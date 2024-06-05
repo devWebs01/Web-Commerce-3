@@ -90,8 +90,9 @@ $destroy = function (product $product) {
 
                             </tbody>
                         </table>
-
-                        {{ $this->products->links() }}
+                        <div class="mx-3">
+                            {{ $this->products->links() }}
+                        </div>
                     </div>
 
                 </div>

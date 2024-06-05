@@ -73,7 +73,6 @@
                     orientation: 'landscape',
                     title: '',
                     pageSize: 'A4',
-                    messageTop: '<header> <div class="row"> <div id="img" class="col-md-3"> <img id="logo" src="/image/logo.png" width="140" height="160" /> </div> <div id="text-header" class="col-md-9"> <h3 class="kablogo"></h3> <h1 class="keclogo"><strong>SEKOLAH DASAR NEGERI 79/VI <br> KOTA JAMBI </strong></h1> <h6 class="alamatlogo"> Jln. Sersan Darpin No. 85 RT. 07, Eka Jaya, Kec. Paal Merah, Kota Jambi <br>Jambi  36134</h6> </div> <hr class="garis1"/> </div> <style> h1,h3,h5,h6{ text-align:center; padding-right:200px; } .row{ margin-top: 20px; } .keclogo{ font-size:24px; font-size:3vw; } .kablogo{ font-size:2vw; } .alamatlogo{ font-size:1.5vw; } .kodeposlogo{ font-size:1.7vw; } #logo{ margin: auto; margin-left: 50%; margin-right: auto; } .garis1{ border-top:3px solid black; height: 2px; border-bottom:1px solid black; } </style> </header>',
                     customize: function(win) {
                         $(win.document.body).find('table')
                             .css('font-size', '8pt');

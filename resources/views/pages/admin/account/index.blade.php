@@ -51,8 +51,8 @@ $submit = function () {
         <div>
             <div class="card overflow-hidden">
                 <div class="card-header p-0">
-                    <img src="https://bootstrapdemos.adminmart.com/matdash/dist/assets/images/backgrounds/profilebg.jpg"
-                        alt="matdash-img" class="img-fluid">
+                    <img src="https://img.freepik.com/premium-photo/abstract-background-design-images-wallpaper-ai-generated_643360-150284.jpg"
+                        alt="matdash-img" width="100%" height="300px" class="object-fit-cover">
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-start">

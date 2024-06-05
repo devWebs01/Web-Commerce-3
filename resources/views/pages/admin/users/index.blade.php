@@ -92,8 +92,9 @@ $destroy = function (User $user) {
 
                                 </tbody>
                             </table>
-
-                            {{ $this->users->links() }}
+                            <div class="mx-3">
+                                {{ $this->users->links() }}
+                            </div>
                         </div>
 
                     </div>

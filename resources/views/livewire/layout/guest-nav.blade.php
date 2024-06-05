@@ -29,7 +29,7 @@ on([
                 return $item->product->price * $item->qty;
             });
     },
-    
+
     'address-update' => function () {
         $this->getAddressUser = Address::where('user_id', auth()->id())->first();
     },

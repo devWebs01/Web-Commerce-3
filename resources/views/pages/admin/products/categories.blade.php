@@ -119,8 +119,9 @@ $destroy = function (Category $category) {
 
                                 </tbody>
                             </table>
-
-                            {{ $this->categories->links() }}
+                            <div class="mx-3">
+                                {{ $this->categories->links() }}
+                            </div>
                         </div>
 
                     </div>
