@@ -49,7 +49,7 @@ $orders = computed(fn() => Order::query()->get());
                                         <td>{{ $order->payment_method }}</td>
                                         <td>{{ $order->protect_cost == 1 ? 'Bubble Wrap' : '-' }}</td>
                                         <td>{{ $order->items->count() }} Barang</td>
-                                        <td>{{ $order->created_at }} Barang</td>
+                                        <td>{{ $order->created_at }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
