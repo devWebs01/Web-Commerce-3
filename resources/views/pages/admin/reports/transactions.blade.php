@@ -34,6 +34,7 @@ $orders = computed(fn() => Order::query()->get());
                                     <th>Metode Pembayaran</th>
                                     <th>Tambahan</th>
                                     <th>Jumlah </th>
+                                    <th>Tanggal </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,6 +49,7 @@ $orders = computed(fn() => Order::query()->get());
                                         <td>{{ $order->payment_method }}</td>
                                         <td>{{ $order->protect_cost == 1 ? 'Bubble Wrap' : '-' }}</td>
                                         <td>{{ $order->items->count() }} Barang</td>
+                                        <td>{{ $order->created_at }} Barang</td>
                                     </tr>
                                 @endforeach
                             </tbody>

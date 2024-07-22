@@ -48,6 +48,7 @@ $orders = computed(function () {
                                     <th>Invoice</th>
                                     <th>Status</th>
                                     <th>Total Pesanan</th>
+                                    <th>Jumlah </th>
                                     <th>#</th>
                                 </tr>
                             </thead>
@@ -64,6 +65,8 @@ $orders = computed(function () {
                                         <th>
                                             {{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
                                         </th>
+                                        <th>{{ $order->items->count() }} Barang</th>
+
                                         <th>
                                             <a href="/admin/transactions/{{ $order->id }}"
                                                 class="btn btn-primary btn-sm">

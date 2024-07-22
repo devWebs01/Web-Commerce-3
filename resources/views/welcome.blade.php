@@ -60,7 +60,7 @@ state([
                 </div>
             </section>
 
-            <section class="my-5">
+            {{-- <section class="my-5">
                 <div class="container-lg">
                     <div class="row align-items-center ">
                         <div class="col-lg-6">
@@ -112,7 +112,7 @@ state([
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> --}}
 
             <div class="container-lg py-5">
                 <div class="row flex-row-reverse align-items-center ">

@@ -15,16 +15,16 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Top Selling',
+                'name' => 'Makeup',
             ],
             [
-                'name' => 'Brightening Family',
+                'name' => 'Skincare',
             ],
             [
-                'name' => 'Mask Family',
+                'name' => 'Hair Care',
             ],
             [
-                'name' => 'Serum Family',
+                'name' => 'Nail Care',
             ],
             [
                 'name' => 'Sunscreen Family',

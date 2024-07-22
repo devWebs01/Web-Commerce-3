@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             UserSeeder::class,
+            JsonSeeder::class,
         ]);
 
         Artisan::call('rajaongkir:seed');
