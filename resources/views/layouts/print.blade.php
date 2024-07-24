@@ -73,6 +73,7 @@
                     orientation: 'landscape',
                     title: '',
                     pageSize: 'A4',
+                    messageTop:'<div class="container"> <h1 class="text-header"><strong>Laporan Data Bylilian</strong></h1> </div> <hr class="garis1" /> </header> <style> body { text-align: center; } h1, h3, h5, h6 { padding-right: 100px; } .row { margin-top: 20px; } .text-header { font-size: 24px; font-size: 3vw; } .garis1 { border-top: 3px solid black; height: 2px; border-bottom: 1px solid black; } .container { display: flex; justify-content: flex-end; text-align: end; width: 100%; /* Menggunakan 80% dari lebar untuk meniru col-10 */ margin: 0 auto; /* Agar berada di tengah */ } </style>',
                     customize: function(win) {
                         $(win.document.body).find('table')
                             .css('font-size', '8pt');

@@ -8,7 +8,7 @@ use function Laravel\Folio\name;
 name('welcome');
 
 state([
-    'products' => fn() => Product::latest()->limit(6)->get(),
+    'products' => fn() => Product::latest()->limit(30)->get(),
 ]);
 
 ?>
@@ -36,7 +36,7 @@ state([
     </style>
     @volt
         <div>
-
+            
             <section class="my-lg-9 py-5">
                 <div class="container">
                     <div class="row flex-row-reverse align-items-center ">
@@ -59,60 +59,6 @@ state([
                     </div>
                 </div>
             </section>
-
-            {{-- <section class="my-5">
-                <div class="container-lg">
-                    <div class="row align-items-center ">
-                        <div class="col-lg-6">
-                            <div class="image-holder">
-                                <img src="https://demo.templatesjungle.com/serene/images/banner-image2.png" alt="banner"
-                                    class="img-fluid ">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 mt-5 mt-lg-0">
-                            <div class="banner-content ">
-                                <ul class="nav nav-tabs d-block border-0" id="myTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link border-0 text-start p-0" id="safe-tab" disabled
-                                            data-bs-toggle="tab" data-bs-target="#safe-tab-pane" type="button"
-                                            role="tab" aria-controls="safe-tab-pane" aria-selected="true">
-                                            <h6 class="sub-heading m-0">01</h6>
-                                            <h2 id="font-custom" class="display-3 hover fw-semibold mb-5 ">100% Aman</h2>
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link border-0 text-start p-0" id="natural-tab"
-                                            data-bs-toggle="tab" data-bs-target="#natural-tab-pane" type="button"
-                                            role="tab" aria-controls="natural-tab-pane" aria-selected="false"
-                                            tabindex="-1" disabled>
-                                            <h6 class="sub-heading m-0">02</h6>
-                                            <h2 id="font-custom" class="display-3 hover fw-semibold mb-5">Natural</h2>
-                                        </button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link border-0 text-start p-0 rounded" id="organic-tab"
-                                            data-bs-toggle="tab" data-bs-target="#organic-tab-pane" type="button"
-                                            role="tab" aria-controls="organic-tab-pane" aria-selected="false"
-                                            tabindex="-1" disabled>
-                                            <h6 class="sub-heading m-0">03</h6>
-                                            <h2 id="font-custom" class="hover display-3 fw-semibold mb-5">Organik</h2>
-                                        </button>
-                                    </li>
-                                </ul>
-
-                                <div class="tab-content" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="safe-tab-pane" role="tabpanel"
-                                        aria-labelledby="safe-tab" tabindex="0">
-                                        <p class="fs-5">Dengan produk kami, Anda dapat merasakan manfaat perawatan kulit
-                                            yang aman, lembut, dan efektif. Kulit Anda akan terjaga dengan baik, terhidar
-                                            dari iritasi dan masalah kulit lainnya.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section> --}}
 
             <div class="container-lg py-5">
                 <div class="row flex-row-reverse align-items-center ">
@@ -165,8 +111,7 @@ state([
                                 <div class="item bg-body border ">
                                     <a href="{{ route('product-detail', ['product' => $product->id]) }}"><img
                                             src="{{ Storage::url($product->image) }}" alt="{{ $product->title }}"
-                                            class="object-fit-cover "
-                                            style="width: 100%; height: 300px;"></a>
+                                            class="object-fit-cover " style="width: 100%; height: 300px;"></a>
                                     <span class="category text-white" style="background-color: #9c9259;">
                                         {{ Str::limit($product->category->name, 13, '...') }}
                                     </span>
