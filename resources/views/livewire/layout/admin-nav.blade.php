@@ -8,7 +8,7 @@ state([
     'orders' => fn() => Order::whereStatus('PENDING')->count() ?? null,
 ]);
 
-$profileShop = computed(function () {
+$shop = computed(function () {
     return Shop::first();
 });
 
@@ -25,7 +25,7 @@ on([
     <div class="brand-logo d-flex align-items-center justify-content-between">
         <a href="#" class="text-nowrap logo-img">
             <h4 style="font-weight: 900" class="ms-lg-2 text-primary">
-                {{ $this->profileShop->name }}
+                {{ $this->shop->name }}
             </h4>
         </a>
         <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -36,7 +36,9 @@ on([
     <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
         <ul id="sidebarnav">
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ route('dashboard') }}" aria-expanded="false"
+                <a class="sidebar-link
+
+                " href="{{ route('dashboard') }}" aria-expanded="false"
                     {{ request()->routeIs('dashboard') }}>
                     <iconify-icon icon="solar:home-2-bold"></iconify-icon>
                     <span class="hide-menu">Beranda
@@ -52,12 +54,16 @@ on([
                 <span class="hide-menu">Pengguna</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false"
-                    {{ request()->routeIs('users.index') }}>
+                <a class="sidebar-link
+{{ auth()->user()->role == 'superadmin' ?: 'd-none' }}
+                "
+                    href="{{ route('users.index') }}" aria-expanded="false" {{ request()->routeIs('users.index') }}>
                     <iconify-icon icon="solar:shield-user-outline"></iconify-icon>
                     <span class="hide-menu">Admin</span>
                 </a>
-                <a class="sidebar-link" href="{{ route('customers') }}" aria-expanded="false"
+                <a class="sidebar-link
+
+                " href="{{ route('customers') }}" aria-expanded="false"
                     {{ request()->routeIs('customers') }}>
                     <iconify-icon icon="solar:user-circle-bold"></iconify-icon>
                     <span class="hide-menu">Pelanggan</span>
@@ -72,17 +78,24 @@ on([
                 <span class="hide-menu">Toko</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ route('categories-product') }}" aria-expanded="false"
+                <a class="sidebar-link
+
+                " href="{{ route('categories-product') }}" aria-expanded="false"
                     {{ request()->routeIs('categories-product') }}>
                     <iconify-icon icon="solar:widget-add-line-duotone"></iconify-icon>
                     <span class="hide-menu">Kategori Produk</span>
                 </a>
-                <a class="sidebar-link" href="{{ route('products.index') }}" aria-expanded="false"
+                <a class="sidebar-link
+
+                " href="{{ route('products.index') }}" aria-expanded="false"
                     {{ request()->routeIs('products.index') }}>
                     <iconify-icon icon="solar:bacteria-bold"></iconify-icon>
                     <span class="hide-menu">Produk Toko</span>
                 </a>
-                <a class="sidebar-link" href="{{ route('setting-store') }}" aria-expanded="false"
+                <a class="sidebar-link
+{{ auth()->user()->role == 'superadmin' ?: 'd-none' }}
+                "
+                    href="{{ route('setting-store') }}" aria-expanded="false"
                     {{ request()->routeIs('setting-store') }}>
                     <iconify-icon icon="solar:shop-2-bold"></iconify-icon>
                     <span class="hide-menu">Pengaturan</span>
@@ -98,8 +111,10 @@ on([
             </li>
 
             <li class="sidebar-item position-relative">
-                <a class="sidebar-link" href="{{ route('transactions.index') }}" aria-expanded="false"
-                    {{ request()->routeIs('transactions.index') }}>
+                <a class="sidebar-link
+
+                " href="{{ route('transactions.index') }}"
+                    aria-expanded="false" {{ request()->routeIs('transactions.index') }}>
                     <iconify-icon icon="solar:round-transfer-diagonal-bold"></iconify-icon>
                     <span class="hide-menu">Transaksi</span>
                 </a>
@@ -119,23 +134,31 @@ on([
                 <span class="hide-menu">Kelola Laporan</span>
             </li>
             <li class="sidebar-item">
-                <a class="sidebar-link" href="{{ route('report.categories-product') }}" aria-expanded="false"
-                    {{ request()->routeIs('report.categories-product') }}>
+                <a class="sidebar-link
+
+                " href="{{ route('report.categories-product') }}"
+                    aria-expanded="false" {{ request()->routeIs('report.categories-product') }}>
                     <iconify-icon icon="solar:add-folder-bold"></iconify-icon>
                     <span class="hide-menu">Data Kategori</span>
                 </a>
-                <a class="sidebar-link" href="{{ route('report.products') }}" aria-expanded="false"
+                <a class="sidebar-link
+
+                " href="{{ route('report.products') }}" aria-expanded="false"
                     {{ request()->routeIs('report.products') }}>
                     <iconify-icon icon="solar:add-folder-bold-duotone"></iconify-icon>
                     <span class="hide-menu">Data Produk</span>
                 </a>
-                <a class="sidebar-link" href="{{ route('report.customers') }}" aria-expanded="false"
+                <a class="sidebar-link
+
+                " href="{{ route('report.customers') }}" aria-expanded="false"
                     {{ request()->routeIs('report.customers') }}>
                     <iconify-icon icon="solar:add-folder-broken"></iconify-icon>
                     <span class="hide-menu">Data Pelanggan</span>
                 </a>
-                <a class="sidebar-link" href="{{ route('report.transactions') }}" aria-expanded="false"
-                    {{ request()->routeIs('report.transactions') }}>
+                <a class="sidebar-link
+
+                " href="{{ route('report.transactions') }}"
+                    aria-expanded="false" {{ request()->routeIs('report.transactions') }}>
                     <iconify-icon icon="solar:accumulator-line-duotone"></iconify-icon>
                     <span class="hide-menu">Data Transaksi</span>
                 </a>
