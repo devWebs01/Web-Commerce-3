@@ -164,8 +164,7 @@ on([
                                         <div class="col">
                                             <h5 id="font-custom">
                                                 {{ $item->product->title }}
-                                                -
-                                                {{ $item->variant->type }}
+                                               
                                             </h5>
                                             <p>
                                                 X {{ $item->qty }} item ({{ $item->qty * $item->product->weight }} gram)
