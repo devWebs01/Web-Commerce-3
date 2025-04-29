@@ -9,6 +9,7 @@
         "darryldecode/cart": "^4.2",
         "dipantry/rajaongkir": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
+        "jantinnerezo/livewire-alert": "^4.0",
         "laravel/breeze": "^1.26",
         "laravel/folio": "^1.1",
         "laravel/framework": "^10.10",

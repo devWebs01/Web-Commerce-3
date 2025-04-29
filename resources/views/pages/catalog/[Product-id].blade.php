@@ -6,31 +6,29 @@ use App\Models\Cart;
 use App\Models\User;
 use function Laravel\Folio\name;
 
-name('product-detail');
+name("product-detail");
 
-state(['product', 'user_id' => fn() => Auth()->user()->id ?? '', 'product_id' => fn() => $this->product->id, 'randomProduct' => fn() => Product::inRandomOrder()->limit(6)->get(), 'qty' => 1]);
+state(["product", "user_id" => fn() => Auth()->user()->id ?? "", "product_id" => fn() => $this->product->id, "randomProduct" => fn() => Product::inRandomOrder()->limit(6)->get(), "qty" => 1]);
 
 rules([
-    'user_id' => 'required|exists:users,id',
-    'product_id' => 'required|exists:products,id',
-    'qty' => 'required|numeric',
+    "user_id" => "required|exists:users,id",
+    "product_id" => "required|exists:products,id",
+    "qty" => "required|numeric",
 ]);
 
 $addToCart = function (Product $product) {
-    if (Auth::check() && auth()->user()->role == 'customer') {
-        $existingCart = Cart::where('user_id', $this->user_id)
-            ->where('product_id', $this->product_id)
-            ->first();
+    if (Auth::check() && auth()->user()->role == "customer") {
+        $existingCart = Cart::where("user_id", $this->user_id)->where("product_id", $this->product_id)->first();
 
         if ($existingCart) {
-            $existingCart->update(['qty' => $existingCart->qty + $this->qty]);
+            $existingCart->update(["qty" => $existingCart->qty + $this->qty]);
         } else {
             Cart::create($this->validate());
         }
 
-        $this->dispatch('cart-updated');
+        $this->dispatch("cart-updated");
     } else {
-        $this->redirect('/login');
+        $this->redirect("/login");
     }
 };
 
@@ -73,14 +71,14 @@ $addToCart = function (Product $product) {
                         </aside>
                         <main class="col-lg-6">
                             <div class="ps-lg-3">
-                                <small class="fw-bold" style="color: #9c9259;">{{ $product->category->name }}</small>
+                                <small class="fw-bold" style="color: #565cff;">{{ $product->category->name }}</small>
                                 <h2 id="font-custom" class="title text-dark fw-bold">
                                     {{ $product->title }}
                                 </h2>
 
                                 <div class="my-3">
                                     <span class="h5 fw-bold">
-                                        {{ 'Rp. ' . Number::format($product->price, locale: 'id') }}
+                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
                                     </span>
                                 </div>
 
@@ -101,11 +99,11 @@ $addToCart = function (Product $product) {
                                     @auth
 
                                         <form wire:submit='addToCart'>
-                                            <button {{ $product->quantity == 0 ? 'disabled' : '' }}
+                                            <button {{ $product->quantity == 0 ? "disabled" : "" }}
                                                 wire:key="{{ $product->id }}" type="submit" class="btn btn-dark w-100">
 
                                                 <span
-                                                    wire:loading.remove>{{ $product->quantity == 0 ? 'Tidak Tersedia' : 'Masukkan Keranjang' }}
+                                                    wire:loading.remove>{{ $product->quantity == 0 ? "Tidak Tersedia" : "Masukkan Keranjang" }}
                                                 </span>
 
                                                 <div wire:loading class="spinner-border spinner-border-sm" role="status">
@@ -118,7 +116,7 @@ $addToCart = function (Product $product) {
                                             Berhasil
                                         </x-action-message>
                                     @else
-                                        <a class="btn btn-dark" href="{{ route('login') }}" role="button">Beli Sekarang</a>
+                                        <a class="btn btn-dark" href="{{ route("login") }}" role="button">Beli Sekarang</a>
                                     @endauth
                                 </div>
                             </div>

@@ -7,23 +7,23 @@ use App\Models\Bank;
 usesFileUploads();
 
 state([
-    'order' => fn() => Order::find($id),
-    'proof_of_payment',
-    'banks' => fn() => Bank::get(),
+    "order" => fn() => Order::find($id),
+    "proof_of_payment",
+    "banks" => fn() => Bank::get(),
 ]);
 
 $submit = function () {
     $this->validate([
-        'proof_of_payment' => 'required|image|mimes:jpeg,png,jpg',
+        "proof_of_payment" => "required|image|mimes:jpeg,png,jpg",
     ]);
 
     $order = $this->order;
     $order->update([
-        'proof_of_payment' => $this->proof_of_payment->store('public/proof_of_payment'),
-        'status' => 'PENDING',
+        "proof_of_payment" => $this->proof_of_payment->store("public/proof_of_payment"),
+        "status" => "PENDING",
     ]);
 
-    $this->redirect('/orders');
+    $this->redirect("/orders");
 };
 
 ?>
@@ -57,7 +57,7 @@ $submit = function () {
                                             <h1 id="font-custom" class="display-1">{{ ++$index }}</h1>
                                         </div>
                                         <div class="col">
-                                            <h2 id="font-custom" style="color: #9c9259">
+                                            <h2 id="font-custom" style="color: #565cff">
                                                 {{ $item->account_number }}
                                             </h2>
                                             <h6 class="fw-bold border-bottom pb-2 mb-2">
@@ -77,7 +77,7 @@ $submit = function () {
                         <div class="row">
                             <div class="col-lg-7">
                                 <h1 id="font-custom">
-                                    {{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
+                                    {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
 
                                 </h1>
                             </div>
@@ -109,7 +109,7 @@ $submit = function () {
                                     <input type="file" class="form-control" wire:model='proof_of_payment'>
                                     <button class="btn btn-outline-secondary" type="submit">Submit</button>
                                 </div>
-                                @error('proof_of_payment')
+                                @error("proof_of_payment")
                                     <p id="proof_of_payment" class="text-danger">{{ $message }}</p>
                                 @enderror
                             </form>

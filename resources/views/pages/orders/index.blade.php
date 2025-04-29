@@ -3,21 +3,36 @@
 use function Livewire\Volt\{state, usesPagination, with};
 use App\Models\Order;
 
-usesPagination(theme: 'bootstrap');
+usesPagination(theme: "bootstrap");
 
-state(['count' => 0]);
+state(["count" => 0]);
 
 $increment = fn() => $this->count++;
 
 with(
     fn() => [
-        'process_orders' => fn() => Order::where('user_id', auth()->id())->where('status', 'UNPAID')->orWhere('status', 'PROGRESS')->orWhere('status', 'PENDING')->latest()->paginate(5),
+        "process_orders" => fn() => Order::where("user_id", auth()->id())
+            ->where("status", "UNPAID")
+            ->orWhere("status", "PROGRESS")
+            ->orWhere("status", "PENDING")
+            ->latest()
+            ->paginate(5),
 
-        'shipped_orders' => fn() => Order::where('user_id', auth()->id())->where('status', 'SHIPPED')->orWhere('status', 'PACKED')->latest()->paginate(5),
+        "shipped_orders" => fn() => Order::where("user_id", auth()->id())
+            ->where("status", "SHIPPED")
+            ->orWhere("status", "PACKED")
+            ->latest()
+            ->paginate(5),
 
-        'completed_orders' => fn() => Order::where('user_id', auth()->id())->where('status', 'COMPLETED')->latest()->paginate(5),
+        "completed_orders" => fn() => Order::where("user_id", auth()->id())
+            ->where("status", "COMPLETED")
+            ->latest()
+            ->paginate(5),
 
-        'cancelled_orders' => fn() => Order::where('user_id', auth()->id())->where('status', 'CANCELLED')->latest()->paginate(5),
+        "cancelled_orders" => fn() => Order::where("user_id", auth()->id())
+            ->where("status", "CANCELLED")
+            ->latest()
+            ->paginate(5),
     ],
 );
 
@@ -88,11 +103,11 @@ with(
                                                     <td>{{ $item->invoice }}</td>
                                                     <td>
                                                         <span class="badge rounded-pill p-2"
-                                                            style="background-color: #9c9259">
+                                                            style="background-color: #565cff">
                                                             {{ $item->status }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ 'Rp. ' . Number::format($item->total_amount, locale: 'id') }}
+                                                    <td>{{ "Rp. " . Number::format($item->total_amount, locale: "id") }}
                                                     </td>
                                                     <td>
                                                         <a wire:navigate href="/orders/{{ $item->id }}"
@@ -129,11 +144,11 @@ with(
                                                     <td>{{ $item->invoice }}</td>
                                                     <td>
                                                         <span class="badge rounded-pill p-2"
-                                                            style="background-color: #9c9259">
+                                                            style="background-color: #565cff">
                                                             {{ $item->status }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ 'Rp. ' . Number::format($item->total_amount, locale: 'id') }}
+                                                    <td>{{ "Rp. " . Number::format($item->total_amount, locale: "id") }}
                                                     </td>
                                                     <td>
                                                         <a wire:navigate href="/orders/{{ $item->id }}"
@@ -171,11 +186,11 @@ with(
                                                     <td>{{ $item->invoice }}</td>
                                                     <td>
                                                         <span class="badge rounded-pill p-2"
-                                                            style="background-color: #9c9259">
+                                                            style="background-color: #565cff">
                                                             {{ $item->status }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ 'Rp. ' . Number::format($item->total_amount, locale: 'id') }}
+                                                    <td>{{ "Rp. " . Number::format($item->total_amount, locale: "id") }}
                                                     </td>
                                                     <td>
                                                         <a wire:navigate href="/orders/{{ $item->id }}"
@@ -213,11 +228,11 @@ with(
                                                     <td>{{ $item->invoice }}</td>
                                                     <td>
                                                         <span class="badge rounded-pill p-2"
-                                                            style="background-color: #9c9259">
+                                                            style="background-color: #565cff">
                                                             {{ $item->status }}
                                                         </span>
                                                     </td>
-                                                    <td>{{ 'Rp. ' . Number::format($item->total_amount, locale: 'id') }}
+                                                    <td>{{ "Rp. " . Number::format($item->total_amount, locale: "id") }}
                                                     </td>
                                                     <td>
                                                         <a wire:navigate href="/orders/{{ $item->id }}"

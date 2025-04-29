@@ -5,11 +5,11 @@ use App\Models\Category;
 use App\Models\Product;
 use function Laravel\Folio\name;
 
-name('catalog-products');
+name("catalog-products");
 
-state(['search'])->url();
-state(['categories' => fn() => Category::get()]);
-state(['category_id' => '']);
+state(["search"])->url();
+state(["categories" => fn() => Category::get()]);
+state(["category_id" => ""]);
 
 $products = computed(function () {
     // Dapatkan semua buku jika tidak ada search dan category
@@ -19,22 +19,20 @@ $products = computed(function () {
 
     // Dapatkan buku berdasarkan search
     elseif ($this->search && !$this->category_id) {
-        return Product::where('title', 'like', '%' . $this->search . '%')
+        return Product::where("title", "like", "%" . $this->search . "%")
             ->latest()
             ->get();
     }
 
     // Dapatkan buku berdasarkan category
     elseif (!$this->search && $this->category_id) {
-        return Product::where('category_id', $this->category_id)
-            ->latest()
-            ->get();
+        return Product::where("category_id", $this->category_id)->latest()->get();
     }
 
     // Dapatkan buku berdasarkan search dan category
     else {
-        return Product::where('title', 'like', '%' . $this->search . '%')
-            ->where('category_id', $this->category_id)
+        return Product::where("title", "like", "%" . $this->search . "%")
+            ->where("category_id", $this->category_id)
             ->latest()
             ->get();
     }
@@ -56,7 +54,9 @@ $products = computed(function () {
                         </div>
                         <div class="col-lg-6 mt-4 mt-lg-0 align-content-center">
                             <p>
-                                Jelajahi beragam pilihan produk kecantikan kami yang terkini. Dari koleksi perawatan kulit yang menenangkan hingga kosmetik yang memperindah penampilan, kami menyediakan segala sesuatu yang Anda butuhkan untuk tampil cantik dan percaya diri setiap hari.
+                                Jelajahi beragam pilihan produk kecantikan kami yang terkini. Dari koleksi perawatan kulit
+                                yang menenangkan hingga kosmetik yang memperindah penampilan, kami menyediakan segala
+                                sesuatu yang Anda butuhkan untuk tampil cantik dan percaya diri setiap hari.
                             </p>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ $products = computed(function () {
                                 <select wire:model.live="category_id" class="form-select" name="category_id" id="">
                                     <option selected value="">Kategori Produk</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ Str::limit($category->name, 35, '...') }}
+                                        <option value="{{ $category->id }}">{{ Str::limit($category->name, 35, "...") }}
                                     @endforeach
                                 </select>
                             </div>
@@ -89,19 +89,18 @@ $products = computed(function () {
                         @foreach ($this->products as $product)
                             <div class="col-lg-4 col-md-6">
                                 <div class="item bg-body border ">
-                                    <a href="{{ route('product-detail', ['product' => $product->id]) }}"><img
+                                    <a href="{{ route("product-detail", ["product" => $product->id]) }}"><img
                                             src="{{ Storage::url($product->image) }}" alt="{{ $product->title }}"
-                                            class="object-fit-cover "
-                                            style="width: 100%; height: 300px;"></a>
-                                    <span class="category text-white" style="background-color: #9c9259;">
-                                        {{ Str::limit($product->category->name, 13, '...') }}
+                                            class="object-fit-cover " style="width: 100%; height: 300px;"></a>
+                                    <span class="category text-white" style="background-color: #565cff;">
+                                        {{ Str::limit($product->category->name, 13, "...") }}
                                     </span>
                                     <h6>
-                                        {{ 'Rp. ' . Number::format($product->price, locale: 'id') }}
+                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
                                     </h6>
                                     <h4>
-                                        <a href="{{ route('product-detail', ['product' => $product->id]) }}">
-                                            {{ Str::limit($product->title, 50, '...') }}
+                                        <a href="{{ route("product-detail", ["product" => $product->id]) }}">
+                                            {{ Str::limit($product->title, 50, "...") }}
                                         </a>
                                     </h4>
                                 </div>

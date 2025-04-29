@@ -1,25 +1,61 @@
 <?php
 
-use function Livewire\Volt\{state, rules, computed};
-use App\Models\Category;
+use App\Models\Cart;
 use App\Models\Product;
 use function Laravel\Folio\name;
+use function Livewire\Volt\{state, uses};
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-name('welcome');
+name("welcome");
 
 state([
-    'products' => fn() => Product::latest()->limit(30)->get(),
+    "products" => fn() => Product::inRandomOrder()->limit(6)->get(),
 ]);
+
+$addToCart = function ($product_id) {
+    if (Auth::check() && auth()->user()->role == "customer") {
+        $user_id = auth()->id();
+
+        $existingCart = Cart::where("user_id", $user_id)->where("product_id", $product_id)->first();
+
+        if ($existingCart) {
+            $this->alert("warning", "Layanan sudah ada di list.", [
+                "position" => "top",
+                "timer" => "2000",
+                "toast" => true,
+                "timerProgressBar" => true,
+                "text" => "",
+            ]);
+        } else {
+            Cart::create([
+                "user_id" => $user_id,
+                "product_id" => $product_id,
+                "quantity" => 1, // Default quantity
+            ]);
+
+            $this->alert("success", "Layanan berhasil ditambahkan ke list.", [
+                "position" => "top",
+                "timer" => "2000",
+                "toast" => true,
+                "timerProgressBar" => true,
+                "text" => "",
+            ]);
+        }
+
+        $this->dispatch("cart-updated");
+    } else {
+        $this->redirect("/login");
+    }
+};
 
 ?>
 
 <x-guest-layout>
-    <x-slot name="title">Selamat Datang</x-slot>
+    <x-slot name="title">CABERACER - Modifikasi Visual Kendaraan</x-slot>
+
     <style>
         .hover {
-            --c: #9c9259;
-            /* the color */
-
+            --c: #565cff;
             color: #0000;
             background:
                 linear-gradient(90deg, #fff 50%, var(--c) 0) calc(100% - var(--_p, 0%))/200% 100%,
@@ -27,102 +63,107 @@ state([
             -webkit-background-clip: text, padding-box;
             background-clip: text, padding-box;
             transition: 0.5s;
-            border-radius: 10px;
+            font-weight: bolder;
         }
 
         .hover:hover {
             --_p: 100%
         }
+
+        /* Styling untuk teks pada slider */
+        .header-text h2 {
+            font-size: 3rem;
+            /* Ukuran default untuk layar besar */
+        }
+
+        /* Mengubah ukuran teks pada layar kecil */
+        @media (max-width: 767px) {
+            .header-text h2 {
+                font-size: 2rem;
+                /* Ukuran lebih kecil untuk layar kecil */
+            }
+        }
+
+        /* Styling untuk slider height */
+        .main-banner .owl-carousel .item {
+            height: 50vh;
+            /* Set tinggi slider menjadi 50% dari tinggi layar pada layar kecil */
+        }
+
+        @media (min-width: 768px) {
+            .main-banner .owl-carousel .item {
+                height: 70vh;
+                /* Tinggi slider lebih besar pada layar besar */
+            }
+        }
     </style>
+
     @volt
         <div>
-            
-            <section class="my-lg-9 py-5">
-                <div class="container">
-                    <div class="row flex-row-reverse align-items-center ">
-                        <div class="col-lg-8">
-                            <div class="image-holder text-end">
-                                <img src="https://demo.templatesjungle.com/serene/images/banner-image1.png" alt="banner"
-                                    class="img-fluid ">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 mt-5 mt-lg-0">
-                            <div class="banner-content ">
-                                <h6 class="sub-heading">Produk Kecantikkan</h6>
-                                <h2 id="font-custom" class="display-3 fw-semibold my-2 my-lg-3">Perawatan kulit mudah &
-                                    terjangkau.
-                                </h2>
-                                <p class="fs-5">Dapatkan perawatan kulit terbaik dengan produk-produk berkualitas tinggi
-                                    yang aman, alami, dan organik. Nikmati hasil yang maksimal dengan harga terjangkau. </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div class="container-lg py-5">
-                <div class="row flex-row-reverse align-items-center ">
-                    <div class="col-lg-8">
-                        <div class="image-holder text-end">
-                            <img src="https://demo.templatesjungle.com/serene/images/banner-image3.png" alt="banner"
-                                class="img-fluid">
-                        </div>
-                    </div>
-                    <div class="col-lg-4  mt-5 mt-lg-0">
-                        <div class="banner-content ">
-                            <h6 class="sub-heading">Aran Terbatas? Tak Masalah!</h6>
-                            <h2 id="font-custom" class="display-3 fw-semibold my-2 my-lg-3">Dapatkan Kemudahan Berbelanja
+            <!-- Banner Utama -->
+            <div class="container main-banner">
+                <div class="owl-carousel owl-banner">
+                    <div class="item rounded rounded-5"
+                        style="background-image: url('/guest/apola_image/banner1.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                        <div class="header-text">
+                            <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
+                                Ubah Kendaraanmu Jadi Karya Seni Bergerak
                             </h2>
-                            <p class="fs-5">Dapatkan produk berkualitas dengan proses
-                                pembelian yang mudah. Nikmati pengalaman belanja yang lancar, tanpa terkendala apa pun.
-                            </p>
-                            <a href="{{ route('catalog-products') }}"
-                                class="btn btn-outline-dark text-uppercase mt-4 mt-lg-5">Belanja Sekarang</a>
+                        </div>
+                    </div>
+                    <div class="item rounded rounded-5"
+                        style="background-image: url('/guest/apola_image/banner2.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                        <div class="header-text">
+                            <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
+                                Desain Decal & Striping Premium, Tahan Lama
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="item rounded rounded-5"
+                        style="background-image: url('/guest/apola_image/banner3.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                        <div class="header-text">
+                            <h2 id="font-custom" class="text-dark font-stroke fs-1 fs-sm-2 fs-md-3">
+                                Wrapping Kendaraan: Ganti Warna Tanpa Cat Permanen
+                            </h2>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="container pt-5">
-                <div class="row align-items-center my-lg-9">
-                    <div class="col-lg-6">
-                        <div class="banner-content ">
-                            <h6>Populer Sekarang</h6>
-                            <h2 id="font-custom" class="display-3 fw-semibold my-2 my-lg-3">Produk Perawatan Kulit
-                                Terpopuler
-                            </h2>
+            <!-- Koleksi Layanan -->
+            <div class="properties section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 offset-lg-4">
+                            <div class="section-heading text-center">
+                                <h6>| Layanan Kami</h6>
+                                <h2 id="font-custom" class="fw-bold">Kustom Visual untuk Motor & Mobil</h2>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <p class="fs-5">Temukan produk perawatan kulit terpopuler kami yang dapat memenuhi kebutuhan Anda.
-                            Lihat rangkaian produk kami di bawah ini: </p>
-                        <a href="{{ route('catalog-products') }}"
-                            class="btn btn-outline-dark text-uppercase mt-4 mt-lg-5">Lihat Semua Produk</a>
-                    </div>
-                </div>
-                <hr>
-            </div>
-
-            <div class="properties section mt-5">
-                <div class="container">
                     <div class="row">
                         @foreach ($products as $product)
                             <div class="col-lg-4 col-md-6">
-                                <div class="item bg-body border ">
-                                    <a href="{{ route('product-detail', ['product' => $product->id]) }}"><img
-                                            src="{{ Storage::url($product->image) }}" alt="{{ $product->title }}"
-                                            class="object-fit-cover " style="width: 100%; height: 300px;"></a>
-                                    <span class="category text-white" style="background-color: #9c9259;">
-                                        {{ Str::limit($product->category->name, 13, '...') }}
+                                <div class="item">
+                                    <a href="{{ route("product-detail", ["product" => $product->id]) }}">
+                                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->title }}"
+                                            class="object-fit-cover" style="width:100%; height:300px;">
+                                    </a>
+                                    <span class="category">
+                                        {{ Str::limit($product->category->name, 13, "...") }}
                                     </span>
                                     <h6>
-                                        {{ 'Rp. ' . Number::format($product->price, locale: 'id') }}
+                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
                                     </h6>
                                     <h4>
-                                        <a href="{{ route('product-detail', ['product' => $product->id]) }}">
-                                            {{ Str::limit($product->title, 50, '...') }}
+                                        <a href="{{ route("product-detail", ["product" => $product->id]) }}">
+                                            {{ Str::limit($product->title, 50, "...") }}
                                         </a>
                                     </h4>
+                                    <div class="main-button">
+                                        <a href="{{ route("product-detail", ["product" => $product->id]) }}">Pesan
+                                            Sekarang</a>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -130,23 +171,74 @@ state([
                 </div>
             </div>
 
-            <div class="container">
-                <section class="py-5 my-md-5 border rounded-5" style="background-color: #9c9259;">
-                    <div class="container">
-                        <div class="row justify-content-center text-center text-white py-4">
-                            <div class="col-lg-8">
-                                <span>Daftar Sekarang</span>
-                                <h2 id="font-custom" class="display-5 fw-bold my-2">Mulai Hari Ini Juga!</h2>
-                                <p class="lead text-white">Bergabunglah dengan kami dan rasakan manfaat dari produk-produk
-                                    perawatan kulit berkualitas tinggi. </p>
-                                <div class=" mt-5 d-grid col-3 mx-auto">
-                                    <a class="btn btn-dark text-uppercase " href="{{ route('login') }}"
-                                        type="submit">Daftar</a>
+            <!-- Proses Pemesanan -->
+            <section class="py-5">
+                <div class="container">
+                    <div class="row text-center mb-0">
+                        <div class="col-12 col-lg-10 col-xl-8 mx-auto section-heading">
+                            <h6>| Mengapa CABERACER?</h6>
+                            <h2 class="fw-bold" id="font-custom">
+                                Proses Mudah & Cepat
+                                <span class="hover">Hasil Maksimal</span>
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center mt-4">
+                        <div class="col-lg-9">
+                            <div class="row">
+                                <div class="col-lg-4 text-center mb-4">
+                                    <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:150px;height:150px;">
+                                        <i class="fa-solid display-3 fa-headset"></i>
+                                    </div>
+                                    <p class="mt-2 fw-bold">Konsultasi & Desain</p>
+                                </div>
+                                <div class="col-lg-4 text-center mb-4">
+                                    <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:150px;height:150px;">
+                                        <i class="fa-solid display-3 fa-cubes"></i>
+                                    </div>
+                                    <p class="mt-2 fw-bold">Produksi & Quality Check</p>
+                                </div>
+                                <div class="col-lg-4 text-center mb-4">
+                                    <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:150px;height:150px;">
+                                        <i class="fa-solid display-3 fa-truck-fast"></i>
+                                    </div>
+                                    <p class="mt-2 fw-bold">Pengiriman & Pemasangan</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
+
+            <!-- Video Showcase -->
+            <div class="video section" id="parallax" style="background-image: url('/guest/apola_image/thumbnail.jpg');">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 offset-lg-4">
+                            <div class="section-heading text-center">
+                                <button class="btn btn-dark btn-sm rounded">| CABERACER.ID</button>
+                                <h2 class="mt-3">Lihat Proses Kami</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-content">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-10 offset-lg-1">
+                            <div class="video-frame ratio ratio-16x9">
+                                <video class="rounded-5" muted loop autoplay>
+                                    <source src="{{ asset("/guest/apola_image/videos.mp4") }}" type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>

@@ -4,30 +4,31 @@ use Dipantry\Rajaongkir\Models\ROProvince;
 use Dipantry\Rajaongkir\Models\ROCity;
 use App\Models\Shop;
 use function Livewire\Volt\{state, computed, rules};
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
-state(['province_id'])->url();
+state(["province_id"])->url();
 
 $getShop = computed(function () {
     return Shop::first();
 });
 
 state([
-    'name' => fn() => $this->getShop->name ?? '',
-    'province_id' => fn() => $this->getShop->province_id ?? '',
-    'city_id' => fn() => $this->getShop->city_id ?? '',
-    'details' => fn() => $this->getShop->details ?? '',
-    'provinces' => fn() => ROProvince::all(),
+    "name" => fn() => $this->getShop->name ?? "",
+    "province_id" => fn() => $this->getShop->province_id ?? "",
+    "city_id" => fn() => $this->getShop->city_id ?? "",
+    "details" => fn() => $this->getShop->details ?? "",
+    "provinces" => fn() => ROProvince::all(),
 ]);
 
 $cities = computed(function () {
-    return ROCity::where('province_id', $this->province_id)->get();
+    return ROCity::where("province_id", $this->province_id)->get();
 });
 
 rules([
-    'name' => 'required|min:5',
-    'province_id' => 'required|exists:rajaongkir_provinces,id',
-    'city_id' => 'required|exists:rajaongkir_cities,id',
-    'details' => 'required|min:20',
+    "name" => "required|min:5",
+    "province_id" => "required|exists:rajaongkir_provinces,id",
+    "city_id" => "required|exists:rajaongkir_cities,id",
+    "details" => "required|min:20",
 ]);
 
 $save = function () {
@@ -38,7 +39,12 @@ $save = function () {
     } elseif (!$this->getShop) {
         Shop::create($validate);
     }
-    $this->dispatch('save');
+    $this->dispatch("save");
+
+    LivewireAlert::text("Proses berhasil!")
+        ->success()
+        ->timer(3000) // Dismisses after 3 seconds
+        ->show();
 };
 
 ?>
@@ -55,46 +61,46 @@ $save = function () {
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Nama Toko</label>
-                <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name" id="name"
+                <input type="text" class="form-control @error("name") is-invalid @enderror" wire:model="name" id="name"
                     aria-describedby="nameId" placeholder="Enter name store" />
-                @error('name')
+                @error("name")
                     <small id="nameId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="mb-3">
                 <label for="province_id" class="form-label">Provinsi</label>
-                <select class="form-select @error('province_id') is-invalid @enderror" wire:model.live="province_id"
+                <select class="form-select @error("province_id") is-invalid @enderror" wire:model.live="province_id"
                     id="province_id">
                     <option>Pilih Provinsi</option>
                     @foreach ($provinces as $province)
                         <option value="{{ $province->id }}">{{ $province->name }}</option>
                     @endforeach
                 </select>
-                @error('province_id')
+                @error("province_id")
                     <small id="provinceId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="mb-3">
                 <label for="city_id" class="form-label">Kota</label>
-                <select class="form-select @error('city_id') is-invalid @enderror" wire:model="city_id" id="city_id">
+                <select class="form-select @error("city_id") is-invalid @enderror" wire:model="city_id" id="city_id">
                     <option>Pilih Kota</option>
                     @foreach ($this->cities as $city)
                         <option value="{{ $city->id }}">{{ $city->name }}</option>
                     @endforeach
                 </select>
-                @error('city_id')
+                @error("city_id")
                     <small id="cityId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="mb-3">
                 <label for="details" class="form-label">Alamat Lengkap</label>
-                <textarea class="form-control @error('details') is-invalid @enderror" wire:model="details" id="details"
+                <textarea class="form-control @error("details") is-invalid @enderror" wire:model="details" id="details"
                     aria-describedby="detailsId" placeholder="Enter Alamat Lengkap" rows="8"></textarea>
 
-                @error('details')
+                @error("details")
                     <small id="detailsId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
