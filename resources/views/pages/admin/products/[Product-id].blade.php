@@ -4,53 +4,59 @@ use function Livewire\Volt\{state, rules, usesFileUploads};
 use App\Models\Category;
 use App\Models\Product;
 use function Laravel\Folio\name;
+use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
-name('products.edit');
+name("products.edit");
 
 usesFileUploads();
 
 state([
-    'categories' => fn() => Category::get(),
-    'category_id' => fn() => $this->product->category_id,
-    'title' => fn() => $this->product->title,
-    'price' => fn() => $this->product->price,
-    'quantity' => fn() => $this->product->quantity,
-    'weight' => fn() => $this->product->weight,
-    'description' => fn() => $this->product->description,
-    'image',
-    'product',
+    "categories" => fn() => Category::get(),
+    "category_id" => fn() => $this->product->category_id,
+    "title" => fn() => $this->product->title,
+    "price" => fn() => $this->product->price,
+    "quantity" => fn() => $this->product->quantity,
+    "weight" => fn() => $this->product->weight,
+    "description" => fn() => $this->product->description,
+    "image",
+    "product",
 ]);
 
 rules([
-    'category_id' => 'required|exists:categories,id',
-    'title' => 'required|min:5',
-    'price' => 'required|numeric',
-    'quantity' => 'required|numeric',
-    'image' => 'nullable',
-    'weight' => 'required|numeric',
-    'description' => 'required|min:10',
+    "category_id" => "required|exists:categories,id",
+    "title" => "required|min:5",
+    "price" => "required|numeric",
+    "quantity" => "required|numeric",
+    "image" => "nullable",
+    "weight" => "required|numeric",
+    "description" => "required|min:10",
 ]);
 
 $save = function () {
     $validate = $this->validate();
     if ($this->image) {
-        $validate['image'] = $this->image->store('public/images');
+        $validate["image"] = $this->image->store("public/images");
         Storage::delete($this->product->image);
     } else {
-        $validate['image'] = $this->product->image;
+        $validate["image"] = $this->product->image;
     }
     product::whereId($this->product->id)->update($validate);
 
-    $this->redirectRoute('products.index', navigate: true);
+    $this->redirectRoute("products.index");
+
+    LivewireAlert::text("Proses berhasil!")
+        ->success()
+        ->timer(3000) // Dismisses after 3 seconds
+        ->show();
 };
 ?>
 <x-admin-layout>
     <x-slot name="title">Produk</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('products.index') }}">Produk Toko</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("products.index") }}">Produk Toko</a></li>
         <li class="breadcrumb-item"><a
-                href="{{ route('products.edit', ['product' => $product->id]) }}">{{ $product->title }}</a></li>
+                href="{{ route("products.edit", ["product" => $product->id]) }}">{{ $product->title }}</a></li>
     </x-slot>
 
     @volt
@@ -73,41 +79,38 @@ $save = function () {
 
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control @error('title') is-invalid @enderror"
-                                        wire:model="title" id="title" aria-describedby="titleId"
-                                        placeholder="Enter product title" />
-                                    @error('title')
+                                    <input type="text" class="form-control @error("title") is-invalid @enderror"
+                                        wire:model="title" id="title" aria-describedby="titleId" placeholder="..." />
+                                    @error("title")
                                         <small id="titleId" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="price" class="form-label">Harga Produk</label>
-                                    <input type="number" class="form-control @error('price') is-invalid @enderror"
-                                        wire:model="price" id="price" aria-describedby="priceId"
-                                        placeholder="Enter product price" />
-                                    @error('price')
+                                    <label for="price" class="form-label">Harga Mulai Dari</label>
+                                    <input type="number" class="form-control @error("price") is-invalid @enderror"
+                                        wire:model="price" id="price" aria-describedby="priceId" placeholder="..." />
+                                    @error("price")
                                         <small id="priceId" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
-
                                 <div class="mb-3">
                                     <label for="image" class="form-label">Gambar Produk</label>
-                                    <input type="file" class="form-control @error('image') is-invalid @enderror"
-                                        wire:model="image" id="image" aria-describedby="imageId"
-                                        placeholder="Enter product image" />
-                                    @error('image')
+                                    <input type="file" class="form-control @error("image") is-invalid @enderror"
+                                        wire:model="image" id="image" aria-describedby="imageId" placeholder="..."
+                                        accept="image/*" />
+                                    @error("image")
                                         <small id="imageId" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="quantity" class="form-label">Jumlah Produk</label>
-                                    <input type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                    <input type="number" class="form-control @error("quantity") is-invalid @enderror"
                                         wire:model="quantity" id="quantity" aria-describedby="quantityId"
-                                        placeholder="Enter product quantity" />
-                                    @error('quantity')
+                                        placeholder="..." />
+                                    @error("quantity")
                                         <small id="quantityId" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -121,17 +124,16 @@ $save = function () {
                                         @endforeach
                                     </select>
 
-                                    @error('category_id')
+                                    @error("category_id")
                                         <small id="category_id" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="weight" class="form-label">Berat Produk</label>
-                                    <input type="number" class="form-control @error('weight') is-invalid @enderror"
-                                        wire:model="weight" id="weight" aria-describedby="weightId"
-                                        placeholder="Enter product weight" />
-                                    @error('weight')
+                                    <input type="number" class="form-control @error("weight") is-invalid @enderror"
+                                        wire:model="weight" id="weight" aria-describedby="weightId" placeholder="..." />
+                                    @error("weight")
                                         <small id="weightId" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -140,21 +142,18 @@ $save = function () {
 
                             <div class="mb-3">
                                 <label for="description" class="form-label">Penjelasan Produk</label>
-                                <textarea class="form-control @error('description') is-invalid @enderror" wire:model="description" id="description"
-                                    aria-describedby="descriptionId" placeholder="Enter product description" rows="8"></textarea>
+                                <textarea class="form-control @error("description") is-invalid @enderror" wire:model="description" id="description"
+                                    aria-describedby="descriptionId" placeholder="..." rows="8"></textarea>
 
-                                @error('description')
+                                @error("description")
                                     <small id="descriptionId" class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
-
                             <div class="text-end">
-                                <x-action-message wire:loading on="save">
-                                    <span class="spinner-border spinner-border-sm"></span>
-                                </x-action-message>
+
                                 <button type="submit" class="btn btn-primary">
-                                    Submit
+                                    Simpan
                                 </button>
                             </div>
                     </form>

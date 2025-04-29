@@ -4,7 +4,6 @@ use function Livewire\Volt\{state, computed, usesPagination, on, rules};
 use App\Models\Bank;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 
-
 usesPagination();
 
 state(["swap" => false, "account_owner", "account_number", "bank_name", "bankId"]);
@@ -101,7 +100,7 @@ $edit = function (Bank $bank) {
                     </x-action-message>
                 </div>
                 <button type="submit" class=" ms-3 btn btn-primary">
-                    Submit
+                    Simpan
                 </button>
             </div>
         </form>
@@ -127,15 +126,13 @@ $edit = function (Bank $bank) {
                             <th>{{ $bank->bank_name }}</th>
                             <th>{{ $bank->account_number }}</th>
                             <th>
-                                <div class="btn-group">
+                                <div>
                                     <button wire:loading.attr='disabled' wire:click='edit({{ $bank->id }})'
                                         class="btn btn-warning btn-sm">
                                         Edit
                                     </button>
-                                    <button
-                                        wire:confirm.prompt="Yakin Ingin Menghapus?\n\nTulis 'hapus' untuk konfirmasi!|hapus"
-                                        wire:loading.attr='disabled' wire:click='destroy({{ $bank->id }})'
-                                        class="btn btn-danger btn-sm join-item">
+                                    <button wire:confirm="Yakin Ingin Menghapus?" wire:loading.attr='disabled'
+                                        wire:click='destroy({{ $bank->id }})' class="btn btn-danger btn-sm join-item">
                                         Hapus
                                     </button>
                                 </div>

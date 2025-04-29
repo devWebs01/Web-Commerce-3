@@ -22,9 +22,9 @@ $login = function () {
     Session::regenerate();
 
     if (auth()->user()->role == "admin") {
-        $this->redirect(session("url.intended", RouteServiceProvider::HOME), navigate: true);
+        $this->redirect(session("url.intended", RouteServiceProvider::HOME));
     } elseif (auth()->user()->role == "superadmin") {
-        $this->redirect(session("url.intended", RouteServiceProvider::HOME), navigate: true);
+        $this->redirect(session("url.intended", RouteServiceProvider::HOME));
     } else {
         $this->redirect("/");
     }

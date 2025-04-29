@@ -107,7 +107,7 @@ $save = function () {
             <div class="row mb-3">
                 <div class="col-md">
                     <button type="submit" class="btn btn-primary">
-                        Submit
+                        Simpan
                     </button>
                 </div>
                 <div class="col-md align-self-center text-end">

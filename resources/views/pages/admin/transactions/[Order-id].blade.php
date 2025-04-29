@@ -6,40 +6,40 @@ use App\Models\Order;
 use App\Models\Item;
 use function Laravel\Folio\name;
 
-name('transactions.show');
+name("transactions.show");
 
 state([
-    'order' => fn() => Order::find($id),
-    'orderItems' => fn() => Item::where('order_id', $this->order->id)->get(),
-    'tracking_number',
+    "order" => fn() => Order::find($id),
+    "orderItems" => fn() => Item::where("order_id", $this->order->id)->get(),
+    "tracking_number",
 ]);
 
 rules([
-    'tracking_number' => 'required|min:10',
+    "tracking_number" => "required|min:10",
 ]);
 
 $confirm = function () {
-    $this->order->update(['status' => 'PACKED']);
-    $this->dispatch('order-update');
-    $this->dispatch('orders-alert');
+    $this->order->update(["status" => "PACKED"]);
+    $this->dispatch("order-update");
+    $this->dispatch("orders-alert");
 };
 
 $saveTrackingNumber = function () {
     $validate = $this->validate();
-    $validate['status'] = 'SHIPPED';
+    $validate["status"] = "SHIPPED";
 
     $this->order->update($validate);
-    $this->dispatch('order-update');
+    $this->dispatch("order-update");
 };
 
 ?>
 <x-admin-layout>
     <x-slot name="title">Transaksi {{ $order->invoice }}</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('transactions.index') }}">Transaksi</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("transactions.index") }}">Transaksi</a></li>
         <li class="breadcrumb-item"><a
-                href="{{ route('transactions.show', ['order' => $order->id]) }}">{{ $order->invoice }}</a></li>
+                href="{{ route("transactions.show", ["order" => $order->id]) }}">{{ $order->invoice }}</a></li>
     </x-slot>
     @volt
         <div>
@@ -48,22 +48,22 @@ $saveTrackingNumber = function () {
                     <div class="row">
                         <div class="col-md">
                             <form wire:submit="saveTrackingNumber">
-                                @if ($order->status == 'PACKED')
+                                @if ($order->status == "PACKED")
                                     <div class="input-group mb-3">
                                         <input wire:model="tracking_number" type="text"
-                                            class="form-control  @error('tracking_number')
+                                            class="form-control  @error("tracking_number")
                                         is-invalid
                                         @enderror"
                                             placeholder="Masukkan resi...">
 
                                         <button class="btn btn-primary  rounded-end-1" type="submit">
-                                            Submit
+                                            Simpan
                                         </button>
                                         <x-action-message wire:loading on="saveTrackingNumber">
                                             <span class="spinner-border spinner-border-sm"></span>
                                         </x-action-message>
                                     </div>
-                                    @error('tracking_number')
+                                    @error("tracking_number")
                                         <small id="tracking_numberId" class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 @else
@@ -76,11 +76,10 @@ $saveTrackingNumber = function () {
                                 @endif
                             </form>
 
-
                         </div>
                         <div class="col-md">
                             <div class="text-end">
-                                @if ($order->status == 'PENDING')
+                                @if ($order->status == "PENDING")
                                     <x-action-message wire:loading on="password-updated">
                                         <span class="spinner-border spinner-border-sm"></span>
                                     </x-action-message>
@@ -129,26 +128,27 @@ $saveTrackingNumber = function () {
                                             {{ $order->invoice }}
                                         </h6>
                                         <h6>Nomor Resi Pesanan:
-                                            {{ $order->tracking_number ?? '-' }}
+                                            {{ $order->tracking_number ?? "-" }}
                                         </h6>
                                         <h6>Pengiriman:
                                             {{ $order->courier }}
                                         </h6>
                                         <h6>Tambahan:
-                                            {{ $order->protect_cost == true ? 'Bubble Wrap' : '-' }}
+                                            {{ $order->protect_cost == true ? "Bubble Wrap" : "-" }}
                                         </h6>
 
                                         <h6>Metode Pembayaran:
                                             {{ $order->payment_method }}
                                         </h6>
                                     </div>
-                                    @if ($order->payment_method == 'Transfer Bank')
+                                    @if ($order->payment_method == "Transfer Bank")
                                         <div class="col-md text-end">
                                             <figure class="figure">
-                                                <a href="{{ Storage::url($order->proof_of_payment) }}" data-fancybox target="_blank">
+                                                <a href="{{ Storage::url($order->proof_of_payment) }}" data-fancybox
+                                                    target="_blank">
                                                     <img src="{{ Storage::url($order->proof_of_payment) }}"
                                                         class="figure-img img-fluid rounded object-fit-cover
-                                                {{ !$order->proof_of_payment ? 'placeholder' : '' }}"
+                                                {{ !$order->proof_of_payment ? "placeholder" : "" }}"
                                                         width="100" alt="...">
                                                 </a>
                                                 <figcaption class="figure-caption text-center">
@@ -178,13 +178,13 @@ $saveTrackingNumber = function () {
                                                 <!-- start row -->
                                                 <tr class="border">
                                                     <td class="text-center">{{ ++$no }}</td>
-                                                    <td>{{ Str::limit($item->product->title, 30, '...') }}</td>
+                                                    <td>{{ Str::limit($item->product->title, 30, "...") }}</td>
                                                     <td class="text-end">{{ $item->qty }}</td>
                                                     <td class="text-end">
-                                                        {{ 'Rp.' . Number::format($item->product->price, locale: 'id') }}
+                                                        {{ "Rp." . Number::format($item->product->price, locale: "id") }}
                                                     </td>
                                                     <td class="text-end">
-                                                        {{ 'Rp.' . Number::format($item->product->price * $item->qty, locale: 'id') }}
+                                                        {{ "Rp." . Number::format($item->product->price * $item->qty, locale: "id") }}
                                                     </td>
                                                 </tr>
                                                 <!-- end row -->
@@ -193,12 +193,12 @@ $saveTrackingNumber = function () {
                                             <tr class="text-end">
                                                 <td colspan="4"> Sub - Total:</td>
                                                 <td>
-                                                    {{ 'Rp.' .
+                                                    {{ "Rp." .
                                                         Number::format(
                                                             $order->items->sum(function ($item) {
                                                                 return $item->qty * $item->product->price;
                                                             }),
-                                                            locale: 'id',
+                                                            locale: "id",
                                                         ) }}
                                                 </td>
                                             </tr>
@@ -211,13 +211,13 @@ $saveTrackingNumber = function () {
                                             <tr class="text-end">
                                                 <td colspan="4"> Biaya Pengiriman:</td>
                                                 <td>
-                                                    {{ 'Rp.' . Number::format($order->shipping_cost, locale: 'id') }}
+                                                    {{ "Rp." . Number::format($order->shipping_cost, locale: "id") }}
                                                 </td>
                                             </tr>
                                             <tr class="text-end">
                                                 <td colspan="4"> Biaya Tambahan:</td>
                                                 <td>
-                                                    {{ $order->protect_cost == true ? 'Rp.' . Number::format(3000, locale: 'id') : 'Rp. 0' }}
+                                                    {{ $order->protect_cost == true ? "Rp." . Number::format(3000, locale: "id") : "Rp. 0" }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -228,7 +228,7 @@ $saveTrackingNumber = function () {
                             <div class="col-md-12">
                                 <div class="pull-right text-end">
                                     <h3>
-                                        <b>Total : {{ 'Rp.' . Number::format($order->total_amount, locale: 'id') }} </b>
+                                        <b>Total : {{ "Rp." . Number::format($order->total_amount, locale: "id") }} </b>
                                     </h3>
                                 </div>
                             </div>

@@ -4,22 +4,22 @@ use App\Models\User;
 use function Livewire\Volt\{computed, state, usesPagination};
 use function Laravel\Folio\name;
 
-name('customers');
+name("customers");
 
-state(['search'])->url();
-usesPagination(theme: 'bootstrap');
+state(["search"])->url();
+usesPagination(theme: "bootstrap");
 
 $users = computed(function () {
     if ($this->search == null) {
-        return User::query()->where('role', 'customer')->latest()->paginate(10);
+        return User::query()->where("role", "customer")->latest()->paginate(10);
     } else {
         return User::query()
-            ->where('role', 'customer')
+            ->where("role", "customer")
             ->where(function ($query) {
                 $query
-                    ->where('name', 'LIKE', "%{$this->search}%")
-                    ->orWhere('email', 'LIKE', "%{$this->search}%")
-                    ->orWhere('telp', 'LIKE', "%{$this->search}%");
+                    ->where("name", "LIKE", "%{$this->search}%")
+                    ->orWhere("email", "LIKE", "%{$this->search}%")
+                    ->orWhere("telp", "LIKE", "%{$this->search}%");
             })
             ->latest()
             ->paginate(10);
@@ -32,8 +32,8 @@ $users = computed(function () {
     <div>
         <x-slot name="title">Pelanggan</x-slot>
         <x-slot name="header">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('customers') }}">Pelanggan</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("customers") }}">Pelanggan</a></li>
         </x-slot>
 
         @volt
@@ -44,7 +44,7 @@ $users = computed(function () {
                             <label for="email" class="form-label">Cari Pelanggan</label>
                             <input wire:model.live="search" type="search" class="form-control" name="search"
                                 id="search" aria-describedby="helpId"
-                                placeholder="Masukkan nama pengguna / email / telp" />
+                                placeholder="Masukkan nama pengguna, email, telp" />
                         </div>
                     </div>
 
@@ -69,12 +69,12 @@ $users = computed(function () {
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->telp }}</td>
-                                            <td>{{ $user->address->province->name ?? '-' }}</td>
+                                            <td>{{ $user->address->province->name ?? "-" }}</td>
                                             <td>
-                                                {{ $user->address->city->name ?? '-' }}
+                                                {{ $user->address->city->name ?? "-" }}
                                             </td>
                                             <td>
-                                                {{ $user->address->details ?? '-' }}
+                                                {{ $user->address->details ?? "-" }}
                                             </td>
                                         </tr>
                                     @endforeach

@@ -10,15 +10,15 @@ use Illuminate\Validation\Rule;
 use function Livewire\Volt\{state, on};
 
 state([
-    'name' => fn() => auth()->user()->name,
-    'email' => fn() => auth()->user()->email,
-    'telp' => fn() => auth()->user()->telp,
-    'getAddressUser' => fn() => Address::where('user_id', auth()->id())->first() ?? null,
+    "name" => fn() => auth()->user()->name,
+    "email" => fn() => auth()->user()->email,
+    "telp" => fn() => auth()->user()->telp,
+    "getAddressUser" => fn() => Address::where("user_id", auth()->id())->first() ?? null,
 ]);
 
 on([
-    'address-update' => function () {
-        $this->getAddressUser = Address::where('user_id', auth()->id())->first();
+    "address-update" => function () {
+        $this->getAddressUser = Address::where("user_id", auth()->id())->first();
     },
 ]);
 
@@ -26,27 +26,27 @@ $updateProfileInformation = function () {
     $user = Auth::user();
 
     $validated = $this->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-        'telp' => ['required', 'digits_between:11,12', 'numeric', Rule::unique(User::class)->ignore($user->id)],
+        "name" => ["required", "string", "max:255"],
+        "email" => ["required", "string", "lowercase", "email", "max:255", Rule::unique(User::class)->ignore($user->id)],
+        "telp" => ["required", "digits_between:11,12", "numeric", Rule::unique(User::class)->ignore($user->id)],
     ]);
 
     $user->fill($validated);
 
-    if ($user->isDirty('email')) {
+    if ($user->isDirty("email")) {
         $user->email_verified_at = null;
     }
 
     $user->save();
 
-    $this->dispatch('profile-updated', name: $user->name);
+    $this->dispatch("profile-updated", name: $user->name);
 };
 
 $sendVerification = function () {
     $user = Auth::user();
 
     if ($user->hasVerifiedEmail()) {
-        $path = session('url.intended', RouteServiceProvider::HOME);
+        $path = session("url.intended", RouteServiceProvider::HOME);
 
         $this->redirect($path);
 
@@ -55,7 +55,7 @@ $sendVerification = function () {
 
     $user->sendEmailVerificationNotification();
 
-    Session::flash('status', 'verification-link-sent');
+    Session::flash("status", "verification-link-sent");
 };
 
 ?>
@@ -105,14 +105,13 @@ $sendVerification = function () {
                             data-bs-toggle="pill" data-bs-target="#v-pills-location" type="button" role="tab"
                             aria-controls="v-pills-location" aria-selected="false">
                             Alamat
-                            
+
                             @if (!$getAddressUser)
                                 <span
                                     class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                     !
                                 </span>
                             @endif
-
 
                         </button>
 
@@ -125,7 +124,6 @@ $sendVerification = function () {
 
                                     <div class="alert alert-dark alert-dismissible fade show" role="alert">
 
-
                                         <strong>Kamu dapat melihat dan memperbarui detail profil kamu, seperti nama,
                                             alamat email, dan nomor telepon. Pastikan informasi ini selalu up-to-date agar
                                             kami
@@ -134,12 +132,11 @@ $sendVerification = function () {
 
                                     <form wire:submit="updateProfileInformation">
 
-
                                         <div class="mb-3 row">
                                             <label for="inputname" class="col-sm-2 col-form-label">Nama Lengkap</label>
                                             <div class="col-sm-10">
                                                 <input wire:model="name" type="text" class="form-control" id="inputname">
-                                                @error('name')
+                                                @error("name")
                                                     <p class="text-danger">
                                                         {{ $message }}
                                                     </p>
@@ -152,7 +149,7 @@ $sendVerification = function () {
                                                 <input wire:model="email" type="email" class="form-control"
                                                     id="inputemail">
 
-                                                @error('email')
+                                                @error("email")
                                                     <p class="text-danger">
                                                         {{ $message }}
                                                     </p>
@@ -164,7 +161,7 @@ $sendVerification = function () {
                                             <div class="col-sm-10">
                                                 <input wire:model="telp" type="number" class="form-control" id="inputtelp">
 
-                                                @error('telp')
+                                                @error("telp")
                                                     <p class="text-danger">
                                                         {{ $message }}
                                                     </p>
@@ -184,7 +181,7 @@ $sendVerification = function () {
                                             </x-action-message>
 
                                             <button type="submit" class="btn btn-dark">
-                                                Submit
+                                                Simpan
                                             </button>
 
                                         </div>
@@ -194,7 +191,7 @@ $sendVerification = function () {
                                 <div class="tab-pane fade" id="v-pills-location" role="tabpanel"
                                     aria-labelledby="v-pills-location-tab" tabindex="0">
 
-                                    @include('pages.user.address')
+                                    @include("pages.user.address")
                                 </div>
 
                             </div>
