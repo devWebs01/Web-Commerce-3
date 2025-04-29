@@ -11,13 +11,11 @@ class Courier extends Model
     use HasFactory;
 
     protected $fillable = [
-        'description', 'value', 'etd', 'order_id'
+        'description', 'value', 'etd', 'order_id',
     ];
 
     /**
      * Get the order that owns the Courier
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order(): BelongsTo
     {

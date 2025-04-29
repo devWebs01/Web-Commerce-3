@@ -19,14 +19,14 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-
     protected $with = 'address';
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'telp',
-        'role'
+        'role',
     ];
 
     /**
@@ -51,8 +51,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the carts for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function carts(): HasMany
     {
@@ -61,8 +59,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the orders for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders(): HasMany
     {
@@ -71,8 +67,6 @@ class User extends Authenticatable
 
     /**
      * Get all of the address for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function address(): HasOne
     {

@@ -3,15 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use Exception;
 use GuzzleHttp\Client;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Exception;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class JsonSeeder extends Seeder
 {
@@ -24,8 +21,9 @@ class JsonSeeder extends Seeder
         $path = public_path('products.json');
 
         // Check if the file exists
-        if (!File::exists($path)) {
+        if (! File::exists($path)) {
             Log::error("File not found: $path");
+
             return;
         }
 
@@ -38,6 +36,7 @@ class JsonSeeder extends Seeder
         // Check if JSON decoding was successful
         if ($data === null) {
             Log::error("Error decoding JSON file: $path");
+
             return;
         }
 
@@ -50,7 +49,7 @@ class JsonSeeder extends Seeder
                 // Trim spaces from the URL
                 $imageUrl = trim($item['image']);
                 $imageName = basename($imageUrl);
-                $imagePath = 'public/images/' . $imageName;
+                $imagePath = 'public/images/'.$imageName;
 
                 // Download the image using Guzzle
                 $response = $client->get($imageUrl);
@@ -70,14 +69,14 @@ class JsonSeeder extends Seeder
                     'title' => $item['title'],
                     'price' => $item['price'],
                     'quantity' => rand(10, 100), // Atur jumlah sesuai kebutuhan
-                    'image' => 'images/' . $imageName, // Path without 'public/'
+                    'image' => 'images/'.$imageName, // Path without 'public/'
                     'weight' => $item['weight'],
                     'description' => $item['description'],
                 ]);
 
-                $this->command->info('Tambah Produk ' . $product->title);
+                $this->command->info('Tambah Produk '.$product->title);
             } catch (Exception $e) {
-                Log::error("Error processing item: " . $e->getMessage());
+                Log::error('Error processing item: '.$e->getMessage());
             }
         }
     }

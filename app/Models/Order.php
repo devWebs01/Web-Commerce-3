@@ -17,20 +17,20 @@ class Order extends Model
         'status',
         'total_amount',
         'total_weight',
-        'tracking_number',
-        'shipping_cost',
         'payment_method',
         'note',
+
+        'tracking_number',
+        'shipping_cost',
         'estimated_delivery_time',
         'courier',
         'proof_of_payment',
-        'protect_cost'
+        'protect_cost',
+        'alternative_phone',
     ];
 
     /**
      * Get all of the Items for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function Items(): HasMany
     {
@@ -39,8 +39,6 @@ class Order extends Model
 
     /**
      * Get the user that owns the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -49,8 +47,6 @@ class Order extends Model
 
     /**
      * Get all of the couriers for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function couriers(): HasMany
     {

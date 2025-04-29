@@ -13,13 +13,11 @@ class Address extends Model
     protected $with = ['province', 'city'];
 
     protected $fillable = [
-        'user_id', 'province_id', 'city_id', 'details'
+        'user_id', 'province_id', 'city_id', 'details',
     ];
 
     /**
      * Get the user that owns the Address
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -28,17 +26,14 @@ class Address extends Model
 
     /**
      * Get the province that owns the Address
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function province(): BelongsTo
     {
         return $this->belongsTo(Province::class);
     }
+
     /**
      * Get the city that owns the Address
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function city(): BelongsTo
     {

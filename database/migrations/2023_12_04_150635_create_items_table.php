@@ -9,7 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      * 'order_id', 'product_id', 'qty'
-     *
      */
     public function up(): void
     {
@@ -18,6 +17,13 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->string('qty');
+            // tambahan
+            $table->string('custom_title');
+            $table->string('note');
+            $table->string('design_file')->nullable();
+            $table->string('final_design')->nullable();
+            $table->string('base_price');
+            $table->string('final_price')->nullable();
             $table->timestamps();
         });
     }

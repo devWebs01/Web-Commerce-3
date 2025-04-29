@@ -19,14 +19,17 @@ return new class extends Migration
             $table->enum('status', ['PACKED', 'UNPAID', 'PROGRESS', 'COMPLETED', 'SHIPPED', 'PENDING', 'CANCELLED']);
             $table->unsignedBigInteger('total_amount')->nullable();
             $table->unsignedBigInteger('total_weight')->nullable();
+            $table->longText('note')->nullable();
+            $table->string('payment_method')->nullable();
+            $table->string('protect_cost')->nullable();
+
+            // Pengiriman
             $table->string('tracking_number')->nullable();
             $table->unsignedBigInteger('shipping_cost')->nullable();
-            $table->longText('note')->nullable();
             $table->string('estimated_delivery_time')->nullable();
             $table->string('courier')->nullable();
-            $table->string('payment_method')->nullable();
             $table->string('proof_of_payment')->nullable();
-            $table->string('protect_cost')->nullable();
+            $table->string('alternative_phone')->nullable();
             $table->timestamps();
         });
     }

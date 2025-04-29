@@ -11,13 +11,21 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'product_id', 'qty'
+        'user_id',
+        'product_id',
+        'qty',
+
+        // Tambahan:
+        'custom_title', // nama produk custom oleh customer
+        'note', // bisa JSON untuk info tambahan umum
+        'design_file', // file upload dari customer
+        'final_design', // file hasil akhir (oleh admin)
+        'base_price', // harga dasar
+        'final_price', // total item ini
     ];
 
     /**
      * Get the user that owns the Cart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -26,8 +34,6 @@ class Cart extends Model
 
     /**
      * Get the product that owns the Cart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product(): BelongsTo
     {
