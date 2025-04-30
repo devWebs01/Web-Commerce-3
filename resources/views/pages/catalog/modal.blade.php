@@ -5,7 +5,7 @@
             <div class="modal-body">
                 <h6>Pesanan akan dikirim ke
                     <br>
-                    <small style="color: #f35525;">{{ auth()->user()->fulladdress }}</small>
+                    <small style="color: #635bff;">{{ auth()->user()->fulladdress }}</small>
                     <br>
                     <strong>
                         Apakah alamat pengiriman tersebut sudah benar?
@@ -13,7 +13,7 @@
                 </h6>
             </div>
             <div class="modal-footer d-flex justify-content-around">
-                <a class="btn btn-dark btn-sm" href="{{ route('customer.account', ['user' => auth()->id()]) }}"
+                <a class="btn btn-dark btn-sm" href="{{ route("customer.account", ["user" => auth()->id()]) }}"
                     role="button">
                     Tidak, Atur Alamat
                 </a>

@@ -10,25 +10,25 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 uses([LivewireAlert::class]);
 
-name('product-detail');
+name("product-detail");
 
 state([
-    'user_id' => fn() => Auth()->user()->id ?? '',
-    'product_id' => fn() => $this->product->id,
-    'variant_id' => '',
-    'randomProduct' => fn() => Product::inRandomOrder()->limit(6)->get(),
-    'qty' => 1,
-    'variant_type' => '',
-    'variant_stock' => '',
-    'variant' => '',
-    'product',
+    "user_id" => fn() => Auth()->user()->id ?? "",
+    "product_id" => fn() => $this->product->id,
+    "variant_id" => "",
+    "randomProduct" => fn() => Product::inRandomOrder()->limit(6)->get(),
+    "qty" => 1,
+    "variant_type" => "",
+    "variant_stock" => "",
+    "variant" => "",
+    "product",
 ]);
 
 rules([
-    'user_id' => 'required|exists:users,id',
-    'product_id' => 'required|exists:products,id',
-    'variant_id' => 'required|exists:variants,id',
-    'qty' => 'required|numeric',
+    "user_id" => "required|exists:users,id",
+    "product_id" => "required|exists:products,id",
+    "variant_id" => "required|exists:variants,id",
+    "qty" => "required|numeric",
 ]);
 
 $selectVariant = function (Variant $variant) {
@@ -39,21 +39,19 @@ $selectVariant = function (Variant $variant) {
 };
 
 $addToCart = function (Product $product) {
-    if (Auth::check() && auth()->user()->role == 'customer') {
-        $existingCart = Cart::where('user_id', $this->user_id)
-            ->where('variant_id', $this->variant_id)
-            ->first();
+    if (Auth::check() && auth()->user()->role == "customer") {
+        $existingCart = Cart::where("user_id", $this->user_id)->where("variant_id", $this->variant_id)->first();
 
         $stock = $this->variant_stock;
 
         // Memeriksa apakah stok mencukupi
         if ($stock < $this->qty) {
-            $this->alert('error', 'Stok tidak mencukupi untuk menambahkan item ke keranjang.', [
-                'position' => 'top',
-                'timer' => '2000',
-                'toast' => true,
-                'timerProgressBar' => true,
-                'text' => '',
+            $this->alert("error", "Stok tidak mencukupi untuk menambahkan item ke keranjang.", [
+                "position" => "top",
+                "timer" => "2000",
+                "toast" => true,
+                "timerProgressBar" => true,
+                "text" => "",
             ]);
             return;
         }
@@ -63,32 +61,32 @@ $addToCart = function (Product $product) {
 
             // Memeriksa apakah stok mencukupi untuk jumlah baru
             if ($stock < $newQty) {
-                $this->alert('error', 'Stok tidak mencukupi untuk menambahkan item ke keranjang.', [
-                    'position' => 'top',
-                    'timer' => '2000',
-                    'toast' => true,
-                    'timerProgressBar' => true,
-                    'text' => '',
+                $this->alert("error", "Stok tidak mencukupi untuk menambahkan item ke keranjang.", [
+                    "position" => "top",
+                    "timer" => "2000",
+                    "toast" => true,
+                    "timerProgressBar" => true,
+                    "text" => "",
                 ]);
                 return;
             }
 
-            $existingCart->update(['qty' => $newQty]);
+            $existingCart->update(["qty" => $newQty]);
         } else {
             Cart::create($this->validate());
         }
 
-        $this->dispatch('cart-updated');
+        $this->dispatch("cart-updated");
 
-        $this->alert('success', 'Item berhasil ditambahkan ke dalam keranjang belanja.', [
-            'position' => 'top',
-            'timer' => '2000',
-            'toast' => true,
-            'timerProgressBar' => true,
-            'text' => '',
+        $this->alert("success", "Item berhasil ditambahkan ke dalam keranjang belanja.", [
+            "position" => "top",
+            "timer" => "2000",
+            "toast" => true,
+            "timerProgressBar" => true,
+            "text" => "",
         ]);
     } else {
-        $this->redirect('/login');
+        $this->redirect("/login");
     }
 };
 
@@ -131,14 +129,14 @@ $addToCart = function (Product $product) {
                         </aside>
                         <main class="col-lg-6">
                             <div class="ps-lg-3">
-                                <small class="fw-bold" style="color: #f35525;">{{ $product->category->name }}</small>
+                                <small class="fw-bold" style="color: #635bff;">{{ $product->category->name }}</small>
                                 <h2 id="font-custom" class="title text-dark fw-bold">
                                     {{ $product->title }}
                                 </h2>
 
                                 <div class="my-3">
-                                    <span class="h5 fw-bold" style="color: #f35525;">
-                                        {{ 'Rp. ' . Number::format($product->price, locale: 'id') }}
+                                    <span class="h5 fw-bold" style="color: #635bff;">
+                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
                                     </span>
                                 </div>
 
@@ -152,7 +150,7 @@ $addToCart = function (Product $product) {
 
                                     <dt class="col-3 mb-2">Stok:</dt>
                                     <dd class="col-9 mb-2">
-                                        {{ $variant . ' - ' . $variant_type }}</dd>
+                                        {{ $variant . " - " . $variant_type }}</dd>
 
                                     <dt class="col-3 mb-2">Varian</dt>
                                     <dd class="col-9 mb-2">
@@ -162,7 +160,7 @@ $addToCart = function (Product $product) {
                                                 <div class="col-auto">
                                                     <button wire:key='{{ $variant->id }}'
                                                         wire:click='selectVariant({{ $variant->id }})' type="button"
-                                                        class="badge rounded-pill" style="color: #f35525;">
+                                                        class="badge rounded-pill" style="color: #635bff;">
                                                         {{ $variant->type }}
                                                     </button>
                                                 </div>
@@ -170,8 +168,6 @@ $addToCart = function (Product $product) {
                                         </div>
                                     </dd>
                                 </div>
-
-
 
                                 <div class="d-grid my-4">
                                     @auth
@@ -181,7 +177,7 @@ $addToCart = function (Product $product) {
                                                     class="btn btn-dark w-100">
 
                                                     <span
-                                                        wire:loading.remove>{{ $variant_stock == 0 ? 'Tidak Tersedia' : 'Masukkan Keranjang' }}
+                                                        wire:loading.remove>{{ $variant_stock == 0 ? "Tidak Tersedia" : "Masukkan Keranjang" }}
                                                     </span>
 
                                                     <div wire:loading class="spinner-border spinner-border-sm" role="status">
@@ -190,13 +186,13 @@ $addToCart = function (Product $product) {
                                                 </button>
                                             @endif
                                         </form>
-                                        @error('variant_id')
+                                        @error("variant_id")
                                             <small class="my-3 text-center text-danger">
                                                 Plih ukuran/variant yang diinginkan
                                             </small>
                                         @enderror
                                     @else
-                                        <a class="btn btn-dark" href="{{ route('login') }}" role="button">Beli Sekarang</a>
+                                        <a class="btn btn-dark" href="{{ route("login") }}" role="button">Beli Sekarang</a>
                                     @endauth
                                 </div>
                             </div>

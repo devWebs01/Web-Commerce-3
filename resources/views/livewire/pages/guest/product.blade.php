@@ -6,34 +6,32 @@ use App\Models\Cart;
 use App\Models\User;
 
 state([
-    'user_id' => fn() => Auth()->user()->id ?? '',
-    'product_id' => fn() => $this->product,
-    'product' => fn() => Product::find($id),
-    'randomProduct' => fn() => Product::inRandomOrder()->limit(6)->get(),
-    'qty' => 1,
+    "user_id" => fn() => Auth()->user()->id ?? "",
+    "product_id" => fn() => $this->product,
+    "product" => fn() => Product::find($id),
+    "randomProduct" => fn() => Product::inRandomOrder()->limit(6)->get(),
+    "qty" => 1,
 ]);
 
 rules([
-    'user_id' => 'required|exists:users,id',
-    'product_id' => 'required|exists:products,id',
-    'qty' => 'required|numeric',
+    "user_id" => "required|exists:users,id",
+    "product_id" => "required|exists:products,id",
+    "qty" => "required|numeric",
 ]);
 
 $addToCart = function () {
-    $existingCart = Cart::where('user_id', $this->user_id)
-        ->where('product_id', $this->product_id)
-        ->first();
+    $existingCart = Cart::where("user_id", $this->user_id)->where("product_id", $this->product_id)->first();
     dd($addToCart);
 
     if ($existingCart) {
         // If the product is already in the cart, update the quantity
-        $existingCart->update(['qty' => $existingCart->qty + $this->qty]);
+        $existingCart->update(["qty" => $existingCart->qty + $this->qty]);
     } else {
         // If the product is not in the cart, add it as a new item
         Cart::create($this->validate());
     }
 
-    $this->dispatch('cart-updated');
+    $this->dispatch("cart-updated");
 };
 
 ?>
@@ -113,14 +111,14 @@ $addToCart = function () {
                 </aside>
                 <main class="col-lg-6">
                     <div class="ps-lg-3">
-                        <small class="fw-bold" style="color: #f35525;">{{ $product->category->name }}</small>
+                        <small class="fw-bold" style="color: #635bff;">{{ $product->category->name }}</small>
                         <h2 id="font-custom" class="title text-dark fw-bold">
                             {{ $product->title }}
                         </h2>
 
                         <div class="my-3">
                             <span class="h5 fw-bold">
-                                {{ 'Rp. ' . Number::format($product->price, locale: 'id') }}
+                                {{ "Rp. " . Number::format($product->price, locale: "id") }}
                             </span>
                         </div>
 
@@ -142,7 +140,7 @@ $addToCart = function () {
                                     </button>
                                 </form>
                             @else
-                                <a name="" id="" class="btn btn-dark" href="{{ route('login') }}"
+                                <a name="" id="" class="btn btn-dark" href="{{ route("login") }}"
                                     role="button">Beli Sekarang</a>
                             @endauth
 
@@ -172,7 +170,7 @@ $addToCart = function () {
             <div class="row">
                 <h2 id="font-custom" class="fw-bold mb-4">Mungkin Kamu juga suka</h2>
             </div>
-            @livewire('welcome.featured-products')
+            @livewire("welcome.featured-products")
         </div>
     </section>
     <!-- content -->

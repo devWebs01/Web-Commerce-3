@@ -359,8 +359,16 @@ class ProductSeeder extends Seeder
             ];
         foreach ($data as $item) {
             // Upload gambar dari URL ke folder storage
-            $imageContents = file_get_contents($item['image']);
-            $imageName = basename($item['image']);
+            try {
+                $imageContents = file_get_contents($item['image']);
+                $imageName = basename($item['image']);
+            } catch (\Exception $e) {
+                // Gunakan fake image jika gagal
+                $fakeImage = 'https://fakeimg.pl/350x200/?text=KONTOL&font=lobster';
+                $imageContents = file_get_contents($fakeImage);
+                $imageName = 'fake-' . uniqid() . '.png';
+            }
+
             $storagePath = 'images/' . $imageName;
             Storage::disk('public')->put($storagePath, $imageContents);
 
@@ -370,7 +378,7 @@ class ProductSeeder extends Seeder
                 'title' => $item['title'],
                 'capital' => $item['capital'],
                 'price' => $item['price'],
-                'quantity' => 0,
+                'quantity' => rand(10, 99),
                 'image' => $storagePath,
                 'weight' => $item['weight'],
                 'description' => $item['description'],

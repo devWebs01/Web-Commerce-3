@@ -8,31 +8,31 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 uses([LivewireAlert::class]);
 
-name('customer.payment');
+name("customer.payment");
 
 usesFileUploads();
 
-state(['order', 'proof_of_payment', 'banks' => fn() => Bank::get()]);
+state(["order", "proof_of_payment", "banks" => fn() => Bank::get()]);
 
 $submit = function () {
     $this->validate([
-        'proof_of_payment' => 'required|image|mimes:jpeg,png,jpg',
+        "proof_of_payment" => "required|image|mimes:jpeg,png,jpg",
     ]);
 
     $order = $this->order;
     $order->update([
-        'proof_of_payment' => $this->proof_of_payment->store('public/proof_of_payment'),
-        'status' => 'PENDING',
+        "proof_of_payment" => $this->proof_of_payment->store("public/proof_of_payment"),
+        "status" => "PENDING",
     ]);
 
-    $this->alert('success', 'Pembayaran selesai. Silahkan tunggu update pesanan anda selanjutnya! Terima kasih', [
-        'position' => 'top',
-        'timer' => 3000,
-        'toast' => true,
-        'width' => 500,
+    $this->alert("success", "Pembayaran selesai. Silahkan tunggu update pesanan anda selanjutnya! Terima kasih", [
+        "position" => "top",
+        "timer" => 3000,
+        "toast" => true,
+        "width" => 500,
     ]);
 
-    $this->redirect('/orders');
+    $this->redirect("/orders");
 };
 
 ?>
@@ -66,7 +66,7 @@ $submit = function () {
                                             <h1 id="font-custom" class="display-1">{{ ++$index }}</h1>
                                         </div>
                                         <div class="col">
-                                            <h2 id="font-custom" style="color: #f35525">
+                                            <h2 id="font-custom" style="color: #635bff">
                                                 {{ $item->account_number }}
                                             </h2>
                                             <h6 class="fw-bold border-bottom pb-2 mb-2">
@@ -86,7 +86,7 @@ $submit = function () {
                         <div class="row">
                             <div class="col-lg-7">
                                 <h1 id="font-custom">
-                                    {{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
+                                    {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
 
                                 </h1>
 
@@ -102,7 +102,7 @@ $submit = function () {
                                                 </div>
                                             </label>
                                             <input type="file" class="form-control" wire:model='proof_of_payment'>
-                                            @error('proof_of_payment')
+                                            @error("proof_of_payment")
                                                 <p id="proof_of_payment" class="text-danger">{{ $message }}</p>
                                             @enderror
                                         </div>

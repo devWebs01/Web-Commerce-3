@@ -14,15 +14,10 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            [
-                'name' => 'OUTERWEAR',
-            ],
-            [
-                'name' => 'BOTTOMS',
-            ],
-            [
-                'name' => 'FOOTWEAR',
-            ],
+            ['name' => 'Decal'],
+            ['name' => 'Sticker Cutting'],
+            ['name' => 'Vinyl'],
+            ['name' => 'Aksesoris'],
         ];
 
 
