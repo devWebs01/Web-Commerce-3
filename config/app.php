@@ -162,7 +162,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Darryldecode\Cart\CartServiceProvider::class,
         Dipantry\Rajaongkir\ServiceProvider::class,
 
         /*
