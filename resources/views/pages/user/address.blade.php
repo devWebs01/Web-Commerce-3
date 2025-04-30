@@ -3,51 +3,62 @@
 use Dipantry\Rajaongkir\Models\ROProvince;
 use Dipantry\Rajaongkir\Models\ROCity;
 use App\Models\Address;
-use function Livewire\Volt\{state, computed, rules};
+use function Livewire\Volt\{state, computed, rules, uses};
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-state(["province_id"])->url();
+uses([LivewireAlert::class]);
+
+state(['province_id'])->url();
 
 rules([
-    "province_id" => "required|exists:rajaongkir_provinces,id",
-    "city_id" => "required|exists:rajaongkir_cities,id",
-    "details" => "required|min:20",
+    'province_id' => 'required|exists:rajaongkir_provinces,id',
+    'city_id' => 'required|exists:rajaongkir_cities,id',
+    'details' => 'required|min:20',
 ]);
 
 $getAddress = computed(function () {
-    return Address::where("user_id", auth()->id())->first();
+    return Address::where('user_id', auth()->id())->first();
 });
 
 state([
-    "province_id" => fn() => $this->getAddress->province_id ?? "",
-    "city_id" => fn() => $this->getAddress->city_id ?? "",
-    "details" => fn() => $this->getAddress->details ?? "",
-    "provinces" => fn() => ROProvince::all(),
+    'province_id' => fn() => $this->getAddress->province_id ?? '',
+    'city_id' => fn() => $this->getAddress->city_id ?? '',
+    'details' => fn() => $this->getAddress->details ?? '',
+    'provinces' => fn() => ROProvince::all(),
 ]);
 
 $cities = computed(function () {
-    return ROCity::where("province_id", $this->province_id)->get();
+    return ROCity::where('province_id', $this->province_id)->get();
 });
 
 $submit = function () {
     $validate = $this->validate();
 
     if ($this->getAddress) {
-        $updateAddress = Address::where("user_id", auth()->id())->first();
+        $updateAddress = Address::where('user_id', auth()->id())->first();
         $updateAddress->update($validate);
     } elseif (!$this->getAddress) {
-        $validate["user_id"] = auth()->id();
+        $validate['user_id'] = auth()->id();
         Address::create($validate);
     }
-    $this->dispatch("address-update");
+    $this->dispatch('address-update');
+    $this->alert('success', 'Alamat telah diperbaharui.', [
+        'position' => 'top',
+        'timer' => '2000',
+        'toast' => true,
+        'timerProgressBar' => true,
+        'text' => '',
+    ]);
 };
 
 ?>
 @volt
     <div>
         <div class="alert alert-dark alert-dismissible fade show" role="alert">
-
-            <strong>Kamu dapat melihat dan memperbarui detail alamat kamu, seperti nama provinsi, kota dan detail lengkap
-                yang sesuai tujuanmu.</strong>
+            <strong>
+                Kamu dapat melihat dan memperbarui detail alamat kamu, seperti nama provinsi, kota dan detail lengkap
+                yang sesuai tujuanmu.
+            </strong>
         </div>
         <form wire:submit.prevent="submit">
             @csrf
@@ -62,7 +73,7 @@ $submit = function () {
                         </option>
                     @endforeach
                 </select>
-                @error("province_id")
+                @error('province_id')
                     <p class="text-danger">
                         {{ $message }}
                     </p>
@@ -76,7 +87,7 @@ $submit = function () {
                         <option value="{{ $city->id }}">{{ $city->name }}</option>
                     @endforeach
                 </select>
-                @error("province_id")
+                @error('province_id')
                     <p class="text-danger">
                         {{ $message }}
                     </p>
@@ -87,27 +98,22 @@ $submit = function () {
                     Detail Lengkap
                 </label>
                 <textarea class="form-control" wire:model='details' name="details" id="details" rows="3"></textarea>
-                @error("details")
+                @error('details')
                     <p class="text-danger">
                         {{ $message }}
                     </p>
                 @enderror
             </div>
 
-            <div class="mb-3 d-flex justify-content-end align-items-center">
 
-                {{-- Loading Spinner --}}
-                <div wire:loading class="spinner-border spinner-border-sm mx-5" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-
-                {{-- Success Notif --}}
-                <x-action-message class="me-3" on="address-update">
-                    Berhasil
-                </x-action-message>
-
+            <div class="text-end">
                 <button type="submit" class="btn btn-dark">
-                    Simpan
+                    <div wire:loading class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span wire:loading.class='d-none'>
+                        {{ !$this->getAddress ? 'SUBMIT' : 'EDIT' }}
+                    </span>
                 </button>
 
             </div>

@@ -1,6 +1,6 @@
 <?php
 
-use function Livewire\Volt\{state, rules, on, mount};
+use function Livewire\Volt\{state, rules, on, uses};
 use Dipantry\Rajaongkir\Constants\RajaongkirCourier;
 use App\Models\Cart;
 use App\Models\Order;
@@ -8,6 +8,9 @@ use App\Models\Item;
 use App\Models\Address;
 use App\Models\Shop;
 use function Laravel\Folio\name;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
+uses([LivewireAlert::class]);
 
 name('catalog-cart');
 
@@ -37,7 +40,7 @@ $calculateTotal = function () {
 
 $increaseQty = function ($cartId) {
     $cart = Cart::find($cartId);
-    if ($cart->qty < $cart->product->quantity) {
+    if ($cart->qty < $cart->variant->stock) {
         $cart->update(['qty' => $cart->qty + 1]);
         $this->dispatch('cart-updated');
     }
@@ -67,6 +70,9 @@ $confirmCheckout = function () {
         'invoice' => 'INV-' . time(),
         'total_amount' => 0,
         'shipping_cost' => 0,
+        'province_id' => $this->destination->province_id,
+        'city_id' => $this->destination->city_id,
+        'details' => $this->destination->details,
     ]);
 
     // Inisialisasi total harga pesanan
@@ -77,6 +83,7 @@ $confirmCheckout = function () {
     foreach ($cartItems as $cartItem) {
         $orderItem = new Item([
             'product_id' => $cartItem->product_id,
+            'variant_id' => $cartItem->variant_id,
             'qty' => $cartItem->qty,
         ]);
 
@@ -90,7 +97,7 @@ $confirmCheckout = function () {
         $totalWeight += $cartItem->product->weight * $cartItem->qty;
 
         // Kurangkan kuantitas produk dari stok
-        $cartItem->product->decrement('quantity', $cartItem->qty);
+        $cartItem->variant->decrement('stock', $cartItem->qty);
     }
 
     // Update total harga pesanan
@@ -142,11 +149,24 @@ $confirmCheckout = function () {
 
         $this->dispatch('cart-updated');
 
+        $this->alert('success', 'Pesanan telah berhasil diproses. Menuju detail pesanan.', [
+            'position' => 'top',
+            'timer' => '2000',
+            'toast' => true,
+            'text' => '',
+        ]);
+
         $this->redirect('/orders/' . $order->id);
     } catch (\Throwable $th) {
         Order::find($order->id)->delete();
 
-        $this->dispatch('checkout-failed');
+        $this->alert('error', 'Maaf, terjadi kesalahan saat checkout. Silakan coba lagi!', [
+            'position' => 'top',
+            'timer' => '2000',
+            'toast' => true,
+            'timerProgressBar' => true,
+            'text' => '',
+        ]);
     }
 };
 
@@ -154,8 +174,11 @@ $confirmCheckout = function () {
 
 <x-guest-layout>
     <x-slot name="title">Keranjang Belanja</x-slot>
+
     @volt
         <div>
+            @include('pages.catalog.modal')
+
             <div class="container">
                 <div class="row mb-4">
                     <div class="col-lg-6">
@@ -170,14 +193,15 @@ $confirmCheckout = function () {
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card rounded-5">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table rounded table-hover text-center">
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Item</th>
+                                        <th>Produk</th>
+                                        <th>Varian</th>
                                         <th>Jumlah</th>
                                         <th>Total Harga</th>
                                         <th>#</th>
@@ -188,6 +212,9 @@ $confirmCheckout = function () {
                                         <tr class="align-items-center">
                                             <td>{{ ++$no }}.</td>
                                             <td>{{ Str::limit($cart->product->title, 20, '...') }}</td>
+                                            <td>
+                                                {{ $cart->variant->type }}
+                                            </td>
                                             <td>
                                                 <div class="input-group input-group-sm justify-content-center">
                                                     <button class="btn btn-body btn-sm border" wire:loading.attr='disabled'
@@ -216,7 +243,7 @@ $confirmCheckout = function () {
                                         </tr>
                                     @endforeach
                                     <tr>
-                                        <td colspan="2"></td>
+                                        <td colspan="3"></td>
                                         <td>Total:</td>
                                         <td>
                                             {{ 'Rp.' . Number::format($this->calculateTotal(), locale: 'id') }}
@@ -224,7 +251,7 @@ $confirmCheckout = function () {
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"></td>
+                                        <td colspan="3"></td>
                                         <td>
                                             <a class="btn btn-outline-dark btn-sm" href="{{ route('catalog-products') }}"
                                                 role="button">
@@ -234,18 +261,16 @@ $confirmCheckout = function () {
                                         <td>
                                             @if ($carts->count() > 0)
                                                 @if (!$this->destination)
-                                                    <a class="btn btn-outline-dark btn-sm" href="/user/{{ auth()->id() }}"
+                                                    <a class="btn btn-outline-dark btn-sm"
+                                                        href="{{ route('customer.account', ['user' => auth()->id()]) }}"
                                                         role="button">
                                                         Atur Alamat
                                                     </a>
                                                 @else
-                                                    <form wire:submit="confirmCheckout">
-                                                        <button wire:loading.attr='disable' type="submit"
-                                                            class="btn btn-sm btn-outline-dark">
-                                                            <span wire:loading.delay wire:target="confirmCheckout"
-                                                                class="loading loading-spinner loading-xs"></span>
-                                                            Checkout</button>
-                                                    </form>
+                                                    <button type="button" class="btn btn-outline-dark btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                        Checkout
+                                                    </button>
                                                 @endif
                                             @endif
                                         </td>
@@ -253,10 +278,6 @@ $confirmCheckout = function () {
                                             <div wire:loading class="spinner-border spinner-border-sm" role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
-
-                                            <x-action-message on="checkout-failed">
-                                                Gagal
-                                            </x-action-message>
                                         </td>
                                     </tr>
                                 </tbody>

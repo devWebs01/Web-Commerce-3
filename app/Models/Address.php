@@ -13,30 +13,23 @@ class Address extends Model
     protected $with = ['province', 'city'];
 
     protected $fillable = [
-        'user_id', 'province_id', 'city_id', 'details',
+        'user_id', 'province_id', 'city_id', 'details'
     ];
 
-    /**
-     * Get the user that owns the Address
-     */
+    // Relations Models
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the province that owns the Address
-     */
     public function province(): BelongsTo
     {
         return $this->belongsTo(Province::class);
     }
-
-    /**
-     * Get the city that owns the Address
-     */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
     }
+
+    // Get Attr Model
 }

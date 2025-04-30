@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -14,48 +15,16 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name' => 'Makeup',
+                'name' => 'OUTERWEAR',
             ],
             [
-                'name' => 'Skincare',
+                'name' => 'BOTTOMS',
             ],
             [
-                'name' => 'Hair Care',
-            ],
-            [
-                'name' => 'Nail Care',
-            ],
-            [
-                'name' => 'Sunscreen Family',
-            ],
-            [
-                'name' => 'Anti Acne Family',
-            ],
-            [
-                'name' => '5X Ceramide Family',
-            ],
-            [
-                'name' => '2PCS Diskon Paket',
-            ],
-            [
-                'name' => '3PCS Gift Value Sets',
-            ],
-            [
-                'name' => '5PCS Gift Value Sets',
-            ],
-            [
-                'name' => 'Facial Wash',
-            ],
-            [
-                'name' => 'Toner Family',
-            ],
-            [
-                'name' => 'Make Up',
-            ],
-            [
-                'name' => 'New Launch',
+                'name' => 'FOOTWEAR',
             ],
         ];
+
 
         foreach ($categories as $category) {
             Category::insert($category);

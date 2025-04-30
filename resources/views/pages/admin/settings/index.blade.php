@@ -16,8 +16,8 @@ name('setting-store');
         <div>
             <div class="card overflow-hidden">
                 <div class="card-header p-0">
-                    <img src="https://img.freepik.com/premium-photo/abstract-background-design-images-wallpaper-ai-generated_643360-150284.jpg"
-                        alt="matdash-img" width="100%" height="300px" class="object-fit-cover">
+                    <img src="https://bootstrapdemos.adminmart.com/matdash/dist/assets/images/backgrounds/profilebg.jpg"
+                        alt="matdash-img" class="img-fluid">
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-start">
@@ -37,10 +37,10 @@ name('setting-store');
                         <div class="tab-content" id="v-pills-tabContent">
 
                             <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
-                                aria-labelledby="v-pills-profile-tab" tabindex="0">
-                                @include('pages.admin.settings.profile')
+                            aria-labelledby="v-pills-profile-tab" tabindex="0">
+                            @include('pages.admin.settings.profile')
 
-                            </div>
+                        </div>
 
                             <div class="tab-pane fade" id="v-pills-payment" role="tabpanel"
                                 aria-labelledby="v-pills-payment-tab" tabindex="0">

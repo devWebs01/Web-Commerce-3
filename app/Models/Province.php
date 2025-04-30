@@ -14,6 +14,8 @@ class Province extends Model
 
     /**
      * Get all of the addresses for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
     public function address(): HasOne
     {
@@ -22,6 +24,8 @@ class Province extends Model
 
     /**
      * Get all of the shops for the Province
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasOne
      */
     public function shop(): hasOne
     {

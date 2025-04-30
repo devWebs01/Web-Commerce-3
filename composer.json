@@ -6,10 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "darryldecode/cart": "^4.2",
         "dipantry/rajaongkir": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
-        "jantinnerezo/livewire-alert": "^4.0",
+        "jantinnerezo/livewire-alert": "^3.0",
         "laravel/breeze": "^1.26",
         "laravel/folio": "^1.1",
         "laravel/framework": "^10.10",

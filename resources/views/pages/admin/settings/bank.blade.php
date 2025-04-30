@@ -1,43 +1,38 @@
 <?php
 
-use function Livewire\Volt\{state, computed, usesPagination, on, rules};
+use function Livewire\Volt\{state, computed, usesPagination, on, rules, uses};
 use App\Models\Bank;
-use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
+uses([LivewireAlert::class]);
 
 usesPagination();
 
-state(["swap" => false, "account_owner", "account_number", "bank_name", "bankId"]);
+state(['swap' => false, 'account_owner', 'account_number', 'bank_name', 'bankId']);
 
 $banks = computed(fn() => Bank::latest()->paginate(5));
 
-$destroy = function (Bank $bank) {
-    $bank->delete();
-    $this->reset("account_owner", "bank_name", "account_number");
-};
-
 rules([
-    "account_owner" => "required|string|min:5",
-    "bank_name" => "required|string|min:3",
-    "account_number" => "required|min:10",
+    'account_owner' => 'required|string|min:5',
+    'bank_name' => 'required|string|min:3',
+    'account_number' => 'required|min:10',
 ]);
 
 $save = function (Bank $bank) {
     $validate = $this->validate();
-
     if ($this->bankId == null) {
         $bank->create($validate);
     } else {
         $bankUpdate = Bank::find($this->bankId);
         $bankUpdate->update($validate);
     }
+    $this->reset('account_owner', 'bank_name', 'account_number');
 
-    $this->reset("account_owner", "bank_name", "account_number");
-    $this->dispatch("bank-update");
-
-    LivewireAlert::text("Proses berhasil!")
-        ->success()
-        ->timer(3000) // Dismisses after 3 seconds
-        ->show();
+    $this->alert('success', 'Data rekening berhasil di perbaharui!', [
+        'position' => 'top',
+        'timer' => 3000,
+        'toast' => true,
+    ]);
 };
 
 $edit = function (Bank $bank) {
@@ -47,6 +42,11 @@ $edit = function (Bank $bank) {
     $this->account_owner = $bank->account_owner;
     $this->bank_name = $bank->bank_name;
     $this->account_number = $bank->account_number;
+};
+
+$destroy = function (Bank $bank) {
+    $bank->delete();
+    $this->reset('account_owner', 'bank_name', 'account_number');
 };
 
 ?>
@@ -62,29 +62,29 @@ $edit = function (Bank $bank) {
 
             <div class="mb-3">
                 <label for="account_owner" class="form-label">Nama Pemilik</label>
-                <input type="text" class="form-control @error("account_owner") is-invalid @enderror"
+                <input type="text" class="form-control @error('account_owner') is-invalid @enderror"
                     wire:model="account_owner" id="account_owner" aria-describedby="account_ownerId"
                     placeholder="Enter account owner" />
-                @error("account_owner")
+                @error('account_owner')
                     <small id="account_ownerId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="mb-3">
                 <label for="bank_name" class="form-label">Nama Bank</label>
-                <input type="text" class="form-control @error("bank_name") is-invalid @enderror" wire:model="bank_name"
+                <input type="text" class="form-control @error('bank_name') is-invalid @enderror" wire:model="bank_name"
                     id="bank_name" aria-describedby="bank_nameId" placeholder="Enter bank name" />
-                @error("bank_name")
+                @error('bank_name')
                     <small id="bank_nameId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
             <div class="mb-3">
                 <label for="account_number" class="form-label">Nomor Rekening</label>
-                <input type="text" class="form-control @error("account_number") is-invalid @enderror"
+                <input type="text" class="form-control @error('account_number') is-invalid @enderror"
                     wire:model="account_number" id="account_number" aria-describedby="account_numberId"
                     placeholder="Enter bank number" />
-                @error("account_number")
+                @error('account_number')
                     <small id="account_numberId" class="form-text text-danger">{{ $message }}</small>
                 @enderror
             </div>
@@ -95,17 +95,12 @@ $edit = function (Bank $bank) {
                 </button>
                 <div>
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
-                    <x-action-message on="bank-update">
-                        Berhasil
-                    </x-action-message>
                 </div>
                 <button type="submit" class=" ms-3 btn btn-primary">
-                    Simpan
+                    Submit
                 </button>
             </div>
         </form>
-
-        <hr>
 
         <div class="table-responsive border rounded my-3">
             <table class="table">
@@ -126,13 +121,13 @@ $edit = function (Bank $bank) {
                             <th>{{ $bank->bank_name }}</th>
                             <th>{{ $bank->account_number }}</th>
                             <th>
-                                <div>
+                                <div class="btn-group">
                                     <button wire:loading.attr='disabled' wire:click='edit({{ $bank->id }})'
                                         class="btn btn-warning btn-sm">
                                         Edit
                                     </button>
-                                    <button wire:confirm="Yakin Ingin Menghapus?" wire:loading.attr='disabled'
-                                        wire:click='destroy({{ $bank->id }})' class="btn btn-danger btn-sm join-item">
+                                    <button wire:loading.attr='disabled' wire:click='destroy({{ $bank->id }})'
+                                        class="btn btn-danger btn-sm join-item">
                                         Hapus
                                     </button>
                                 </div>

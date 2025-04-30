@@ -14,62 +14,54 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $with = 'address';
-
     protected $fillable = [
         'name',
         'email',
         'password',
         'telp',
-        'role',
+        'role'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
-    /**
-     * Get all of the carts for the User
-     */
+    // Relations Models
     public function carts(): HasMany
     {
         return $this->hasMany(Cart::class);
     }
 
-    /**
-     * Get all of the orders for the Order
-     */
     public function orders(): HasMany
     {
         return $this->hasMany(order::class);
     }
 
-    /**
-     * Get all of the address for the User
-     */
     public function address(): HasOne
     {
         return $this->hasOne(Address::class);
+    }
+
+    // Get Attr Model
+    public function getDetailsAttribute()
+    {
+        return $this->name . ' ' . $this->email . ' ' . $this->telp;
+    }
+
+    public function getFullAddressAttribute()
+    {
+        $address = $this->address;
+
+        if ($address && $address->province && $address->city) {
+            return $address->province->name . ', ' . $address->city->name . ', ' . ($address->details ?? '');
+        }
+        return null;
     }
 }

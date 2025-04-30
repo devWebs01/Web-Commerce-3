@@ -42,7 +42,7 @@ $products = computed(fn() => Product::latest()->get());
                                         <td>{{ ++$no }}</td>
                                         <td>{{ $product->title }}</td>
                                         <td>{{ 'Rp. ' . Number::format($product->price, locale: 'id') }}</td>
-                                        <td>{{ $product->quantity }} Tersedia</td>
+                                        <td> Tersedia</td>
                                         <td>{{ $product->items->count() }} Terjual</td>
                                         <td>{{ 'Rp. ' . Number::format($product->items->count() * $product->price, locale: 'id') }}
                                         </td>

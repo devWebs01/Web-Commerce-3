@@ -87,6 +87,7 @@ return [
     // 'locale' => 'en',
     'locale' => 'id',
 
+
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -162,7 +163,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Darryldecode\Cart\CartServiceProvider::class,
         Dipantry\Rajaongkir\ServiceProvider::class,
 
         /*
@@ -190,7 +190,6 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
         'Rajaongkir' => Dipantry\Rajaongkir\Facade::class,
     ])->toArray(),
 

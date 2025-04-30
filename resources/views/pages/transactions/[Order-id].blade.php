@@ -1,29 +1,38 @@
 <?php
 
-use function Livewire\Volt\{state, usesFileUploads};
+use function Livewire\Volt\{state, usesFileUploads, uses};
 use App\Models\Order;
 use App\Models\Bank;
+use function Laravel\Folio\name;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
+uses([LivewireAlert::class]);
+
+name('customer.payment');
 
 usesFileUploads();
 
-state([
-    "order" => fn() => Order::find($id),
-    "proof_of_payment",
-    "banks" => fn() => Bank::get(),
-]);
+state(['order', 'proof_of_payment', 'banks' => fn() => Bank::get()]);
 
 $submit = function () {
     $this->validate([
-        "proof_of_payment" => "required|image|mimes:jpeg,png,jpg",
+        'proof_of_payment' => 'required|image|mimes:jpeg,png,jpg',
     ]);
 
     $order = $this->order;
     $order->update([
-        "proof_of_payment" => $this->proof_of_payment->store("public/proof_of_payment"),
-        "status" => "PENDING",
+        'proof_of_payment' => $this->proof_of_payment->store('public/proof_of_payment'),
+        'status' => 'PENDING',
     ]);
 
-    $this->redirect("/orders");
+    $this->alert('success', 'Pembayaran selesai. Silahkan tunggu update pesanan anda selanjutnya! Terima kasih', [
+        'position' => 'top',
+        'timer' => 3000,
+        'toast' => true,
+        'width' => 500,
+    ]);
+
+    $this->redirect('/orders');
 };
 
 ?>
@@ -57,7 +66,7 @@ $submit = function () {
                                             <h1 id="font-custom" class="display-1">{{ ++$index }}</h1>
                                         </div>
                                         <div class="col">
-                                            <h2 id="font-custom" style="color: #565cff">
+                                            <h2 id="font-custom" style="color: #f35525">
                                                 {{ $item->account_number }}
                                             </h2>
                                             <h6 class="fw-bold border-bottom pb-2 mb-2">
@@ -77,9 +86,31 @@ $submit = function () {
                         <div class="row">
                             <div class="col-lg-7">
                                 <h1 id="font-custom">
-                                    {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                                    {{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
 
                                 </h1>
+
+                                <div class="my-3">
+                                    <form wire:submit="submit">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="proof_of_payment" class="form-label fw-semibold">
+                                                Bukti Pembayaran
+                                                <div wire:loading class="spinner-border spinner-border-sm ms-2"
+                                                    role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            </label>
+                                            <input type="file" class="form-control" wire:model='proof_of_payment'>
+                                            @error('proof_of_payment')
+                                                <p id="proof_of_payment" class="text-danger">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        <div class="d-grid">
+                                            <button class="btn btn-outline-secondary" type="submit">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                             <div class="col">
                                 @if ($proof_of_payment)
@@ -96,25 +127,7 @@ $submit = function () {
                                 @endif
                             </div>
                         </div>
-                        <div class="my-3">
-                            <label for="proof_of_payment" class="form-label">
-                                Bukti Pembayaran
-                                <div wire:loading class="spinner-border spinner-border-sm ms-2" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </label>
-                            <form wire:submit="submit">
-                                @csrf
-                                <div class="input-group">
-                                    <input type="file" class="form-control" wire:model='proof_of_payment'>
-                                    <button class="btn btn-outline-secondary" type="submit">Submit</button>
-                                </div>
-                                @error("proof_of_payment")
-                                    <p id="proof_of_payment" class="text-danger">{{ $message }}</p>
-                                @enderror
-                            </form>
 
-                        </div>
                     </div>
                 </div>
             </div>

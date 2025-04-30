@@ -1,16 +1,16 @@
 <?php
 
-use function Livewire\Volt\{state, rules, computed, usesPagination};
+use function Livewire\Volt\{state, rules, computed, usesPagination, uses};
 use App\Models\Category;
 use function Laravel\Folio\name;
-use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
-name("categories-product");
+uses([LivewireAlert::class]);
+name('categories-product');
+state(['name', 'categoryId']);
+rules(['name' => 'required|min:6|string']);
 
-state(["name", "categoryId"]);
-rules(["name" => "required|min:6|string"]);
-
-usesPagination(theme: "bootstrap");
+usesPagination(theme: 'bootstrap');
 
 $categories = computed(fn() => Category::latest()->paginate(10));
 
@@ -23,39 +23,41 @@ $save = function (Category $category) {
         $categoryUpdate = Category::find($this->categoryId);
         $categoryUpdate->update($validate);
     }
-    $this->reset("name");
-
-    LivewireAlert::text("Proses berhasil!")
-        ->success()
-        ->timer(3000) // Dismisses after 3 seconds
-        ->show();
+    $this->reset('name');
 };
 
 $edit = function (Category $category) {
     $category = Category::find($category->id);
     $this->categoryId = $category->id;
     $this->name = $category->name;
-    $this->dispatch("save");
 };
 
 $destroy = function (Category $category) {
-    $category->delete();
-    $this->reset("name");
-    $this->dispatch("save");
-
-    LivewireAlert::text("Proses berhasil!")
-        ->success()
-        ->timer(3000) // Dismisses after 3 seconds
-        ->show();
+    try {
+        $category->delete();
+        $this->reset('name');
+        $this->alert('success', 'Data kategori berhasil di hapus!', [
+            'position' => 'top',
+            'timer' => 3000,
+            'toast' => true,
+        ]);
+    } catch (\Throwable $th) {
+        $this->alert('error', 'Data kategori gagal di hapus!', [
+            'position' => 'top',
+            'timer' => 3000,
+            'toast' => true,
+        ]);
+    }
 };
 ?>
+
 
 <x-admin-layout>
     <div>
         <x-slot name="title">Kategori Produk</x-slot>
         <x-slot name="header">
-            <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
-            <li class="breadcrumb-item"><a href="{{ route("categories-product") }}">Kategori Produk</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('categories-product') }}">Kategori Produk</a></li>
         </x-slot>
 
         @volt
@@ -70,7 +72,7 @@ $destroy = function (Category $category) {
                                 <input type="text" class="form-control" wire:model="name" id="name"
                                     aria-describedby="helpId" placeholder="Masukkan kategori baru / edit" />
 
-                                @error("name")
+                                @error('name')
                                     <small id="helpId" class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                                 <div class="row justift-content-between">
@@ -80,10 +82,14 @@ $destroy = function (Category $category) {
                                         </button>
 
                                     </div>
-                                   
+                                    <div class="col align-self-center text-center">
+                                        <span wire:loading class="spinner-border spinner-border-sm"></span>
+                                        <x-action-message on="save">
+                                        </x-action-message>
+                                    </div>
                                     <div class="col-md mt-3 text-end">
                                         <button type="submit" class="btn btn-primary">
-                                            Simpan
+                                            Submit
                                         </button>
                                     </div>
                                 </div>
@@ -93,7 +99,7 @@ $destroy = function (Category $category) {
                     </div>
 
                     <div class="card-body">
-                        <div class="table-responsive border rounded">
+                        <div class="table-responsive border rounded px-3">
                             <table class="table text-center text-nowrap">
                                 <thead>
                                     <tr>
@@ -108,25 +114,20 @@ $destroy = function (Category $category) {
                                             <td>{{ ++$no }}</td>
                                             <td>{{ $category->name }}</td>
                                             <td>
-                                                <div>
-                                                    <a wire:click='edit({{ $category->id }})'
-                                                        class="btn btn-sm btn-warning">Edit</a>
-                                                    <button wire:confirm="Yakin Ingin Menghapus?"
-                                                        wire:loading.attr='disabled'
-                                                        wire:click='destroy({{ $category->id }})'
-                                                        class="btn btn-sm btn-danger">
-                                                        Hapus
-                                                    </button>
-                                                </div>
+                                                <a wire:click='edit({{ $category->id }})'
+                                                    class="btn btn-sm btn-warning">Edit</a>
+                                                <button wire:loading.attr='disabled'
+                                                    wire:click='destroy({{ $category->id }})' class="btn btn-sm btn-danger">
+                                                    Hapus
+                                                </button>
                                             </td>
                                         </tr>
                                     @endforeach
 
                                 </tbody>
                             </table>
-                            <div class="mx-3">
-                                {{ $this->categories->links() }}
-                            </div>
+
+                            {{ $this->categories->links() }}
                         </div>
 
                     </div>

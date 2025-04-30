@@ -10,6 +10,7 @@ state([
     'ordersCount' => fn() => Order::whereIn('status', ['COMPLETED', 'SHIPPED', 'PACKED'])->count(),
     'totalAmount' => Order::whereIn('status', ['COMPLETED', 'SHIPPED', 'PACKED'])->sum('total_amount'),
     'ordersPendingCount' => fn() => Order::whereIn('status', ['PENDING', 'SHIPPED'])->get(),
+    'ordersCustPickup' => fn() => Order::whereIn('status', ['PENDING', 'SHIPPED'])->get(),
 ]);
 
 ?>
@@ -20,41 +21,39 @@ state([
     @volt
         <div>
             <div class="container-fluid">
-                <div class="card text-bg-white">
+                <div class="card text-bg-primary">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-7">
                                 <div class="d-flex flex-column h-100">
-                                    <div class="hstack gap-3 mb-2">
-                                        <span
-                                            class="d-flex align-items-center justify-content-center round-48 bg-primary rounded flex-shrink-0">
-                                            <iconify-icon icon="solar:course-up-outline"
-                                                class="fs-7 text-white"></iconify-icon>
-                                        </span>
-                                        <h5 class="text-primary fs-6 mb-0 text-wrap text-capitalize fw-bold">Welcome Back
-                                            {{ auth()->user()->name }}
-                                        </h5>
-                                    </div>
+                                    <span
+                                        class="d-flex align-items-center justify-content-center round-48 bg-white rounded flex-shrink-0 mb-3">
+                                        <iconify-icon icon="solar:course-up-outline" class="fs-7 text-dark"></iconify-icon>
+                                    </span>
+                                    <h2 class="text-white mb-0 text-nowrap text-capitalize">
+                                        Selamat datang kembali <br> {{ auth()->user()->name }}
+                                    </h2>
                                     <div class="mt-4 mt-sm-auto">
                                         <div class="row">
                                             <div class="col-auto">
-                                                <span class="opacity-75 text-dark">Pendapatan</span>
-                                                <h4 class="mb-0 text-primary mt-1 text-nowrap">
+                                                <span class="opacity-75">Pendapatan</span>
+                                                <h1 class="mb-0 text-white mt-1 text-nowrap">
                                                     {{ 'Rp. ' . Number::format($totalAmount, locale: 'id') }}
-                                                </h4>
+                                                </h1>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-5 text-center text-md-end">
-                                <img src="https://img.freepik.com/free-vector/digital-designers-team-drawing-with-pen-computer-monitor_74855-10586.jpg?w=740&t=st=1717604543~exp=1717605143~hmac=93b861c201e629763f37656be25404002beab0b469e78a487c7f2f97918e1d74"
+                                <img src="https://bootstrapdemos.adminmart.com/matdash/dist/assets/images/backgrounds/welcome-bg.png"
                                     alt="welcome" class="img-fluid mb-n7 mt-2" width="180">
                             </div>
                         </div>
+
+
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card bg-success-subtle overflow-hidden shadow-none">
@@ -127,6 +126,8 @@ state([
                     </div>
                 </div>
             </div>
+
+
         </div>
     @endvolt
 </x-admin-layout>

@@ -8,9 +8,9 @@ use function Livewire\Volt\form;
 use function Livewire\Volt\layout;
 use function Laravel\Folio\name;
 
-name("login");
+name('login');
 
-layout("layouts.auth-layout");
+layout('layouts.auth-layout');
 
 form(LoginForm::class);
 
@@ -21,12 +21,12 @@ $login = function () {
 
     Session::regenerate();
 
-    if (auth()->user()->role == "admin") {
-        $this->redirect(session("url.intended", RouteServiceProvider::HOME));
-    } elseif (auth()->user()->role == "superadmin") {
-        $this->redirect(session("url.intended", RouteServiceProvider::HOME));
+    if (auth()->user()->role == 'admin') {
+        $this->redirect(session('url.intended', RouteServiceProvider::HOME), navigate: true);
+    } elseif (auth()->user()->role == 'superadmin') {
+        $this->redirect(session('url.intended', RouteServiceProvider::HOME), navigate: true);
     } else {
-        $this->redirect("/");
+        $this->redirect('/');
     }
 };
 
@@ -41,16 +41,16 @@ $login = function () {
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="pe-lg-3">
-                    <h1 id="font-custom" class="display-3 fw-bold mb-2 mb-md-3">Temukan Perawatan Kulit Terbaik untuk kamu
+                    <h1 id="font-custom" class="display-3 fw-bold mb-2 mb-md-3">Temukan Gaya Streetwear Ekslusif yang
+                        Membuatmu Beda
                     </h1>
-                    <p class="lead mb-4">Di sini, kamu dapat mengakses informasi lengkap tentang produk, melihat riwayat
-                        pemesanan, dan menikmati dukungan pelanggan kami 24/7.</p>
+                    <p class="lead mb-4">Dapatkan akses tak terbatas ke koleksi streetwear terkini yang dijamin selalu tersedia, membebaskan kamu berekspresi dengan fashion unik.</p>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
                         <div class="d-flex">
                             <div class="flex-shrink-0">
-                                <div style="color: #565cff;">
+                                <div style="color: #f35525;">
                                     <svg class="bi bi-chat-right-fill" fill="currentColor" height="32"
                                         viewbox="0 0 16 16" width="32" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -66,7 +66,7 @@ $login = function () {
                     </div>
                     <div class="col-sm-6">
                         <div class="d-flex">
-                            <div style="color: #565cff;">
+                            <div style="color: #f35525;">
                                 <svg class="bi bi-shield-fill-check" fill="currentColor" height="32"
                                     viewBox="0 0 16 16" width="32" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -84,14 +84,14 @@ $login = function () {
             <div class="col-lg-6">
                 <div class="ps-lg-5">
                     <div class="card shadow-lg text-white text-left h-100">
-                        <div class="card-body rounded p-4 p-xl-5" style="background-color: #565cff;">
+                        <div class="card-body rounded p-4 p-xl-5" style="background-color: #f35525;">
                             <h2 id="font-custom" class="pb-3 text-center text-white fw-bold">Masuk Ke Akun kamu</h2>
                             <form wire:submit="login">
                                 <div class="mb-3">
                                     <label for="email" class="form-label text-white">Email</label>
                                     <input type="email" wire:model="form.email" class="form-control text-white"
                                         id="email" aria-describedby="emailHelp">
-                                    @error("email")
+                                    @error('email')
                                         <small id="emailHelp" class="form-text text-dark">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -99,7 +99,7 @@ $login = function () {
                                     <label for="password" class="form-label text-white">Kata Sandi</label>
                                     <input type="password" wire:model="form.password" class="form-control text-white"
                                         id="password">
-                                    @error("password")
+                                    @error('password')
                                         <small id="password" class="form-text text-dark">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -117,7 +117,7 @@ $login = function () {
                                 </button>
                                 <div class="d-flex align-items-center justify-content-center">
                                     <p class="fs-4 mb-0 fw-bold">Belum punya akun?</p>
-                                    <a class="text-white fs-4 fw-bold ms-2" href="{{ route("register") }}">Buat akun</a>
+                                    <a class="text-white fs-4 fw-bold ms-2" href="{{ route('register') }}">Buat akun</a>
                                 </div>
                             </form>
                         </div>

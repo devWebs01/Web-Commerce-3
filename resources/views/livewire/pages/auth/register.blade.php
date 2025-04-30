@@ -12,29 +12,29 @@ use function Livewire\Volt\rules;
 use function Livewire\Volt\state;
 use function Laravel\Folio\name;
 
-name("register");
+name('register');
 
-layout("layouts.auth-layout");
+layout('layouts.auth-layout');
 
 state([
-    "name" => "",
-    "email" => "",
-    "password" => "",
-    "password_confirmation" => "",
-    "role" => "customer",
+    'name' => '',
+    'email' => '',
+    'password' => '',
+    'password_confirmation' => '',
+    'role' => 'customer',
 ]);
 
 rules([
-    "name" => ["required", "string", "max:255"],
-    "email" => ["required", "string", "lowercase", "email", "max:255", "unique:" . User::class],
-    "password" => ["required", "string", "confirmed", Rules\Password::defaults()],
+    'name' => ['required', 'string', 'max:255'],
+    'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+    'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
 ]);
 
 $register = function () {
     $validated = $this->validate();
 
-    $validated["password"] = Hash::make($validated["password"]);
-    $validated["role"] = $this->role;
+    $validated['password'] = Hash::make($validated['password']);
+    $validated['role'] = $this->role;
 
     event(new Registered(($user = User::create($validated))));
 
@@ -54,19 +54,17 @@ $register = function () {
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-6 mb-5 mb-lg-0">
                 <div class="pe-lg-3">
-                    <h1 id="font-custom" class="display-3 fw-bold mb-2 mb-md-3">Mulailah menemukan produk skincare terbaik
-                        untuk kamu.
+                    <h1 id="font-custom" class="display-3 fw-bold mb-2 mb-md-3">Tampil Beda dengan Koleksi Streetwear Terbaru
                     </h1>
                     <p class="lead mb-4">
-                        Dengan jaminan ketersediaan 99,99%, kamu dapat yakin bahwa kebutuhan perawatan kulit kamu akan
-                        terpenuhi tanpa kendala.
+                        Kami menjamin ketersediaan produk hingga 99,99%, memastikan kamu dapat menemukan pilihan fashion streetwear idaman tanpa hambatan.
                     </p>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
                         <div class="d-flex">
                             <div class="flex-shrink-0">
-                                <div style="color: #565cff;">
+                                <div style="color: #f35525;">
                                     <svg class="bi bi-chat-right-fill" fill="currentColor" height="32"
                                         viewbox="0 0 16 16" width="32" xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -82,7 +80,7 @@ $register = function () {
                     </div>
                     <div class="col-sm-6">
                         <div class="d-flex">
-                            <div style="color: #565cff;">
+                            <div style="color: #f35525;">
                                 <svg class="bi bi-shield-fill-check" fill="currentColor" height="32"
                                     viewbox="0 0 16 16" width="32" xmlns="http://www.w3.org/2000/svg">
                                     <path
@@ -100,14 +98,14 @@ $register = function () {
             <div class="col-lg-6">
                 <div class="ps-lg-5">
                     <div class="card shadow-lg text-white text-left h-100">
-                        <div class="card-body rounded p-4 p-xl-5" style="background-color: #565cff;">
+                        <div class="card-body rounded p-4 p-xl-5" style="background-color: #f35525;">
                             <form wire:submit="register">
                                 <input type="hidden" wire:model="role" value="customer">
                                 <div class="mb-3">
                                     <label for="name" class="form-label text-white">Nama Lengkap</label>
                                     <input type="text" wire:model="name" class="form-control text-white"
                                         id="name" aria-describedby="nameHelp">
-                                    @error("name")
+                                    @error('name')
                                         <small id="nameHelp" class="form-text text-dark">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -115,7 +113,7 @@ $register = function () {
                                     <label for="email" class="form-label text-white">Email</label>
                                     <input type="email" wire:model="email" class="form-control text-white"
                                         id="email" aria-describedby="emailHelp">
-                                    @error("email")
+                                    @error('email')
                                         <small id="emailHelp" class="form-text text-dark">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -123,7 +121,7 @@ $register = function () {
                                     <label for="password" class="form-label text-white">Kata Sandi</label>
                                     <input type="password" wire:model="password" class="form-control text-white"
                                         id="password">
-                                    @error("password")
+                                    @error('password')
                                         <small id="password" class="form-text text-dark">{{ $message }}</small>
                                     @enderror
                                 </div>
@@ -132,7 +130,7 @@ $register = function () {
                                         sandi</label>
                                     <input type="password" wire:model="password_confirmation"
                                         class="form-control text-white" id="password_confirmation">
-                                    @error("password_confirmation")
+                                    @error('password_confirmation')
                                         <small id="password_confirmation"
                                             class="form-text text-dark">{{ $message }}</small>
                                     @enderror
@@ -143,7 +141,7 @@ $register = function () {
                                 </button>
                                 <div class="d-flex align-items-center justify-content-center">
                                     <p class="fs-4 mb-0 fw-bold">Sudah punya akun?</p>
-                                    <a class="text-white fs-4 fw-bold ms-2" href="{{ route("login") }}">Masuk
+                                    <a class="text-white fs-4 fw-bold ms-2" href="{{ route('login') }}">Masuk
                                         Sekarang</a>
                                 </div>
                             </form>

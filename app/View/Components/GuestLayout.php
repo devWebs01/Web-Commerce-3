@@ -14,7 +14,6 @@ class GuestLayout extends Component
     public function render(): View
     {
         $setting = Shop::first();
-
         return view('layouts.guest-layout', compact('setting'));
     }
 }

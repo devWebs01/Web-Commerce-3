@@ -14,20 +14,13 @@ class Shop extends Model
         'name',
         'province_id',
         'city_id',
-        'details',
+        'details'
     ];
 
-    /**
-     * Get the province that owns the Address
-     */
     public function province(): BelongsTo
     {
         return $this->belongsTo(Province::class);
     }
-
-    /**
-     * Get the city that owns the Address
-     */
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);

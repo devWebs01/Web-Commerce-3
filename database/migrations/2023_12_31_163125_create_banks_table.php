@@ -8,6 +8,7 @@ return new class extends Migration
 {
     /**
      * Run the migrations. 'account_owner', 'account_number', 'bank_name',
+
      */
     public function up(): void
     {

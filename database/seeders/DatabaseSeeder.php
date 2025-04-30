@@ -21,13 +21,12 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             UserSeeder::class,
-            JsonSeeder::class,
         ]);
 
         Artisan::call('rajaongkir:seed');
 
         \App\Models\Shop::create([
-            'name' => 'Bylilian',
+            'name' => 'APOLA CO ID',
             'province_id' => 8,
             'city_id' => 156,
             'details' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit vehicula rutrum inceptos, euismod augue nisl penatibus cursus metus accumsan rhoncus vel risus leo, torquent praesent est malesuada litora primis eros eu nam.',

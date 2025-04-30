@@ -3,9 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+
 
 class UserSeeder extends Seeder
 {
@@ -18,7 +20,7 @@ class UserSeeder extends Seeder
             [
                 'name' => 'admin',
                 'email' => 'admin@testing.com',
-                'telp' => '08'.rand(1111111111, 9999999999),
+                'telp' => '08' . rand(1111111111, 9999999999),
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
@@ -27,16 +29,17 @@ class UserSeeder extends Seeder
             [
                 'name' => 'pemilik',
                 'email' => 'pemilik@testing.com',
-                'telp' => '08'.rand(1111111111, 9999999999),
+                'telp' => '08' . rand(1111111111, 9999999999),
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),
                 'role' => 'superadmin',
+                
             ],
             [
                 'name' => 'pelanggan',
                 'email' => 'pelanggan@testing.com',
-                'telp' => '08'.rand(1111111111, 9999999999),
+                'telp' => '08' . rand(1111111111, 9999999999),
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
                 'remember_token' => Str::random(10),

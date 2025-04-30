@@ -40,7 +40,7 @@ $products = computed(fn() => Product::latest()->get());
                                         <td>{{ ++$no }}</td>
                                         <td>{{ Str::limit($product->title, 40, '...') }}</td>
                                         <td>{{ 'Rp. ' . Number::format($product->price, locale: 'id') }}</td>
-                                        <td>{{ $product->quantity }} Tersedia</td>
+                                        <td>Tersedia</td>
                                         <td>{{ $product->weight }} gram</td>
                                     </tr>
                                 @endforeach

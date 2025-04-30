@@ -66,6 +66,7 @@
                                 <tr class="border">
                                     <th class="text-center">#</th>
                                     <th>Produk</th>
+                                    <th class="text-center">Variant</th>
                                     <th class="text-center">Kuantitas</th>
                                     <th class="text-center">Harga Satuan</th>
                                     <th class="text-end">Total</th>
@@ -78,6 +79,7 @@
                                     <tr class="border">
                                         <td class="text-center">{{ ++$no }}</td>
                                         <td>{{ Str::limit($item->product->title, 30, '...') }}</td>
+                                        <td class="text-center">{{ $item->variant->type }}</td>
                                         <td class="text-center">{{ $item->qty }} Item</td>
                                         <td class="text-center">
                                             {{ 'Rp.' . Number::format($item->product->price, locale: 'id') }}
