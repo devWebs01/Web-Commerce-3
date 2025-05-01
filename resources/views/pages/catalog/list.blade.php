@@ -43,27 +43,24 @@ $products = computed(function () {
     <x-slot name="title">Katalog Produk</x-slot>
     @volt
         <div>
-            <!-- Judul & Deskripsi -->
-            <section class="pt-5">
-                <div class="custom-container mb-5">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <h2 id="font-custom" class="display-2 fw-bold">Katalog Produk</h2>
-                        </div>
-                        <div class="col-lg-5 mt-4 mt-lg-0">
-                            <p>
-                                Jelajahi beragam pilihan gaya dan tren terbaru dalam mode pakaian kami. Dari koleksi santai
-                                yang nyaman hingga pakaian kasual yang stylish, kami memiliki segala yang Anda butuhkan
-                                untuk tampil percaya diri dan menarik setiap hari.
-                            </p>
-                        </div>
+            <div class="container mb-5">
+                <div class="row">
+                    <div class="col-lg-7">
+                        <h2 id="font-custom" class="display-2 fw-bold">Katalog Produk</h2>
+                    </div>
+                    <div class="col-lg-5 mt-4 mt-lg-0">
+                        <p>
+                            Jelajahi beragam pilihan gaya dan tren terbaru dalam mode pakaian kami. Dari koleksi santai
+                            yang nyaman hingga pakaian kasual yang stylish, kami memiliki segala yang Anda butuhkan
+                            untuk tampil percaya diri dan menarik setiap hari.
+                        </p>
                     </div>
                 </div>
-            </section>
+            </div>
 
             <!-- Filter dan Produk -->
             <section class="pb-5">
-                <div class="custom-container">
+                <div class="container">
                     <div class="row">
                         <!-- Sidebar Kategori -->
                         <div class="col-lg-3 mb-4">

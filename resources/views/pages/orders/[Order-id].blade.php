@@ -144,7 +144,7 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
     <x-slot name="title">Pesanan {{ $order->invoice }}</x-slot>
 
     @volt
-        <div class="custom-container py-5">
+        <div class="container py-5">
             <div class="row mb-4">
                 <h2 class="fw-bold h4">Checkout</h2>
                 <div class="col-lg-8">
@@ -270,7 +270,7 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
                                     class="btn btn-primary w-100">Lanjutkan</button>
                             @elseif ($order->status === "UNPAID")
                                 <a href="{{ route("customer.payment", ["order" => $order->id]) }}"
-                                    class="btn btn-primary w-100">Bayar Sekarang</a>
+                                    class="btn btn-dark w-100">Bayar Sekarang</a>
                             @endif
 
                             @if ($order->status === "PROGRESS" || $order->status === "UNPAID")

@@ -59,7 +59,7 @@ $submit = function () {
                     <div class="col-lg-5">
                         <h6 class="mb-3">Kirimkan ke salah satu rekening yang tertera di bawah ini:</h6>
                         @foreach ($banks as $index => $item)
-                            <div class="card mb-3">
+                            <div class="card shadow border-0 mb-3">
                                 <div class="card-body">
                                     <div class="row gap-3">
                                         <div class="col-2 text-end align-content-center">
@@ -83,12 +83,28 @@ $submit = function () {
                     </div>
                     <div class="col-lg-7">
                         <h6>Total Pembayaran:</h6>
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <h1 id="font-custom">
-                                    {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                        <h1 id="font-custom" class="mb-3">
+                            {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
 
-                                </h1>
+                        </h1>
+
+                        <div class="row">
+                            <div class="col-12">
+                                @if ($proof_of_payment)
+                                    <div class="card">
+                                        <a data-fslightbox="mygalley" class="" target="_blank" data-type="image"
+                                            href="{{ $proof_of_payment->temporaryUrl() }}">
+                                            <img src="{{ $proof_of_payment->temporaryUrl() }}" class="img object-fit-cover"
+                                                style="height: 240px; width: 100%" alt="proof_of_payment" />
+                                        </a>
+                                    </div>
+                                @else
+                                    <div class="card placeholder" style="height: 240px; width: 100%">
+                                    </div>
+                                @endif
+                            </div>
+
+                            <div class="col-12">
 
                                 <div class="my-3">
                                     <form wire:submit="submit">
@@ -112,20 +128,7 @@ $submit = function () {
                                     </form>
                                 </div>
                             </div>
-                            <div class="col">
-                                @if ($proof_of_payment)
-                                    <div class="card">
-                                        <a data-fslightbox="mygalley" class="" target="_blank" data-type="image"
-                                            href="{{ $proof_of_payment->temporaryUrl() }}">
-                                            <img src="{{ $proof_of_payment->temporaryUrl() }}" class="img object-fit-cover"
-                                                style="height: 250px; width: 100%" alt="proof_of_payment" />
-                                        </a>
-                                    </div>
-                                @else
-                                    <div class="card placeholder" style="height: 250px; width: 100%">
-                                    </div>
-                                @endif
-                            </div>
+
                         </div>
 
                     </div>

@@ -170,7 +170,7 @@
                 }
             }
 
-            .custom-container {
+            .container {
                 max-width: 1320px;
                 margin-left: auto;
                 margin-right: auto;
@@ -179,7 +179,7 @@
             }
 
             @media (max-width: 576px) {
-                .custom-container {
+                .container {
                     padding-left: 0.75rem;
                     padding-right: 0.75rem;
                 }

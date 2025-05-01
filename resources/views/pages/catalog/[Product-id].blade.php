@@ -95,24 +95,22 @@ $addToCart = function (Product $product) {
 
     @volt
         <div>
-            <section class="pt-5">
-                <div class="custom-container mb-5">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <h2 id="font-custom" class="display-2 fw-bold">
-                                Detail Produk
-                            </h2>
-                        </div>
-                        <div class="col-lg-6 mt-lg-0 align-content-center">
-                            <p>
-                                Temukan kualitas terbaik dari produk <span class="fw-bold">{{ $product->title }}</span> yang
-                                kami tawarkan.
-                            </p>
-                        </div>
+             <div class="container">
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <h2 id="font-custom" class="display-2 fw-bold">
+                            Detail Produk
+                        </h2>
                     </div>
-
+                    <div class="col-lg-6 mt-lg-0 align-content-center">
+                        <p>
+                            Temukan kualitas terbaik dari produk <span class="fw-bold">{{ $product->title }}</span> yang
+                            kami tawarkan.
+                        </p>
+                    </div>
                 </div>
-            </section>
+
+            </div>
 
             <section class="pb-5">
                 <div class="container">

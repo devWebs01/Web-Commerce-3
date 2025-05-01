@@ -77,7 +77,7 @@ $sendVerification = function () {
     @volt
         <div>
 
-            <div class="custom-container mb-5">
+            <div class="container mb-5">
                 <div class="row">
                     <div class="col-lg-6">
                         <h2 id="font-custom" class="display-2 fw-bold">
