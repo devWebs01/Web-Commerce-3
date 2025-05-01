@@ -98,7 +98,7 @@ $submit = function () {
                                                 Bukti Pembayaran
                                                 <div wire:loading class="spinner-border spinner-border-sm ms-2"
                                                     role="status">
-                                                    <span class="visually-hidden">Loading...</span>
+
                                                 </div>
                                             </label>
                                             <input type="file" class="form-control" wire:model='proof_of_payment'>
@@ -115,7 +115,7 @@ $submit = function () {
                             <div class="col">
                                 @if ($proof_of_payment)
                                     <div class="card">
-                                        <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image"
+                                        <a data-fslightbox="mygalley" class="" target="_blank" data-type="image"
                                             href="{{ $proof_of_payment->temporaryUrl() }}">
                                             <img src="{{ $proof_of_payment->temporaryUrl() }}" class="img object-fit-cover"
                                                 style="height: 250px; width: 100%" alt="proof_of_payment" />

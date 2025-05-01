@@ -12,17 +12,17 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 uses([LivewireAlert::class]);
 
-name('catalog-cart');
+name("catalog-cart");
 
 state([
-    'carts' => fn() => Cart::where('user_id', auth()->id())->get(),
-    'destination' => fn() => Address::where('user_id', auth()->id())->first(),
-    'origin' => fn() => Shop::first(),
-    'order',
+    "carts" => fn() => Cart::where("user_id", auth()->id())->get(),
+    "destination" => fn() => Address::where("user_id", auth()->id())->first(),
+    "origin" => fn() => Shop::first(),
+    "order",
 ]);
 
 on([
-    'cart-updated' => function () {
+    "cart-updated" => function () {
         $this->cart = $this->carts;
         $this->subTotal = $this->carts->sum(function ($item) {
             return $item->product->price * $item->qty;
@@ -41,38 +41,38 @@ $calculateTotal = function () {
 $increaseQty = function ($cartId) {
     $cart = Cart::find($cartId);
     if ($cart->qty < $cart->variant->stock) {
-        $cart->update(['qty' => $cart->qty + 1]);
-        $this->dispatch('cart-updated');
+        $cart->update(["qty" => $cart->qty + 1]);
+        $this->dispatch("cart-updated");
     }
 };
 
 $decreaseQty = function ($cartId) {
     $cart = Cart::find($cartId);
     if ($cart->qty > 1) {
-        $cart->update(['qty' => $cart->qty - 1]);
-        $this->dispatch('cart-updated');
+        $cart->update(["qty" => $cart->qty - 1]);
+        $this->dispatch("cart-updated");
     }
 };
 
 $deleteProduct = function ($cartId) {
     $cart = Cart::find($cartId);
     $cart->delete();
-    $this->dispatch('cart-updated');
+    $this->dispatch("cart-updated");
 };
 
 $confirmCheckout = function () {
     // Buat record pesanan
-    $cartItems = Cart::where('user_id', auth()->id())->get();
+    $cartItems = Cart::where("user_id", auth()->id())->get();
 
     $order = Order::create([
-        'user_id' => auth()->id(),
-        'status' => 'PROGRESS',
-        'invoice' => 'INV-' . time(),
-        'total_amount' => 0,
-        'shipping_cost' => 0,
-        'province_id' => $this->destination->province_id,
-        'city_id' => $this->destination->city_id,
-        'details' => $this->destination->details,
+        "user_id" => auth()->id(),
+        "status" => "PROGRESS",
+        "invoice" => "INV-" . time(),
+        "total_amount" => 0,
+        "shipping_cost" => 0,
+        "province_id" => $this->destination->province_id,
+        "city_id" => $this->destination->city_id,
+        "details" => $this->destination->details,
     ]);
 
     // Inisialisasi total harga pesanan
@@ -82,9 +82,9 @@ $confirmCheckout = function () {
     // Salin item dari keranjang ke tabel order_items
     foreach ($cartItems as $cartItem) {
         $orderItem = new Item([
-            'product_id' => $cartItem->product_id,
-            'variant_id' => $cartItem->variant_id,
-            'qty' => $cartItem->qty,
+            "product_id" => $cartItem->product_id,
+            "variant_id" => $cartItem->variant_id,
+            "qty" => $cartItem->qty,
         ]);
 
         // Tambahkan item ke pesanan
@@ -97,75 +97,75 @@ $confirmCheckout = function () {
         $totalWeight += $cartItem->product->weight * $cartItem->qty;
 
         // Kurangkan kuantitas produk dari stok
-        $cartItem->variant->decrement('stock', $cartItem->qty);
+        $cartItem->variant->decrement("stock", $cartItem->qty);
     }
 
     // Update total harga pesanan
     $order->update([
-        'total_amount' => $totalPrice, // Total harga pesanan ditambah ongkir
-        'total_weight' => $totalWeight, // Total berat pesanan
+        "total_amount" => $totalPrice, // Total harga pesanan ditambah ongkir
+        "total_weight" => $totalWeight, // Total berat pesanan
     ]);
 
     try {
         $jneShippingData = [
-            'origin' => $this->origin->city_id,
-            'destination' => $this->destination->city_id,
-            'weight' => 123,
-            'courier' => RajaongkirCourier::JNE,
+            "origin" => $this->origin->city_id,
+            "destination" => $this->destination->city_id,
+            "weight" => 123,
+            "courier" => RajaongkirCourier::JNE,
         ];
         $tikiShippingData = [
-            'origin' => $this->origin->city_id,
-            'destination' => $this->destination->city_id,
-            'weight' => 123,
-            'courier' => RajaongkirCourier::TIKI,
+            "origin" => $this->origin->city_id,
+            "destination" => $this->destination->city_id,
+            "weight" => 123,
+            "courier" => RajaongkirCourier::TIKI,
         ];
 
-        $jneOngkirCost = \Rajaongkir::getOngkirCost($jneShippingData['origin'], $jneShippingData['destination'], $jneShippingData['weight'], $jneShippingData['courier']);
+        $jneOngkirCost = \Rajaongkir::getOngkirCost($jneShippingData["origin"], $jneShippingData["destination"], $jneShippingData["weight"], $jneShippingData["courier"]);
 
-        $tikiOngkirCost = \Rajaongkir::getOngkirCost($tikiShippingData['origin'], $tikiShippingData['destination'], $tikiShippingData['weight'], $tikiShippingData['courier']);
+        $tikiOngkirCost = \Rajaongkir::getOngkirCost($tikiShippingData["origin"], $tikiShippingData["destination"], $tikiShippingData["weight"], $tikiShippingData["courier"]);
 
-        $jneShippingCost = $jneOngkirCost[0]['costs'];
-        $tikiShippingCost = $tikiOngkirCost[0]['costs'];
+        $jneShippingCost = $jneOngkirCost[0]["costs"];
+        $tikiShippingCost = $tikiOngkirCost[0]["costs"];
 
         foreach ($jneShippingCost as $shippingCost) {
             \App\Models\Courier::create([
-                'order_id' => $order->id,
-                'description' => $shippingCost['description'] . ' (JNE)',
-                'value' => $shippingCost['cost'][0]['value'],
-                'etd' => $shippingCost['cost'][0]['etd'],
+                "order_id" => $order->id,
+                "description" => $shippingCost["description"] . " (JNE)",
+                "value" => $shippingCost["cost"][0]["value"],
+                "etd" => $shippingCost["cost"][0]["etd"],
             ]);
         }
 
         foreach ($tikiShippingCost as $shippingCost) {
             \App\Models\Courier::create([
-                'order_id' => $order->id,
-                'description' => $shippingCost['description'] . ' (TIKI)',
-                'value' => $shippingCost['cost'][0]['value'],
-                'etd' => $shippingCost['cost'][0]['etd'],
+                "order_id" => $order->id,
+                "description" => $shippingCost["description"] . " (TIKI)",
+                "value" => $shippingCost["cost"][0]["value"],
+                "etd" => $shippingCost["cost"][0]["etd"],
             ]);
         }
 
-        Cart::where('user_id', auth()->id())->delete();
+        Cart::where("user_id", auth()->id())->delete();
 
-        $this->dispatch('cart-updated');
+        $this->dispatch("cart-updated");
 
-        $this->alert('success', 'Pesanan telah berhasil diproses. Menuju detail pesanan.', [
-            'position' => 'top',
-            'timer' => '2000',
-            'toast' => true,
-            'text' => '',
+        $this->alert("success", "Pesanan telah berhasil diproses. Menuju detail pesanan.", [
+            "position" => "top",
+            "timer" => "2000",
+            "toast" => true,
+            "text" => "",
         ]);
 
-        $this->redirect('/orders/' . $order->id);
+        $this->redirect("/orders/" . $order->id);
     } catch (\Throwable $th) {
         Order::find($order->id)->delete();
 
-        $this->alert('error', 'Maaf, terjadi kesalahan saat checkout. Silakan coba lagi!', [
-            'position' => 'top',
-            'timer' => '2000',
-            'toast' => true,
-            'timerProgressBar' => true,
-            'text' => '',
+        $this->alert("error", "Maaf, terjadi kesalahan saat checkout. Silakan coba lagi!", [
+            "position" => "top",
+            "timer" => "2000",
+            "toast" => true,
+            "timerProgressBar" => true,
+            "text" => "",
         ]);
     }
 };
@@ -177,7 +177,7 @@ $confirmCheckout = function () {
 
     @volt
         <div>
-            @include('pages.catalog.modal')
+            @include("pages.catalog.modal")
 
             <div class="container">
                 <div class="row mb-4">
@@ -193,7 +193,7 @@ $confirmCheckout = function () {
                     </div>
                 </div>
 
-                <div class="card rounded-5">
+                <div class="card ">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table rounded table-hover text-center">
@@ -211,7 +211,7 @@ $confirmCheckout = function () {
                                     @foreach ($carts as $no => $cart)
                                         <tr class="align-items-center">
                                             <td>{{ ++$no }}.</td>
-                                            <td>{{ Str::limit($cart->product->title, 20, '...') }}</td>
+                                            <td>{{ Str::limit($cart->product->title, 20, "...") }}</td>
                                             <td>
                                                 {{ $cart->variant->type }}
                                             </td>
@@ -232,7 +232,7 @@ $confirmCheckout = function () {
                                                 </div>
                                             </td>
                                             <td class="w-1/6">
-                                                {{ 'Rp.' . Number::format($cart->qty * $cart->product->price, locale: 'id') }}
+                                                {{ "Rp." . Number::format($cart->qty * $cart->product->price, locale: "id") }}
                                             </td>
                                             <td>
                                                 <button wire:click="deleteProduct('{{ $cart->id }}')" type="button"
@@ -246,14 +246,14 @@ $confirmCheckout = function () {
                                         <td colspan="3"></td>
                                         <td>Total:</td>
                                         <td>
-                                            {{ 'Rp.' . Number::format($this->calculateTotal(), locale: 'id') }}
+                                            {{ "Rp." . Number::format($this->calculateTotal(), locale: "id") }}
                                         </td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td colspan="3"></td>
                                         <td>
-                                            <a class="btn btn-outline-dark btn-sm" href="{{ route('catalog-products') }}"
+                                            <a class="btn btn-outline-dark " href="{{ route("catalog-products") }}"
                                                 role="button">
                                                 Lanjut Belanja
                                             </a>
@@ -261,13 +261,13 @@ $confirmCheckout = function () {
                                         <td>
                                             @if ($carts->count() > 0)
                                                 @if (!$this->destination)
-                                                    <a class="btn btn-outline-dark btn-sm"
-                                                        href="{{ route('customer.account', ['user' => auth()->id()]) }}"
+                                                    <a class="btn btn-outline-dark "
+                                                        href="{{ route("customer.account", ["user" => auth()->id()]) }}"
                                                         role="button">
                                                         Atur Alamat
                                                     </a>
                                                 @else
-                                                    <button type="button" class="btn btn-outline-dark btn-sm"
+                                                    <button type="button" class="btn btn-outline-dark "
                                                         data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                         Checkout
                                                     </button>
@@ -276,7 +276,7 @@ $confirmCheckout = function () {
                                         </td>
                                         <td>
                                             <div wire:loading class="spinner-border spinner-border-sm" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -289,7 +289,6 @@ $confirmCheckout = function () {
             </div>
 
         </div>
-
 
     @endvolt
 </x-guest-layout>

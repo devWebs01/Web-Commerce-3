@@ -161,7 +161,7 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
                             </strong>
                         </div>
                         @if ($order->status == "CANCELLED")
-                            <div class="alert alert-danger rounded-5" role="alert">
+                            <div class="alert alert-danger " role="alert">
                                 <strong>Pemberitahuan!</strong>
                                 <span>
                                     Pesanan dibatalkan.

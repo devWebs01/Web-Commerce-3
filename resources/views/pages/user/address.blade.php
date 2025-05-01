@@ -8,46 +8,46 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 uses([LivewireAlert::class]);
 
-state(['province_id'])->url();
+state(["province_id"])->url();
 
 rules([
-    'province_id' => 'required|exists:rajaongkir_provinces,id',
-    'city_id' => 'required|exists:rajaongkir_cities,id',
-    'details' => 'required|min:20',
+    "province_id" => "required|exists:rajaongkir_provinces,id",
+    "city_id" => "required|exists:rajaongkir_cities,id",
+    "details" => "required|min:20",
 ]);
 
 $getAddress = computed(function () {
-    return Address::where('user_id', auth()->id())->first();
+    return Address::where("user_id", auth()->id())->first();
 });
 
 state([
-    'province_id' => fn() => $this->getAddress->province_id ?? '',
-    'city_id' => fn() => $this->getAddress->city_id ?? '',
-    'details' => fn() => $this->getAddress->details ?? '',
-    'provinces' => fn() => ROProvince::all(),
+    "province_id" => fn() => $this->getAddress->province_id ?? "",
+    "city_id" => fn() => $this->getAddress->city_id ?? "",
+    "details" => fn() => $this->getAddress->details ?? "",
+    "provinces" => fn() => ROProvince::all(),
 ]);
 
 $cities = computed(function () {
-    return ROCity::where('province_id', $this->province_id)->get();
+    return ROCity::where("province_id", $this->province_id)->get();
 });
 
 $submit = function () {
     $validate = $this->validate();
 
     if ($this->getAddress) {
-        $updateAddress = Address::where('user_id', auth()->id())->first();
+        $updateAddress = Address::where("user_id", auth()->id())->first();
         $updateAddress->update($validate);
     } elseif (!$this->getAddress) {
-        $validate['user_id'] = auth()->id();
+        $validate["user_id"] = auth()->id();
         Address::create($validate);
     }
-    $this->dispatch('address-update');
-    $this->alert('success', 'Alamat telah diperbaharui.', [
-        'position' => 'top',
-        'timer' => '2000',
-        'toast' => true,
-        'timerProgressBar' => true,
-        'text' => '',
+    $this->dispatch("address-update");
+    $this->alert("success", "Alamat telah diperbaharui.", [
+        "position" => "top",
+        "timer" => "2000",
+        "toast" => true,
+        "timerProgressBar" => true,
+        "text" => "",
     ]);
 };
 
@@ -73,7 +73,7 @@ $submit = function () {
                         </option>
                     @endforeach
                 </select>
-                @error('province_id')
+                @error("province_id")
                     <p class="text-danger">
                         {{ $message }}
                     </p>
@@ -87,7 +87,7 @@ $submit = function () {
                         <option value="{{ $city->id }}">{{ $city->name }}</option>
                     @endforeach
                 </select>
-                @error('province_id')
+                @error("province_id")
                     <p class="text-danger">
                         {{ $message }}
                     </p>
@@ -98,21 +98,20 @@ $submit = function () {
                     Detail Lengkap
                 </label>
                 <textarea class="form-control" wire:model='details' name="details" id="details" rows="3"></textarea>
-                @error('details')
+                @error("details")
                     <p class="text-danger">
                         {{ $message }}
                     </p>
                 @enderror
             </div>
 
-
             <div class="text-end">
                 <button type="submit" class="btn btn-dark">
                     <div wire:loading class="spinner-border spinner-border-sm" role="status">
-                        <span class="visually-hidden">Loading...</span>
+
                     </div>
                     <span wire:loading.class='d-none'>
-                        {{ !$this->getAddress ? 'SUBMIT' : 'EDIT' }}
+                        {{ !$this->getAddress ? "SUBMIT" : "EDIT" }}
                     </span>
                 </button>
 

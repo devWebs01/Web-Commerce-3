@@ -4,7 +4,6 @@ use function Livewire\Volt\{state, rules, computed, uses};
 use App\Models\Product;
 use App\Models\Variant;
 use App\Models\Cart;
-use App\Models\User;
 use function Laravel\Folio\name;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
@@ -106,8 +105,8 @@ $addToCart = function (Product $product) {
                         </div>
                         <div class="col-lg-6 mt-lg-0 align-content-center">
                             <p>
-                                Hadirkan gaya hidup urban dan trendi dengan <span
-                                    class="fw-bold">{{ $product->title }}</span> dari lini streetwear kami.
+                                Temukan kualitas terbaik dari produk <span class="fw-bold">{{ $product->title }}</span> yang
+                                kami tawarkan.
                             </p>
                         </div>
                     </div>
@@ -118,16 +117,16 @@ $addToCart = function (Product $product) {
             <section class="pb-5">
                 <div class="container">
                     <div class="row gx-2">
-                        <aside class="col-lg-6">
-                            <div class="border rounded-4 mb-3 d-flex justify-content-center">
-                                <a data-fslightbox="mygalley" class="rounded-4" target="_blank" data-type="image"
+                        <aside class="col-lg-5">
+                            <div class="border  mb-3 d-flex justify-content-center">
+                                <a data-fslightbox="mygalley" class="" target="_blank" data-type="image"
                                     href="{{ Storage::url($product->image) }}">
-                                    <img class="p-4 object-fit-cover rounded-5" style="width: 100%;"
+                                    <img class="p-4 object-fit-cover " style="width: 100%;"
                                         src="{{ Storage::url($product->image) }}" />
                                 </a>
                             </div>
                         </aside>
-                        <main class="col-lg-6">
+                        <main class="col-lg-7">
                             <div class="ps-lg-3">
                                 <small class="fw-bold" style="color: #635bff;">{{ $product->category->name }}</small>
                                 <h2 id="font-custom" class="title text-dark fw-bold">
@@ -144,29 +143,28 @@ $addToCart = function (Product $product) {
                                     {{ $product->description }}
                                 </p>
 
-                                <div class="row">
-                                    <dt class="col-3 mb-2">Berat:</dt>
-                                    <dd class="col-9 mb-2">{{ $product->weight }} Gram</dd>
+                                <div>
+                                    <h5 class="mb-2">Berat:</h5>
+                                    <p class="mb-2">{{ $product->weight }} Gram</p>
 
-                                    <dt class="col-3 mb-2">Stok:</dt>
-                                    <dd class="col-9 mb-2">
-                                        {{ $variant . " - " . $variant_type }}</dd>
+                                    <h5 class="mb-2">Stok:</h5>
+                                    <p class="mb-2">
+                                        {{ $variant . " - " . $variant_type }}</p>
 
-                                    <dt class="col-3 mb-2">Varian</dt>
-                                    <dd class="col-9 mb-2">
-                                        <div class="row gap-3">
+                                    <h5 class="mb-2">Varian</h5>
+                                    <div class="row justify-content-between">
 
-                                            @foreach ($product->variants as $variant)
-                                                <div class="col-auto">
-                                                    <button wire:key='{{ $variant->id }}'
-                                                        wire:click='selectVariant({{ $variant->id }})' type="button"
-                                                        class="badge rounded-pill" style="color: #635bff;">
-                                                        {{ $variant->type }}
-                                                    </button>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </dd>
+                                        @foreach ($product->variants as $variant)
+                                            <div class="col-auto w-50 mb-2">
+                                                <button wire:key='{{ $variant->id }}'
+                                                    wire:click='selectVariant({{ $variant->id }})' type="button"
+                                                    class="rounded-3 btn btn-outline-dark w-100">
+                                                    {{ $variant->type }}
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
                                 </div>
 
                                 <div class="d-grid my-4">
@@ -174,14 +172,14 @@ $addToCart = function (Product $product) {
                                         <form wire:submit='addToCart'>
                                             @if ($variant)
                                                 <button wire:key="{{ $product->id }}" type="submit"
-                                                    class="btn btn-dark w-100">
+                                                    class="rounded-3 btn btn-dark w-100 ">
 
                                                     <span
                                                         wire:loading.remove>{{ $variant_stock == 0 ? "Tidak Tersedia" : "Masukkan Keranjang" }}
                                                     </span>
 
                                                     <div wire:loading class="spinner-border spinner-border-sm" role="status">
-                                                        <span class="visually-hidden">Loading...</span>
+
                                                     </div>
                                                 </button>
                                             @endif
@@ -192,7 +190,8 @@ $addToCart = function (Product $product) {
                                             </small>
                                         @enderror
                                     @else
-                                        <a class="btn btn-dark" href="{{ route("login") }}" role="button">Beli Sekarang</a>
+                                        <a class="rounded-3 btn btn-dark" href="{{ route("login") }}" role="button">Beli
+                                            Sekarang</a>
                                     @endauth
                                 </div>
                             </div>

@@ -1,52 +1,14 @@
 <?php
 
-use App\Models\Cart;
 use App\Models\Product;
 use function Laravel\Folio\name;
-use function Livewire\Volt\{state, uses};
-use Jantinnerezo\LivewireAlert\LivewireAlert;
+use function Livewire\Volt\{state};
 
 name("welcome");
 
 state([
     "products" => fn() => Product::inRandomOrder()->limit(6)->get(),
 ]);
-
-$addToCart = function ($product_id) {
-    if (Auth::check() && auth()->user()->role == "customer") {
-        $user_id = auth()->id();
-
-        $existingCart = Cart::where("user_id", $user_id)->where("product_id", $product_id)->first();
-
-        if ($existingCart) {
-            $this->alert("warning", "Layanan sudah ada di list.", [
-                "position" => "top",
-                "timer" => "2000",
-                "toast" => true,
-                "timerProgressBar" => true,
-                "text" => "",
-            ]);
-        } else {
-            Cart::create([
-                "user_id" => $user_id,
-                "product_id" => $product_id,
-                "quantity" => 1, // Default quantity
-            ]);
-
-            $this->alert("success", "Layanan berhasil ditambahkan ke list.", [
-                "position" => "top",
-                "timer" => "2000",
-                "toast" => true,
-                "timerProgressBar" => true,
-                "text" => "",
-            ]);
-        }
-
-        $this->dispatch("cart-updated");
-    } else {
-        $this->redirect("/login");
-    }
-};
 
 ?>
 
@@ -70,20 +32,6 @@ $addToCart = function ($product_id) {
             --_p: 100%
         }
 
-        /* Styling untuk teks pada slider */
-        .header-text h2 {
-            font-size: 3rem;
-            /* Ukuran default untuk layar besar */
-        }
-
-        /* Mengubah ukuran teks pada layar kecil */
-        @media (max-width: 767px) {
-            .header-text h2 {
-                font-size: 2rem;
-                /* Ukuran lebih kecil untuk layar kecil */
-            }
-        }
-
         /* Styling untuk slider height */
         .main-banner .owl-carousel .item {
             height: 50vh;
@@ -103,24 +51,24 @@ $addToCart = function ($product_id) {
             <!-- Banner Utama -->
             <div class="container main-banner">
                 <div class="owl-carousel owl-banner">
-                    <div class="item rounded rounded-5"
-                        style="background-image: url('/guest/apola_image/banner1.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                    <div class="item rounded "
+                        style="background-image: url('https://i.pinimg.com/736x/23/06/22/2306226d78a452b706699c469cc5e1ec.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
                         <div class="header-text">
                             <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Ubah Kendaraanmu Jadi Karya Seni Bergerak
                             </h2>
                         </div>
                     </div>
-                    <div class="item rounded rounded-5"
-                        style="background-image: url('/guest/apola_image/banner2.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                    <div class="item rounded "
+                        style="background-image: url('https://i.pinimg.com/736x/0a/53/d1/0a53d11b33234e2a86d803d974cf856f.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
                         <div class="header-text">
                             <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Desain Decal & Striping Premium, Tahan Lama
                             </h2>
                         </div>
                     </div>
-                    <div class="item rounded rounded-5"
-                        style="background-image: url('/guest/apola_image/banner3.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                    <div class="item rounded "
+                        style="background-image: url('https://i.pinimg.com/736x/20/c9/d9/20c9d9921d5486f120cb96784720b044.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
                         <div class="header-text">
                             <h2 id="font-custom" class="text-dark font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Wrapping Kendaraan: Ganti Warna Tanpa Cat Permanen
@@ -143,25 +91,29 @@ $addToCart = function ($product_id) {
                     </div>
                     <div class="row">
                         @foreach ($products as $product)
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6 mb-3">
                                 <div class="item">
                                     <a href="{{ route("product-detail", ["product" => $product->id]) }}">
                                         <img src="{{ Storage::url($product->image) }}" alt="{{ $product->title }}"
                                             class="object-fit-cover" style="width:100%; height:300px;">
                                     </a>
-                                    <span class="category">
-                                        {{ Str::limit($product->category->name, 13, "...") }}
-                                    </span>
-                                    <h6>
-                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
-                                    </h6>
+                                    <div class="d-flex gap-2 justify-content-between align-items-center">
+                                        <span class="category fw-bold">
+                                            {{ Str::limit($product->category->name, 13, "...") }}
+                                        </span>
+                                        <h6>
+                                            {{ "Rp. " . Number::format($product->price, locale: "id") }}
+                                        </h6>
+                                    </div>
+
                                     <h4>
                                         <a href="{{ route("product-detail", ["product" => $product->id]) }}">
                                             {{ Str::limit($product->title, 50, "...") }}
                                         </a>
                                     </h4>
                                     <div class="main-button">
-                                        <a href="{{ route("product-detail", ["product" => $product->id]) }}">Pesan
+                                        <a class="rounded-3"
+                                            href="{{ route("product-detail", ["product" => $product->id]) }}">Beli
                                             Sekarang</a>
                                     </div>
                                 </div>
@@ -232,7 +184,7 @@ $addToCart = function ($product_id) {
                     <div class="row">
                         <div class="col-lg-10 offset-lg-1">
                             <div class="video-frame ratio ratio-16x9">
-                                <video class="rounded-5" muted loop autoplay>
+                                <video class="" muted loop autoplay>
                                     <source src="{{ asset("/guest/apola_image/videos.mp4") }}" type="video/mp4">
                                 </video>
                             </div>

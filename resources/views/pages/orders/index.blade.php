@@ -149,7 +149,7 @@ with(
                     </div>
                     <div class="tab-pane fade" id="pills-shipped_orders" role="tabpanel"
                         aria-labelledby="pills-shipped_orders-tab" tabindex="0">
-                        <div class="card rounded-5">
+                        <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table text-center">
@@ -193,7 +193,7 @@ with(
                     </div>
                     <div class="tab-pane fade" id="pills-completed_orders" role="tabpanel"
                         aria-labelledby="pills-completed_orders-tab" tabindex="0">
-                        <div class="card rounded-5">
+                        <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table text-center">
@@ -235,7 +235,7 @@ with(
                     </div>
                     <div class="tab-pane fade" id="pills-cancelled_orders" role="tabpanel"
                         aria-labelledby="pills-cancelled_orders-tab" tabindex="0">
-                        <div class="card rounded-5">
+                        <div class="card ">
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table text-center">

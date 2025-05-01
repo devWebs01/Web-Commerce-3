@@ -148,18 +148,25 @@
                 animation: noise-after 2s infinite linear alternate-reverse;
             }
 
-            /* Default untuk layar besar */
-            .text-justify-last {
-                text-align: left;
-                /* atau center, sesuai kebutuhan */
-                text-align-last: auto;
+            .item {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                padding: 15px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+                img {
+                    object-fit: cover;
+                    width: 100%;
+                    height: 300px;
+                }
             }
 
-            /* Untuk layar kecil (misalnya <= 576px) */
-            @media (max-width: 576px) {
-                .text-justify-last {
-                    text-align: justify;
-                    text-align-last: justify;
+            .main-button {
+                margin-top: auto;
+
+                a {
+                    border-radius: 0;
                 }
             }
         </style>
@@ -171,7 +178,7 @@
 
         <header class="px-3">
             <nav class="navbar navbar-expand-lg bg-body mb-3">
-                <div class="container-fluid px-4 py-3 rounded-5 bg-dark">
+                <div class="container-fluid px-4 py-3 rounded-3 bg-dark">
                     <button class="navbar-toggler bg-white border-0" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"
                         aria-label="Toggle navigation">
@@ -249,7 +256,8 @@
         </footer>
 
         <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <x-livewire-alert::scripts />
 
         <!-- Bootstrap core JavaScript -->
         <script src="{{ asset("/guest/vendor/jquery/jquery.min.js") }}"></script>

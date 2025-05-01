@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('capital');
             $table->string('price');
-            $table->string('quantity')->nullable()->default(1);
+            $table->string('quantity')->default(1);
             $table->string('weight');
             $table->string('image');
             $table->longText('description');

@@ -99,7 +99,7 @@ $register = function () {
                                     <input type="text" wire:model="name" class="form-control text-white"
                                         id="name">
                                     @error("name")
-                                        <small class="form-text text-dark">{{ $message }}</small>
+                                        <small class="form-text text-danger fw-bold my-2">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="mb-3">
@@ -107,7 +107,7 @@ $register = function () {
                                     <input type="email" wire:model="email" class="form-control text-white"
                                         id="email">
                                     @error("email")
-                                        <small class="form-text text-dark">{{ $message }}</small>
+                                        <small class="form-text text-danger fw-bold my-2">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="mb-4">
