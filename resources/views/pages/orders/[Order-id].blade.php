@@ -15,7 +15,6 @@ state(["courier"])->url();
 
 state([
     "orderItems" => fn() => $this->order->items,
-    "shipping_cost" => fn() => $this->selectCourier()->value ?? $this->order->shipping_cost,
     "couriers" => fn() => $this->order->couriers,
     "note" => fn() => $this->order->note ?? null,
     "payment_method" => fn() => "Transfer Bank",
@@ -24,6 +23,8 @@ state([
     "order",
     // 'payment_method' => fn() => $this->order->payment_method ?? null,
 ]);
+
+$shipping_cost = computed(fn() => $this->selectCourier()->value ?? 0);
 
 rules(["courier" => "required", "payment_method" => "required"]);
 
@@ -44,14 +45,26 @@ $protect_cost_opsional = computed(function () {
 });
 
 $selectCourier = computed(function () {
+    if ($this->courier === "Ambil Sendiri") {
+        return (object) [
+            "value" => 0,
+            "description" => "Ambil Sendiri",
+            "etd" => "Ditunggu 2x24 Jam",
+        ];
+    }
+
     $confirmCourier = Courier::find($this->courier);
 
     if (!$confirmCourier) {
-        return 0;
-    } else {
-        $this->dispatch("update-selectCourier");
-        return $confirmCourier;
+        return (object) [
+            "value" => 0,
+            "description" => null,
+            "etd" => null,
+        ];
     }
+
+    $this->dispatch("update-selectCourier");
+    return $confirmCourier;
 });
 
 $confirmOrder = function () {
@@ -131,197 +144,144 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
     <x-slot name="title">Pesanan {{ $order->invoice }}</x-slot>
 
     @volt
-        <div>
-            <p class="d-none">@json($this->selectCourier())</p>
-            <div class="container">
-                <div class="row my-4">
-                    <div class="col-lg-6">
-                        <h2 id="font-custom" class="display-4 fw-bold">
-                            {{ $order->invoice }}
-                        </h2>
-                    </div>
-                    <div class="col-lg-6 mt-4 mt-lg-0 align-content-center fun-facts mb-3">
-                        <div class="counter float-start float-lg-end">
-                            <span id="font-custom" class="fs-4 fw-bold">{{ $order->status }}</span>
-                        </div>
-                    </div>
+        <div class="custom-container py-5">
+            <div class="row mb-4">
+                <h2 class="fw-bold h4">Checkout</h2>
+                <div class="col-lg-8">
 
+                    {{-- Booking Notice --}}
                     @if ($order->status === "PROGRESS" || $order->status === "UNPAID")
-                        <div class="alert alert-white d-flex align-items-center rounded" role="alert">
-                            <span class="fs-1 me-4">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </span>
-                            <strong class="fs-5">
-                                {{ $order->user->details }}
-                                <br>
-
-                                <span style="color: #635bff">
-                                    {{ $order->user->fulladdress }}
-                                </span>
-                            </strong>
+                        <div class="alert alert-warning d-flex align-items-center">
+                            <i class="fa-solid fa-clock me-3 fs-4 text-warning"></i>
+                            <div>
+                                <strong>Pesanan Anda sedang diproses</strong><br>
+                                Jika status berubah, kami akan menginformasikannya.
+                            </div>
                         </div>
-                        @if ($order->status == "CANCELLED")
-                            <div class="alert alert-danger " role="alert">
-                                <strong>Pemberitahuan!</strong>
-                                <span>
-                                    Pesanan dibatalkan.
-                                    @if ($order->payment_method != "COD (Cash On Delivery)")
-                                        Silahkan tunggu konfirmasi tentang pengambalian dana!
-                                    @endif
-                                </span>
-                            </div>
-                        @endif
-                        <div class="row">
-                            <div class="col-lg-7">
-                                @foreach ($orderItems as $item)
-                                    <div class="row mb-3">
-                                        <div class="col-4">
-                                            <img src="{{ Storage::url($item->product->image) }}"
-                                                class="img rounded object-fit-cover border rounded" height="100px"
-                                                width="200px" alt="{{ $item->product->title }}" />
-                                        </div>
-                                        <div class="col">
-                                            <h5 id="font-custom">
-                                                {{ $item->product->title }}
-                                                -
-                                                {{ $item->variant->type }}
-                                            </h5>
-                                            <p>
-                                                X {{ $item->qty }} item ({{ $item->qty * $item->product->weight }} gram)
-                                            </p>
-                                            <h6 class="fw-bold" style="color: #635bff">
-                                                Rp.
-                                                {{ Number::format($item->qty * $item->product->price, locale: "id") }}
-                                            </h6>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <div class="col-lg-5">
-                                <div class="mb-3">
-                                    <label for="courier" class="form-label">Pilih Pengiriman</label>
-                                    <select wire:model.live='courier' class="form-select" name="courier" id="courier"
-                                        {{ $order->status !== "PROGRESS" ? "disabled" : "" }}>
-
-                                        <option>{{ $order->courier ? $order->courier : "Pilih satu" }}</option>
-
-                                        <option value="Ambil Sendiri">Ambil Sendiri - Ditunggu 2x24 Jam - Rp. 0</option>
-
-                                        @foreach ($couriers as $courier)
-                                            <option value="{{ $courier->id }}"
-                                                {{ $order->courier === $courier->description ? "elected" : "" }}>
-                                                {{ $courier->formattedDescription }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error("courier")
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="payment_method" class="form-label">Metode Pembayaran</label>
-                                    <select wire:model.live='payment_method' class="form-select" name="payment_method"
-                                        id="payment_method" disabled>
-                                        <option>Pilih satu</option>
-                                        <option value="COD (Cash On Delivery)">COD (Cash On Delivery)</option>
-                                        <option value="Transfer Bank">Transfer Bank</option>
-                                    </select>
-                                    @error("courier")
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="note" class="form-label">Pesan Tambahan</label>
-                                    <textarea wire:model='note' class="form-control" name="note" id="note" rows="3"
-                                        {{ $order->status !== "PROGRESS" ? "disabled" : "" }}>
-                            </textarea>
-                                    @error("note")
-                                        <p class="text-danger">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="form-check mb-3">
-                                    <input wire:model.live='protect_cost' class="form-check-input" type="checkbox"
-                                        value="" id="protect_cost" {{ $order->protect_cost == 0 ?: "checked" }}
-                                        {{ $order->protect_cost == null ?: "disabled" }}>
-                                    <label class="form-check-label" for="protect_cost">
-                                        <strong>Proteksi Pesanan</strong>
-                                        <p>Lindungi pesananmu dari kemungkinan yang tidak diinginkan </p>
-                                        <p class="fw-bold" style="color: #635bff">
-                                            Rp. 3.000
-                                        </p>
-                                    </label>
-                                </div>
-                                <hr>
-                                <div class="row">
-                                    <div class="col">
-                                        Total Produk
-                                    </div>
-                                    <div class="col text-end fw-bold" style="color: #635bff">
-                                        {{ "Rp. " . Number::format($this->order->total_amount) }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        Biaya Pengiriman
-                                    </div>
-                                    <div class="col text-end fw-bold" style="color: #635bff">
-                                        {{ "Rp. " . Number::format($shipping_cost, locale: "id") }}
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        Total Harga
-                                    </div>
-                                    <div class="col text-end fw-bold" style="color: #635bff">
-                                        {{ "Rp. " . Number::format($order->total_amount + $shipping_cost + $this->protect_cost_opsional(), locale: "id") }}
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="row">
-
-                                    <div class="col-md">
-                                        @if ($order->status === "PROGRESS" || $order->status === "UNPAID")
-                                            <button class="btn btn-danger" wire:click="cancelOrder('{{ $order->id }}')"
-                                                role="button">
-                                                Batalkan
-                                            </button>
-                                        @endif
-                                    </div>
-
-                                    <div class="col-md text-end">
-                                        @if ($order->status === "PROGRESS")
-                                            <button wire:click="confirmOrder('{{ $order->id }}')" class="btn btn-dark">
-                                                Lanjut
-                                            </button>
-                                        @elseif ($order->status === "UNPAID")
-                                            <a href="{{ route("customer.payment", ["order" => $order->id]) }}"
-                                                class="btn btn-dark">
-                                                Bayar
-                                            </a>
-                                        @elseif ($order->status === "SHIPPED")
-                                            <button wire:click="complatedOrder" class="btn btn-dark" role="button">
-                                                Pesanan diterima
-                                            </button>
-                                        @endif
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    @else
-                        @include("pages.transactions.invoice")
-                        @if ($order->status === "SHIPPED")
-                            <button wire:click="complatedOrder" class="btn btn-dark" role="button">
-                                Pesanan diterima
-                            </button>
-                        @endif
                     @endif
+
+                    {{-- Informasi Pemesan --}}
+                    <div class="card mb-4 shadow border-0">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-2">Informasi Pemesan</h6>
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <h6 class="text-secondary mb-2">Nama Lengkap</h6>
+                                    <h6>{{ $order->user->name }}</h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="text-secondary mb-2">Email</h6>
+                                    <h6>{{ $order->user->email }}</h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6 class="text-secondary mb-2">Telephone</h6>
+                                    <h6>{{ $order->user->telp }}</h6>
+                                </div>
+                            </div>
+                            <h6 class="text-secondary mb-2">Alamat</h6>
+                            <h6>{{ $order->user->fulladdress }}</h6>
+                        </div>
+                    </div>
+
+                    {{-- Item Pesanan --}}
+                    @foreach ($orderItems as $item)
+                        <div class="card mb-3 shadow border-0">
+                            <div class="row g-0">
+                                <div class="col-4">
+                                    <img src="{{ Storage::url($item->product->image) }}" class="img-fluid rounded-start"
+                                        alt="{{ $item->product->title }}">
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h6 class="card-title">{{ $item->product->title }} - {{ $item->variant->type }}</h6>
+                                        <p class="card-text">x{{ $item->qty }}
+                                            ({{ $item->qty * $item->product->weight }}g)
+                                        </p>
+                                        <h6 class="fw-bold text-primary">Rp
+                                            {{ Number::format($item->qty * $item->product->price, locale: "id") }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Panel Kanan: Pembayaran dan Ringkasan --}}
+                <div class="col-lg-4">
+                    {{-- Pembayaran --}}
+                    <div class="card mb-4 shadow border-0">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Detail Pembayaran</h6>
+
+                            <label class="form-label">Metode Pembayaran</label>
+                            <select wire:model.live="payment_method" class="form-select mb-3"
+                                {{ $order->status !== "PROGRESS" ? "disabled" : "" }}>
+                                <option>Pilih satu</option>
+                                <option value="COD (Cash On Delivery)">COD (Cash On Delivery)</option>
+                                <option value="Transfer Bank">Transfer Bank</option>
+                            </select>
+
+                            <label class="form-label">Pesan Tambahan</label>
+                            <textarea wire:model="note" class="form-control mb-3" rows="2"
+                                {{ $order->status !== "PROGRESS" ? "disabled" : "" }}></textarea>
+
+                            <div class="form-check mb-3 d-none">
+                                <input wire:model.live="protect_cost" type="checkbox" class="form-check-input"
+                                    id="protect_cost" {{ $order->protect_cost == 0 ? "" : "checked" }}
+                                    {{ $order->protect_cost == null ? "disabled" : "" }}>
+                                <label class="form-check-label" for="protect_cost">
+                                    Proteksi Pesanan - <span class="fw-bold text-primary">Rp 3.000</span>
+                                </label>
+                            </div>
+
+                            <label class="form-label">Metode Pengiriman</label>
+                            <select wire:model.live="courier" class="form-select mb-3"
+                                {{ $order->status !== "PROGRESS" ? "disabled" : "" }}>
+                                <option>{{ $order->courier ?? "Pilih satu" }}</option>
+                                <option value="Ambil Sendiri">Ambil Sendiri - Rp. 0</option>
+                                @foreach ($couriers as $courier)
+                                    <option value="{{ $courier->id }}">{{ $courier->formattedDescription }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- Ringkasan --}}
+                    <div class="card shadow border-0">
+                        <div class="card-body">
+                            <h6 class="fw-bold mb-3">Ringkasan</h6>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Total Produk</span>
+                                <span class="fw-bold text-primary">Rp {{ Number::format($order->total_amount) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Ongkir</span>
+                                <span class="fw-bold text-primary">Rp {{ Number::format($this->shipping_cost) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Total</span>
+                                <span class="fw-bold text-primary">Rp
+                                    {{ Number::format($order->total_amount + $this->shipping_cost + $this->protect_cost_opsional()) }}</span>
+                            </div>
+
+                            {{-- Tombol Aksi --}}
+                            @if ($order->status === "PROGRESS")
+                                <button wire:click="confirmOrder('{{ $order->id }}')"
+                                    class="btn btn-primary w-100">Lanjutkan</button>
+                            @elseif ($order->status === "UNPAID")
+                                <a href="{{ route("customer.payment", ["order" => $order->id]) }}"
+                                    class="btn btn-primary w-100">Bayar Sekarang</a>
+                            @endif
+
+                            @if ($order->status === "PROGRESS" || $order->status === "UNPAID")
+                                <button class="btn btn-outline-danger w-100 mt-2"
+                                    wire:click="cancelOrder('{{ $order->id }}')">Batalkan Pesanan</button>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     @endvolt
+
 </x-guest-layout>

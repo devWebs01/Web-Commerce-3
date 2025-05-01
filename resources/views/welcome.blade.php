@@ -70,7 +70,7 @@ state([
                     <div class="item rounded "
                         style="background-image: url('https://i.pinimg.com/736x/20/c9/d9/20c9d9921d5486f120cb96784720b044.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
                         <div class="header-text">
-                            <h2 id="font-custom" class="text-dark font-stroke fs-1 fs-sm-2 fs-md-3">
+                            <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Wrapping Kendaraan: Ganti Warna Tanpa Cat Permanen
                             </h2>
                         </div>
@@ -166,7 +166,7 @@ state([
             </section>
 
             <!-- Video Showcase -->
-            <div class="video section" id="parallax" style="background-image: url('/guest/apola_image/thumbnail.jpg');">
+            <div class="video section" id="parallax" style="background-image: url('/guest/web_image/thumbnail.jpg');">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-4 offset-lg-4">
@@ -185,7 +185,7 @@ state([
                         <div class="col-lg-10 offset-lg-1">
                             <div class="video-frame ratio ratio-16x9">
                                 <video class="" muted loop autoplay>
-                                    <source src="{{ asset("/guest/apola_image/videos.mp4") }}" type="video/mp4">
+                                    <source src="{{ asset("/guest/web_image/videos.mp4") }}" type="video/mp4">
                                 </video>
                             </div>
                         </div>

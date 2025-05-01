@@ -11,20 +11,20 @@ use function Livewire\Volt\{state, on, uses};
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use function Laravel\Folio\name;
 
-name('customer.account');
+name("customer.account");
 
 uses([LivewireAlert::class]);
 
 state([
-    'name' => fn() => auth()->user()->name,
-    'email' => fn() => auth()->user()->email,
-    'telp' => fn() => auth()->user()->telp,
-    'getAddressUser' => fn() => Address::where('user_id', auth()->id())->first() ?? null,
+    "name" => fn() => auth()->user()->name,
+    "email" => fn() => auth()->user()->email,
+    "telp" => fn() => auth()->user()->telp,
+    "getAddressUser" => fn() => Address::where("user_id", auth()->id())->first() ?? null,
 ]);
 
 on([
-    'address-update' => function () {
-        $this->getAddressUser = Address::where('user_id', auth()->id())->first();
+    "address-update" => function () {
+        $this->getAddressUser = Address::where("user_id", auth()->id())->first();
     },
 ]);
 
@@ -32,25 +32,25 @@ $updateProfileInformation = function () {
     $user = Auth::user();
 
     $validated = $this->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-        'telp' => ['required', 'digits_between:11,12', 'numeric', Rule::unique(User::class)->ignore($user->id)],
+        "name" => ["required", "string", "max:255"],
+        "email" => ["required", "string", "lowercase", "email", "max:255", Rule::unique(User::class)->ignore($user->id)],
+        "telp" => ["required", "digits_between:11,12", "numeric", Rule::unique(User::class)->ignore($user->id)],
     ]);
 
     $user->fill($validated);
 
-    if ($user->isDirty('email')) {
+    if ($user->isDirty("email")) {
         $user->email_verified_at = null;
     }
 
     $user->save();
 
-    $this->alert('success', 'Profil telah diperbaharui.', [
-        'position' => 'top',
-        'timer' => '2000',
-        'toast' => true,
-        'timerProgressBar' => true,
-        'text' => '',
+    $this->alert("success", "Profil telah diperbaharui.", [
+        "position" => "top",
+        "timer" => "2000",
+        "toast" => true,
+        "timerProgressBar" => true,
+        "text" => "",
     ]);
 };
 
@@ -58,7 +58,7 @@ $sendVerification = function () {
     $user = Auth::user();
 
     if ($user->hasVerifiedEmail()) {
-        $path = session('url.intended', RouteServiceProvider::HOME);
+        $path = session("url.intended", RouteServiceProvider::HOME);
 
         $this->redirect($path);
 
@@ -67,7 +67,7 @@ $sendVerification = function () {
 
     $user->sendEmailVerificationNotification();
 
-    Session::flash('status', 'verification-link-sent');
+    Session::flash("status", "verification-link-sent");
 };
 
 ?>
@@ -77,7 +77,7 @@ $sendVerification = function () {
     @volt
         <div>
 
-            <div class="container mb-5">
+            <div class="custom-container mb-5">
                 <div class="row">
                     <div class="col-lg-6">
                         <h2 id="font-custom" class="display-2 fw-bold">
@@ -131,11 +131,11 @@ $sendVerification = function () {
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
                                     aria-labelledby="pills-profile-tab" tabindex="0">
-                                    @include('pages.user.profile')
+                                    @include("pages.user.profile")
                                 </div>
                                 <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
                                     tabindex="0">
-                                    @include('pages.user.address')
+                                    @include("pages.user.address")
                                 </div>
                             </div>
                         </section>

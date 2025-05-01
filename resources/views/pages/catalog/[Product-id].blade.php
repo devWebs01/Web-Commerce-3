@@ -96,7 +96,7 @@ $addToCart = function (Product $product) {
     @volt
         <div>
             <section class="pt-5">
-                <div class="container mb-5">
+                <div class="custom-container mb-5">
                     <div class="row">
                         <div class="col-lg-6">
                             <h2 id="font-custom" class="display-2 fw-bold">

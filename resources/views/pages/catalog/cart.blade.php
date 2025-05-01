@@ -110,13 +110,13 @@ $confirmCheckout = function () {
         $jneShippingData = [
             "origin" => $this->origin->city_id,
             "destination" => $this->destination->city_id,
-            "weight" => 123,
+            "weight" => $totalWeight,
             "courier" => RajaongkirCourier::JNE,
         ];
         $tikiShippingData = [
             "origin" => $this->origin->city_id,
             "destination" => $this->destination->city_id,
-            "weight" => 123,
+            "weight" => $totalWeight,
             "courier" => RajaongkirCourier::TIKI,
         ];
 
