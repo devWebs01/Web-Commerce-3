@@ -1,124 +1,53 @@
 <?php
 
-use function Livewire\Volt\{state, usesPagination, computed};
+use function Livewire\Volt\{state, computed};
 use App\Models\Order;
 use function Laravel\Folio\name;
 
-name('transactions.index');
-
-state(['search'])->url();
-usesPagination();
+name("transactions.index");
 
 state([
-    'countOrders' => fn() => [
-        'PACKED' => Order::where('status', 'PACKED')->count(),
-        'UNPAID' => Order::where('status', 'UNPAID')->count(),
-        'PROGRESS' => Order::where('status', 'PROGRESS')->count(),
-        'COMPLETED' => Order::where('status', 'COMPLETED')->count(),
-        'SHIPPED' => Order::where('status', 'SHIPPED')->count(),
-        'PENDING' => Order::where('status', 'PENDING')->count(),
-        'CANCELLED' => Order::where('status', 'CANCELLED')->count(),
+    "countOrders" => fn() => [
+        "PACKED" => Order::where("status", "PACKED")->count(),
+        "UNPAID" => Order::where("status", "UNPAID")->count(),
+        "PROGRESS" => Order::where("status", "PROGRESS")->count(),
+        "COMPLETED" => Order::where("status", "COMPLETED")->count(),
+        "SHIPPED" => Order::where("status", "SHIPPED")->count(),
+        "PENDING" => Order::where("status", "PENDING")->count(),
+        "CANCELLED" => Order::where("status", "CANCELLED")->count(),
     ],
 ]);
 
 $orders = computed(function () {
-    if ($this->search == null) {
-        return Order::query()->latest()->paginate(10);
-    } else {
-        return Order::query()
-            ->where('invoice', 'LIKE', "%{$this->search}%")
-            ->orWhere('status', 'LIKE', "%{$this->search}%")
-            ->orWhere('total_amount', 'LIKE', "%{$this->search}%")
-            ->latest()
-            ->paginate(10);
-    }
+    return Order::query()->latest()->get();
 });
 
 ?>
 
-
 <x-admin-layout>
     <x-slot name="title">Transaksi</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('transactions.index') }}">Transaksi</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("transactions.index") }}">Transaksi</a></li>
     </x-slot>
+
+    @include("layouts.datatables")
 
     @volt
         <div>
-            <div class="car-body row mb-3">
-                <div class="col">
-                    <div class="card overflow-hidden shadow">
-                        <div class="card-body p-4">
-                            <span class="text-dark fs-6 fw-bold">Pesanan Dikemas</span>
-                            <div class="hstack gap-6 align-items-end mt-1">
-                                <h5 class="card-title fw-semibold mb-0 fs-7 mt-1">{{ $countOrders['PACKED'] }}</h5>
-                            </div>
-                        </div>
+            <div class="card">
+                <div class="card-body mb-3">
+                    <div class="w-full md:w-1/2 mx-auto mb-6">
+                        <canvas id="orderStatusChart" height="150"></canvas>
                     </div>
-                </div>
-                <div class="col">
-                    <div class="card overflow-hidden shadow">
-                        <div class="card-body p-4">
-                            <span class="text-dark fs-6 fw-bold">Belum Dibayar</span>
-                            <div class="hstack gap-6 align-items-end mt-1">
-                                <h5 class="card-title fw-semibold mb-0 fs-7 mt-1">{{ $countOrders['UNPAID'] }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card overflow-hidden shadow">
-                        <div class="card-body p-4">
-                            <span class="text-dark fs-6 fw-bold">Pesanan Diterima</span>
-                            <div class="hstack gap-6 align-items-end mt-1">
-                                <h5 class="card-title fw-semibold mb-0 fs-7 mt-1">{{ $countOrders['COMPLETED'] }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card overflow-hidden shadow">
-                        <div class="card-body p-4">
-                            <span class="text-dark fs-6 fw-bold">Pesanan Dikirim</span>
-                            <div class="hstack gap-6 align-items-end mt-1">
-                                <h5 class="card-title fw-semibold mb-0 fs-7 mt-1">{{ $countOrders['SHIPPED'] }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card overflow-hidden shadow">
-                        <div class="card-body p-4">
-                            <span class="text-dark fs-6 fw-bold">Menunggu Konfirmasi</span>
-                            <div class="hstack gap-6 align-items-end mt-1">
-                                <h5 class="card-title fw-semibold mb-0 fs-7 mt-1">{{ $countOrders['PENDING'] }}</h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card overflow-hidden shadow">
-                        <div class="card-body p-4">
-                            <span class="text-dark fs-6 fw-bold">Pesanan Dibatalkan</span>
-                            <div class="hstack gap-6 align-items-end mt-1">
-                                <h5 class="card-title fw-semibold mb-0 fs-7 mt-1">{{ $countOrders['CANCELLED'] }}</h5>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
 
-
             <div class="card">
-                <div class="card-header">
-                    <input wire:model.live="search" type="search" class="form-control" name="search" id="search"
-                        aria-describedby="helpId" placeholder="Mencari transaksi..." />
-                </div>
-
 
                 <div class="card-body">
-                    <div class="table-responsive border rounded">
+                    <div class="table-responsive">
                         <table class="table text-center text-nowrap">
                             <thead>
                                 <tr>
@@ -136,11 +65,11 @@ $orders = computed(function () {
                                         <th>{{ $order->invoice }}</th>
                                         <th>
                                             <span class="badge bg-primary uppercase">
-                                                {{ $order->status }}
+                                                {{ __("order_status." . $order->status) }}
                                             </span>
                                         </th>
                                         <th>
-                                            {{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
+                                            {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
                                         </th>
                                         <th>
                                             <a href="/admin/transactions/{{ $order->id }}"
@@ -151,11 +80,42 @@ $orders = computed(function () {
                                     </tr>
                                 @endforeach
                             </tbody>
-                            {{ $this->orders->links() }}
                         </table>
                     </div>
                 </div>
             </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const ctx = document.getElementById("orderStatusChart").getContext("2d");
+
+                    const chart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: @json(array_map(fn($status) => __("order_status." . $status), array_keys($countOrders))),
+                            datasets: [{
+                                label: 'Jumlah Order per Status',
+                                data: @json(array_values($countOrders)),
+                                backgroundColor: [
+                                    '#f87171', '#fbbf24', '#60a5fa', '#34d399', '#818cf8', '#e879f9',
+                                    '#a3a3a3'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    precision: 0
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+
         </div>
     @endvolt
 </x-admin-layout>

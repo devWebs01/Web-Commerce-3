@@ -44,6 +44,26 @@ state([
                 /* Tinggi slider lebih besar pada layar besar */
             }
         }
+
+        .video-content {
+            position: relative;
+            width: 100%;
+            /* height: 100vh; */
+            /* full viewport height */
+            overflow: hidden;
+        }
+
+        .video-frame video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: 300px;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
     </style>
 
     @volt
@@ -52,7 +72,8 @@ state([
             <div class="container main-banner">
                 <div class="owl-carousel owl-banner">
                     <div class="item rounded "
-                        style="background-image: url('https://i.pinimg.com/736x/23/06/22/2306226d78a452b706699c469cc5e1ec.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                        style="background-image: url('https://i.pinimg.com/originals/23/06/22/2306226d78a452b706699c469cc5e1ec.jpg'); width:100%; max-height:900px; min-height: 500px;
+           background-size: cover; background-position: center; background-repeat: no-repeat;">
                         <div class="header-text">
                             <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Ubah Kendaraanmu Jadi Karya Seni Bergerak
@@ -60,7 +81,8 @@ state([
                         </div>
                     </div>
                     <div class="item rounded "
-                        style="background-image: url('https://i.pinimg.com/736x/0a/53/d1/0a53d11b33234e2a86d803d974cf856f.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                        style="background-image: url('https://i.pinimg.com/originals/bf/d9/77/bfd9774c993ada1dfb8144bf7b6d73a7.jpg'); width:100%; max-height:900px; min-height: 500px;
+           background-size: cover; background-position: center; background-repeat: no-repeat;">
                         <div class="header-text">
                             <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Desain Decal & Striping Premium, Tahan Lama
@@ -68,7 +90,8 @@ state([
                         </div>
                     </div>
                     <div class="item rounded "
-                        style="background-image: url('https://i.pinimg.com/736x/20/c9/d9/20c9d9921d5486f120cb96784720b044.jpg'); width:100%; max-height:900px; min-height: 500px; object-fit:cover;">
+                        style="background-image: url('https://i.pinimg.com/originals/20/c9/d9/20c9d9921d5486f120cb96784720b044.jpg'); width:100%; max-height:900px; min-height: 500px;
+           background-size: cover; background-position: center; background-repeat: no-repeat;">
                         <div class="header-text">
                             <h2 id="font-custom" class="text-white font-stroke fs-1 fs-sm-2 fs-md-3">
                                 Wrapping Kendaraan: Ganti Warna Tanpa Cat Permanen
@@ -141,21 +164,27 @@ state([
                                 <div class="col-lg-4 text-center mb-4">
                                     <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
                                         style="width:150px;height:150px;">
-                                        <i class="fa-solid display-3 fa-headset"></i>
+                                        <i class="fa-solid display-3 fa-headset">
+
+                                        </i>
                                     </div>
                                     <p class="mt-2 fw-bold">Konsultasi & Desain</p>
                                 </div>
                                 <div class="col-lg-4 text-center mb-4">
                                     <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
                                         style="width:150px;height:150px;">
-                                        <i class="fa-solid display-3 fa-cubes"></i>
+                                        <i class="fa-solid display-3 fa-cubes">
+
+                                        </i>
                                     </div>
                                     <p class="mt-2 fw-bold">Produksi & Quality Check</p>
                                 </div>
                                 <div class="col-lg-4 text-center mb-4">
                                     <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
                                         style="width:150px;height:150px;">
-                                        <i class="fa-solid display-3 fa-truck-fast"></i>
+                                        <i class="fa-solid display-3 fa-truck-fast">
+
+                                        </i>
                                     </div>
                                     <p class="mt-2 fw-bold">Pengiriman & Pemasangan</p>
                                 </div>
@@ -167,14 +196,20 @@ state([
 
             <!-- Video Showcase -->
             <div class="video section" id="parallax" style="background-image: url('/guest/web_image/thumbnail.jpg');">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-4 offset-lg-4">
-                            <div class="section-heading text-center">
-                                <button class="btn btn-dark btn-sm rounded">| CABERACER.ID</button>
-                                <h2 class="mt-3">Lihat Proses Kami</h2>
-                            </div>
-                        </div>
+                <div class="row justify-content-center text-center mb-5">
+                    <div class="col-lg-8">
+                        <button class="btn btn-dark btn-sm rounded">| Kunjungi Lokasi Kami</button>
+
+                        <h2 class="fw-bold py-2 text-white">Langsung datang ke <strong class="hover">CabeRacer Workshop
+                                Jambi</strong>
+                            dan rasakan
+                            sendiri kualitas layanan serta produk terbaik kami!</h2>
+                        <p class="text-white">Temukan kami dengan mudah melalui peta di bawah ini. Kami siap
+                            melayani Anda
+                            secara langsung dengan sepenuh hati.</p>
+
+                        <a href="https://maps.google.com/maps/dir//CabeRacer+Workshop+Jambi+9J3Q%2BQQX+Lkr.+Sel.+Kec.+Jambi+Sel.,+Kota+Jambi,+Jambi+36127/@-1.6455095,103.6394985,11z/data=!4m5!4m4!1m0!1m2!1m1!1s0x2e2585e0fe876bcd:0xee149e08d342028c"
+                            class="btn btn-primary mb-0">Lihat Peta</a>
                     </div>
                 </div>
             </div>
@@ -184,7 +219,7 @@ state([
                     <div class="row">
                         <div class="col-lg-10 offset-lg-1">
                             <div class="video-frame ratio ratio-16x9">
-                                <video class="" muted loop autoplay>
+                                <video class="rounded" controls muted loop autoplay>
                                     <source src="{{ asset("/guest/web_image/videos.mp4") }}" type="video/mp4">
                                 </video>
                             </div>
@@ -192,7 +227,6 @@ state([
                     </div>
                 </div>
             </div>
-
         </div>
     @endvolt
 </x-guest-layout>

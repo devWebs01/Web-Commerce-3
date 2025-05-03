@@ -21,7 +21,6 @@ rules([
 
 $addToCart = function () {
     $existingCart = Cart::where("user_id", $this->user_id)->where("product_id", $this->product_id)->first();
-    dd($addToCart);
 
     if ($existingCart) {
         // If the product is already in the cart, update the quantity

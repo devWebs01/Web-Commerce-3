@@ -26,10 +26,10 @@ class DatabaseSeeder extends Seeder
         Artisan::call('rajaongkir:seed');
 
         \App\Models\Shop::create([
-            'name' => 'APOLA CO ID',
+            'name' => 'CABERACER',
             'province_id' => 8,
             'city_id' => 156,
-            'details' => 'Lorem ipsum dolor sit amet consectetur adipiscing elit vehicula rutrum inceptos, euismod augue nisl penatibus cursus metus accumsan rhoncus vel risus leo, torquent praesent est malesuada litora primis eros eu nam.',
+            'details' => '9J3Q+QQX, Lkr. Sel., Kec. Jambi Sel., Kota Jambi, Jambi 36127.',
 
         ]);
     }
