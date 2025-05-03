@@ -159,9 +159,9 @@ state([
                         </div>
                     </div>
                     <div class="row justify-content-center mt-4">
-                        <div class="col-lg-9">
+                        <div class="col-lg-12">
                             <div class="row">
-                                <div class="col-lg-4 text-center mb-4">
+                                <div class="col-md-4 text-center mb-4">
                                     <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
                                         style="width:150px;height:150px;">
                                         <i class="fa-solid display-3 fa-headset">
@@ -170,7 +170,7 @@ state([
                                     </div>
                                     <p class="mt-2 fw-bold">Konsultasi & Desain</p>
                                 </div>
-                                <div class="col-lg-4 text-center mb-4">
+                                <div class="col-md-4 text-center mb-4">
                                     <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
                                         style="width:150px;height:150px;">
                                         <i class="fa-solid display-3 fa-cubes">
@@ -179,7 +179,7 @@ state([
                                     </div>
                                     <p class="mt-2 fw-bold">Produksi & Quality Check</p>
                                 </div>
-                                <div class="col-lg-4 text-center mb-4">
+                                <div class="col-md-4 text-center mb-4">
                                     <div class="step-icon mx-auto border border-2 rounded-circle d-flex align-items-center justify-content-center"
                                         style="width:150px;height:150px;">
                                         <i class="fa-solid display-3 fa-truck-fast">
