@@ -93,9 +93,10 @@ $addToCart = function (Product $product) {
 <x-guest-layout>
     <x-slot name="title">Product {{ $product->title }}</x-slot>
 
+    @include("components.partials.fancybox")
     @volt
         <div>
-             <div class="container">
+            <div class="container">
                 <div class="row mb-4">
                     <div class="col-lg-6">
                         <h2 id="font-custom" class="display-2 fw-bold">
@@ -117,7 +118,7 @@ $addToCart = function (Product $product) {
                     <div class="row gx-2">
                         <aside class="col-lg-5">
                             <div class="border  mb-3 d-flex justify-content-center">
-                                <a data-fslightbox="mygalley" class="" target="_blank" data-type="image"
+                                <a data-fancybox class="" target="_blank" data-type="image"
                                     href="{{ Storage::url($product->image) }}">
                                     <img class="p-4 object-fit-cover " style="width: 100%;"
                                         src="{{ Storage::url($product->image) }}" />

@@ -59,7 +59,7 @@ $submit = function () {
                     <div class="col-lg-5">
                         <h6 class="mb-3">Kirimkan ke salah satu rekening yang tertera di bawah ini:</h6>
                         @foreach ($banks as $index => $item)
-                            <div class="card shadow border-0 mb-3">
+                            <div class="card shadow-sm border-0 mb-3">
                                 <div class="card-body">
                                     <div class="row gap-3">
                                         <div class="col-2 text-end align-content-center">
@@ -92,7 +92,7 @@ $submit = function () {
                             <div class="col-12">
                                 @if ($proof_of_payment)
                                     <div class="card">
-                                        <a data-fslightbox="mygalley" class="" target="_blank" data-type="image"
+                                        <a data-fancybox="gallery" class="" target="_blank" data-type="image"
                                             href="{{ $proof_of_payment->temporaryUrl() }}">
                                             <img src="{{ $proof_of_payment->temporaryUrl() }}" class="img object-fit-cover"
                                                 style="height: 240px; width: 100%" alt="proof_of_payment" />

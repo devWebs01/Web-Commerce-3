@@ -1,12 +1,12 @@
 <?php
 
 return [
-    'PACKED' => 'Dikemas',
-    'UNPAID' => 'Belum Dibayar',
-    'PROGRESS' => 'Sedang Diproses',
-    'COMPLETED' => 'Selesai',
-    'SHIPPED' => 'Dikirim',
-    'PENDING' => 'Menunggu',
-    'CANCELLED' => 'Dibatalkan',
-    'PICKUP' => 'Diambil',
+    'UNPAID' => 'Menunggu Pembayaran',     // Lebih deskriptif dari "Belum Dibayar"
+    'PENDING' => 'Menunggu Konfirmasi',     // Umum dipakai untuk proses verifikasi awal
+    'PROGRESS' => 'Proses Pemesanan',        // Netral dan tidak memaksa tindakan user
+    'PACKED' => 'Sedang Dikemas',          // Menunjukkan bahwa barang sedang disiapkan
+    'SHIPPED' => 'Dalam Pengiriman',        // Lebih alami dari "Dikirim"
+    'PICKUP' => 'Siap Diambil',            // Lebih jelas jika pengguna memilih ambil sendiri
+    'COMPLETED' => 'Pesanan Selesai',         // Konsisten dan formal
+    'CANCELLED' => 'Pesanan Dibatalkan',      // Sama, tapi lebih konsisten
 ];
