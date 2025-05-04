@@ -146,10 +146,10 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                         </div>
                     @else
                         {{-- Admin Alert: Input Resi --}}
-                        <div class="alert alert-secondary rounded-3 mb-2 p-3 border-secondary">
+                        <div class="alert alert-primary rounded-3 mb-2 p-3 border-primary">
                             <div class="d-flex align-items-center mb-4">
 
-                                <div class="me-2 text-secondary">
+                                <div class="me-2 text-primary">
                                     <i class="fa-solid fa-user-shield fa-lg"></i>
                                 </div>
                                 <div>
@@ -158,7 +158,7 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                 </div>
                             </div>
 
-                            <div class="input-group mb-2">
+                            <div class="input-group mb-2 border-dark">
                                 <span class="input-group-text"><i class="fa-solid fa-barcode"></i></span>
                                 <input wire:model="tracking_number" type="text"
                                     class="form-control bg-white @error("tracking_number") is-invalid @enderror"
@@ -259,9 +259,9 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                                     <td class="text-center">{{ $item->variant->type }}</td>
                                                     <td class="text-center">{{ $item->qty }}</td>
                                                     <td class="text-center">
-                                                        Rp.{{ Number::format($item->product->price, locale: "id") }}</td>
+                                                        {{ formatRupiah($item->product->price) }}</td>
                                                     <td class="text-end">
-                                                        Rp.{{ Number::format($item->qty * $item->product->price, locale: "id") }}
+                                                        {{ formatRupiah($item->qty * $item->product->price) }}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -271,7 +271,7 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                             {{-- Ringkasan --}}
                                             <tr class="text-end">
                                                 <td colspan="5">Sub Total</td>
-                                                <td>Rp.{{ Number::format($order->items->sum(fn($item) => $item->qty * $item->product->price), locale: "id") }}
+                                                <td>{{ formatRupiah($order->items->sum(fn($item) => $item->qty * $item->product->price)) }}
                                                 </td>
                                             </tr>
                                             <tr class="text-end">
@@ -280,7 +280,7 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                             </tr>
                                             <tr class="text-end">
                                                 <td colspan="5">Biaya Pengiriman</td>
-                                                <td>Rp.{{ Number::format($order->shipping_cost, locale: "id") }}</td>
+                                                <td>{{ formatRupiah($order->shipping_cost) }}</td>
                                             </tr>
                                             <tr class="text-end">
                                                 <td colspan="5">Biaya Tambahan</td>
@@ -288,7 +288,7 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                             </tr>
                                             <tr class="text-end fw-bold">
                                                 <td colspan="5">Total Pembayaran</td>
-                                                <td>Rp.{{ Number::format($order->total_amount, locale: "id") }}</td>
+                                                <td>{{ formatRupiah($order->total_amount) }}</td>
                                             </tr>
                                         </tfoot>
                                     </table>

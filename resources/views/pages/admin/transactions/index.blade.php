@@ -69,7 +69,7 @@ $orders = computed(function () {
                                             </span>
                                         </th>
                                         <th>
-                                            {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                                            {{ formatRupiah($order->total_amount) }}
                                         </th>
                                         <th>
                                             <a href="/admin/transactions/{{ $order->id }}"

@@ -232,7 +232,7 @@ $confirmCheckout = function () {
                                                 </div>
                                             </td>
                                             <td class="w-1/6">
-                                                {{ "Rp." . Number::format($cart->qty * $cart->product->price, locale: "id") }}
+                                                {{ formatRupiah($cart->qty * $cart->product->price) }}
                                             </td>
                                             <td>
                                                 <button wire:click="deleteProduct('{{ $cart->id }}')" type="button"
@@ -246,7 +246,7 @@ $confirmCheckout = function () {
                                         <td colspan="3"></td>
                                         <td>Total:</td>
                                         <td>
-                                            {{ "Rp." . Number::format($this->calculateTotal(), locale: "id") }}
+                                            {{ formatRupiah($this->calculateTotal()) }}
                                         </td>
                                         <td></td>
                                     </tr>

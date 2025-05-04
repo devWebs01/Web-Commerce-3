@@ -199,19 +199,19 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
                                 <h6 class="fw-bold mb-3">Informasi Pemesan</h6>
                                 <div class="row g-3">
                                     <div class="col-md-4">
-                                        <p class="fw-bold mb-0">Nama</p>
+                                        <p class="fw-bold mb-0">Nama Lengkap:</p>
                                         <p>{{ $order->user->name }}</p>
                                     </div>
                                     <div class="col-md-4">
-                                        <p class="fw-bold mb-0">Email</p>
+                                        <p class="fw-bold mb-0">Email:</p>
                                         <p>{{ $order->user->email }}</p>
                                     </div>
                                     <div class="col-md-4">
-                                        <p class="fw-bold mb-0">Telepon</p>
+                                        <p class="fw-bold mb-0">Telepon:</p>
                                         <p>{{ $order->user->telp }}</p>
                                     </div>
                                     <div class="col-12">
-                                        <p class="fw-bold mb-0">Alamat</p>
+                                        <p class="fw-bold mb-0">Alamat Lengkap:</p>
                                         <p>{{ $order->user->fulladdress }}</p>
                                     </div>
                                 </div>
@@ -242,11 +242,11 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
                                                     <p class="mb-1"><strong>Total berat:</strong>
                                                         {{ $item->qty * $item->product->weight }}g</p>
                                                     <p class="mb-1"><strong>Harga/item:</strong> Rp
-                                                        {{ Number::format($item->product->price, locale: "id") }}</p>
+                                                        {{ formatRupiah($item->product->price) }}</p>
                                                 </div>
                                                 <div class="col-12">
                                                     <p class="mb-0"><strong>Total:</strong> Rp
-                                                        {{ Number::format($item->qty * $item->product->price, locale: "id") }}
+                                                        {{ formatRupiah($item->qty * $item->product->price) }}
                                                     </p>
                                                 </div>
                                             </div>
@@ -309,17 +309,16 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
 
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Total Produk</span>
-                                    <span class="fw-bold">Rp {{ Number::format($order->total_amount) }}</span>
+                                    <span class="fw-bold">{{ formatRupiah($order->total_amount) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Ongkir</span>
-                                    <span class="fw-bold">Rp {{ Number::format($this->shipping_cost) }}</span>
+                                    <span class="fw-bold">{{ formatRupiah($this->shipping_cost) }}</span>
                                 </div>
                                 <div class="d-flex justify-content-between border-top pt-2 mt-2 mb-3">
                                     <span>Total Pembayaran</span>
                                     <span class="fw-bold text-primary">
-                                        Rp
-                                        {{ Number::format($order->total_amount + $this->shipping_cost + $this->protect_cost_opsional()) }}
+                                        {{ formatRupiah($order->total_amount + $this->shipping_cost + $this->protect_cost_opsional()) }}
                                     </span>
                                 </div>
 

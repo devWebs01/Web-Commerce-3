@@ -84,7 +84,7 @@ $submit = function () {
                     <div class="col-lg-7">
                         <h6>Total Pembayaran:</h6>
                         <h1 id="font-custom" class="mb-3">
-                            {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                            {{ formatRupiah($order->total_amount) }}
 
                         </h1>
 

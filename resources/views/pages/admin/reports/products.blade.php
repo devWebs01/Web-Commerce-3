@@ -39,7 +39,7 @@ $products = computed(fn() => Product::latest()->get());
                                     <tr>
                                         <td>{{ ++$no }}</td>
                                         <td>{{ Str::limit($product->title, 40, "...") }}</td>
-                                        <td>{{ "Rp. " . Number::format($product->price, locale: "id") }}</td>
+                                        <td>{{ formatRupiah($product->price) }}</td>
                                         <td>Tersedia</td>
                                         <td>{{ $product->weight }} gram</td>
                                     </tr>

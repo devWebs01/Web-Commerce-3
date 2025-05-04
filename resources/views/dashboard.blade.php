@@ -38,7 +38,7 @@ state([
                                             <div class="col-auto">
                                                 <span class="opacity-75">Pendapatan</span>
                                                 <h1 class="mb-0 text-white mt-1 text-nowrap">
-                                                    {{ "Rp. " . Number::format($totalAmount, locale: "id") }}
+                                                    {{ formatRupiah($totalAmount) }}
                                                 </h1>
                                             </div>
                                         </div>
@@ -111,7 +111,7 @@ state([
                                             <td>{{ ++$no }}.</td>
                                             <td>{{ $order->status }}</td>
                                             <td>
-                                                {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                                                {{ formatRupiah($order->total_amount) }}
                                             </td>
                                             <td>
                                                 {{ $order->payment_method }}

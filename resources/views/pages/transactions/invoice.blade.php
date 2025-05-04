@@ -43,9 +43,9 @@
                                         <td class="text-center">{{ $item->variant->type }}</td>
                                         <td class="text-center">{{ $item->qty }}</td>
                                         <td class="text-center">
-                                            Rp.{{ Number::format($item->product->price, locale: "id") }}</td>
+                                            {{ formatRupiah($item->product->price) }}</td>
                                         <td class="text-end">
-                                            Rp.{{ Number::format($item->qty * $item->product->price, locale: "id") }}
+                                            {{ formatRupiah($item->qty * $item->product->price) }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -53,7 +53,7 @@
                                 {{-- Ringkasan --}}
                                 <tr class="text-end">
                                     <td colspan="5">Sub Total</td>
-                                    <td>Rp.{{ Number::format($order->items->sum(fn($item) => $item->qty * $item->product->price), locale: "id") }}
+                                    <td>{{ formatRupiah($order->items->sum(fn($item) => $item->qty * $item->product->price)) }}
                                     </td>
                                 </tr>
                                 <tr class="text-end">
@@ -62,7 +62,7 @@
                                 </tr>
                                 <tr class="text-end">
                                     <td colspan="5">Biaya Pengiriman</td>
-                                    <td>Rp.{{ Number::format($order->shipping_cost, locale: "id") }}</td>
+                                    <td>{{ formatRupiah($order->shipping_cost) }}</td>
                                 </tr>
                                 <tr class="text-end">
                                     <td colspan="5">Biaya Tambahan</td>
@@ -70,7 +70,7 @@
                                 </tr>
                                 <tr class="text-end fw-bold fs-6">
                                     <td colspan="5">Total Pembayaran</td>
-                                    <td>Rp.{{ Number::format($order->total_amount, locale: "id") }}</td>
+                                    <td>{{ formatRupiah($order->total_amount) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -84,20 +84,20 @@
                             <h6 class="fw-bold mb-3">Informasi Pemesan</h6>
                             <div class="row mb-2">
                                 <div class="col-md-4">
-                                    <p class="mb-1 text-muted">Nama Lengkap</p>
+                                    <p class="fw-bold mb-0">Nama Lengkap:</p>
                                     <p class="mb-0">{{ $order->user->name }}</p>
                                 </div>
                                 <div class="col-md-4">
-                                    <p class="mb-1 text-muted">Email</p>
+                                    <p class="fw-bold mb-0">Email:</p>
                                     <p class="mb-0">{{ $order->user->email }}</p>
                                 </div>
                                 <div class="col-md-4">
-                                    <p class="mb-1 text-muted">Telepon</p>
+                                    <p class="fw-bold mb-0">Telepon:</p>
                                     <p class="mb-0">{{ $order->user->telp }}</p>
                                 </div>
                             </div>
                             <div>
-                                <p class="mb-1 text-muted">Alamat Lengkap</p>
+                                <p class="fw-bold mb-0">Alamat Lengkap:</p>
                                 <p class="mb-0">{{ $order->user->fulladdress }}</p>
                             </div>
                         </div>
@@ -117,6 +117,7 @@
                         </figure>
                     </div>
                 @endif
+
             </div>
         </div>
     </div>

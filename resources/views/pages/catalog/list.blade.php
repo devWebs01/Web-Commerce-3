@@ -111,7 +111,7 @@ $products = computed(function () {
                                                         {{ Str::limit($product->category->name, 13, "...") }}
                                                     </span>
                                                     <h6>
-                                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
+                                                        {{ formatRupiah($product->price) }}
                                                     </h6>
                                                 </div>
 

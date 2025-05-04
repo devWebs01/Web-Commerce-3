@@ -41,10 +41,10 @@ $products = computed(fn() => Product::latest()->get());
                                     <tr>
                                         <td>{{ ++$no }}</td>
                                         <td>{{ $product->title }}</td>
-                                        <td>{{ "Rp. " . Number::format($product->price, locale: "id") }}</td>
+                                        <td>{{ formatRupiah($product->price) }}</td>
                                         <td> Tersedia</td>
                                         <td>{{ $product->items->count() }} Terjual</td>
-                                        <td>{{ "Rp. " . Number::format($product->items->count() * $product->price, locale: "id") }}
+                                        <td>{{ formatRupiah($product->items->count() * $product->price) }}
                                         </td>
                                     </tr>
                                 @endforeach

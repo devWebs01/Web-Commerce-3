@@ -42,7 +42,7 @@ $orders = computed(fn() => Order::query()->get());
                                         <td>{{ $order->invoice }}</td>
                                         <td>{{ $order->user->name }}</td>
                                         <td>{{ $order->status }}</td>
-                                        <td>{{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                                        <td>{{ formatRupiah($order->total_amount) }}
                                         </td>
                                         <td>{{ $order->payment_method }}</td>
                                         <td>{{ $order->protect_cost == 1 ? "Bubble Wrap" : "-" }}</td>

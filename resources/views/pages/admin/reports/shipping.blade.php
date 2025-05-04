@@ -45,14 +45,14 @@ $orders = computed(fn() => Order::query()->where("status", "SHIPPED")->orWhere("
                                         <td>{{ ++$no }}.</td>
                                         <td>{{ $order->user->name }}</td>
                                         <td>{{ $order->status }}</td>
-                                        <td>{{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
+                                        <td>{{ formatRupiah($order->total_amount) }}
                                         </td>
                                         <td>{{ $order->tracking_number }}</td>
                                         <td>{{ $order->payment_method }}</td>
                                         <td>{{ $order->total_weight }} gram</td>
                                         <td>{{ $order->protect_cost == 1 ? "Bubble Wrap" : "-" }}</td>
                                         <td>{{ $order->courier }}</td>
-                                        <td>{{ "Rp. " . Number::format($order->shipping_cost, locale: "id") }}
+                                        <td>{{ formatRupiah($order->shipping_cost) }}
                                         </td>
                                         <td>{{ $order->estimated_delivery_time }} Hari</td>
                                         <td>

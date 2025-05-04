@@ -134,7 +134,7 @@ $addToCart = function (Product $product) {
 
                                 <div class="my-3">
                                     <span class="h5 fw-bold" style="color: #635bff;">
-                                        {{ "Rp. " . Number::format($product->price, locale: "id") }}
+                                        {{ formatRupiah($product->price) }}
                                     </span>
                                 </div>
 

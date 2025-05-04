@@ -101,7 +101,7 @@ $export = function () {
                                     <tr>
                                         <th>{{ ++$no }}</th>
                                         <th>{{ Str::limit($product->title, 50, "...") }}</th>
-                                        <th>{{ "Rp." . Number::format($product->price, locale: "id") }}</th>
+                                        <th>{{ formatRupiah($product->price) }}</th>
                                         <th>
                                             <a href="{{ route("products.edit", ["product" => $product->id]) }}"
                                                 class="btn btn-sm btn-warning">
