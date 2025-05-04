@@ -12,13 +12,11 @@ class Variant extends Model
     use HasFactory;
 
     protected $fillable = [
-        'type', 'stock', 'product_id'
+        'type', 'stock', 'product_id',
     ];
 
     /**
      * Get the product that owns the Variant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product(): BelongsTo
     {
@@ -27,8 +25,6 @@ class Variant extends Model
 
     /**
      * Get all of the carts for the Variant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function carts(): HasMany
     {
@@ -37,14 +33,9 @@ class Variant extends Model
 
     /**
      * Get all of the Orders for the Variant
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
     }
-
-    
 }

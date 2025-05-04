@@ -4,19 +4,19 @@ use function Livewire\Volt\{computed};
 use App\Models\Category;
 use function Laravel\Folio\name;
 
-name('report.categories-product');
+name("report.categories-product");
 
 $categories = computed(fn() => Category::latest()->get());
 
 ?>
 
 <x-admin-layout>
-    @include('layouts.print')
+    @include("components.partials.print")
 
     <x-slot name="title">Laporan Kategori Produk</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('report.categories-product') }}">Laporan Kategori Produk</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("report.categories-product") }}">Laporan Kategori Produk</a></li>
     </x-slot>
 
     @volt

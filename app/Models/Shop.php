@@ -14,13 +14,14 @@ class Shop extends Model
         'name',
         'province_id',
         'city_id',
-        'details'
+        'details',
     ];
 
     public function province(): BelongsTo
     {
         return $this->belongsTo(Province::class);
     }
+
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);

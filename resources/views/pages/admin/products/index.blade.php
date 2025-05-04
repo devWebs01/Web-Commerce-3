@@ -65,7 +65,7 @@ $export = function () {
         <li class="breadcrumb-item"><a href="{{ route("products.index") }}">Produk Toko</a></li>
     </x-slot>
 
-    @include("layouts.datatables")
+    @include("components.partials.datatables")
 
     @volt
         <div>
@@ -87,7 +87,7 @@ $export = function () {
                 </div>
                 <div class="card-body p-3" wire:ignore>
                     <div class="table-responsive px-3">
-                        <table class="table text-center text-nowrap">
+                        <table class="table text-center text-nowrap" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>No.</th>

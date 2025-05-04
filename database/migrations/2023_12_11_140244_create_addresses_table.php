@@ -8,7 +8,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations. 'user_id', 'province_id', 'city_id', 'details'
-
      */
     public function up(): void
     {

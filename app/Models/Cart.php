@@ -11,7 +11,7 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'product_id', 'variant_id', 'qty'
+        'user_id', 'product_id', 'variant_id', 'qty',
     ];
 
     public function user(): BelongsTo

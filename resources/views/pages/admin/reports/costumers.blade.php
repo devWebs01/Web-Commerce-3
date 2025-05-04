@@ -4,17 +4,17 @@ use App\Models\User;
 use function Livewire\Volt\{computed};
 use function Laravel\Folio\name;
 
-name('report.customers');
+name("report.customers");
 
-$users = computed(fn() => User::where('role', 'customer')->latest()->get());
+$users = computed(fn() => User::where("role", "customer")->latest()->get());
 
 ?>
 <x-admin-layout>
-    @include('layouts.print')
+    @include("components.partials.print")
     <x-slot name="title">Laporan Daftar Pelanggan</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('report.customers') }}">Laporan Daftar Pelanggan</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("report.customers") }}">Laporan Daftar Pelanggan</a></li>
     </x-slot>
     @volt
         <div>
@@ -40,8 +40,8 @@ $users = computed(fn() => User::where('role', 'customer')->latest()->get());
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->telp }}</td>
                                         <td>
-                                            {{ $user->address->province->name ?? '-' }},
-                                            {{ $user->address->city->name ?? '-' }}
+                                            {{ $user->address->province->name ?? "-" }},
+                                            {{ $user->address->city->name ?? "-" }}
                                         </td>
                                         <td>{{ $user->orders->count() }} Transaksi</td>
                                     </tr>

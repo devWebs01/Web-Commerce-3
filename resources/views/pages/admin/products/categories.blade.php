@@ -6,11 +6,11 @@ use function Laravel\Folio\name;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 uses([LivewireAlert::class]);
-name('categories-product');
-state(['name', 'categoryId']);
-rules(['name' => 'required|min:6|string']);
+name("categories-product");
+state(["name", "categoryId"]);
+rules(["name" => "required|min:6|string"]);
 
-usesPagination(theme: 'bootstrap');
+usesPagination(theme: "bootstrap");
 
 $categories = computed(fn() => Category::latest()->paginate(10));
 
@@ -23,7 +23,7 @@ $save = function (Category $category) {
         $categoryUpdate = Category::find($this->categoryId);
         $categoryUpdate->update($validate);
     }
-    $this->reset('name');
+    $this->reset("name");
 };
 
 $edit = function (Category $category) {
@@ -35,29 +35,28 @@ $edit = function (Category $category) {
 $destroy = function (Category $category) {
     try {
         $category->delete();
-        $this->reset('name');
-        $this->alert('success', 'Data kategori berhasil di hapus!', [
-            'position' => 'top',
-            'timer' => 3000,
-            'toast' => true,
+        $this->reset("name");
+        $this->alert("success", "Data kategori berhasil di hapus!", [
+            "position" => "top",
+            "timer" => 3000,
+            "toast" => true,
         ]);
     } catch (\Throwable $th) {
-        $this->alert('error', 'Data kategori gagal di hapus!', [
-            'position' => 'top',
-            'timer' => 3000,
-            'toast' => true,
+        $this->alert("error", "Data kategori gagal di hapus!", [
+            "position" => "top",
+            "timer" => 3000,
+            "toast" => true,
         ]);
     }
 };
 ?>
 
-
 <x-admin-layout>
     <div>
         <x-slot name="title">Kategori Produk</x-slot>
         <x-slot name="header">
-            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('categories-product') }}">Kategori Produk</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("categories-product") }}">Kategori Produk</a></li>
         </x-slot>
 
         @volt
@@ -72,7 +71,7 @@ $destroy = function (Category $category) {
                                 <input type="text" class="form-control" wire:model="name" id="name"
                                     aria-describedby="helpId" placeholder="Masukkan kategori baru / edit" />
 
-                                @error('name')
+                                @error("name")
                                     <small id="helpId" class="form-text text-danger">{{ $message }}</small>
                                 @enderror
                                 <div class="row justift-content-between">
@@ -100,7 +99,7 @@ $destroy = function (Category $category) {
 
                     <div class="card-body">
                         <div class="table-responsive border rounded px-3">
-                            <table class="table text-center text-nowrap">
+                            <table class="table text-center text-nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No.</th>

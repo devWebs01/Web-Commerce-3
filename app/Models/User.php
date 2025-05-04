@@ -15,12 +15,13 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $with = 'address';
+
     protected $fillable = [
         'name',
         'email',
         'password',
         'telp',
-        'role'
+        'role',
     ];
 
     protected $hidden = [
@@ -52,7 +53,7 @@ class User extends Authenticatable
     // Get Attr Model
     public function getDetailsAttribute()
     {
-        return $this->name . ' ' . $this->email . ' ' . $this->telp;
+        return $this->name.' '.$this->email.' '.$this->telp;
     }
 
     public function getFullAddressAttribute()
@@ -60,8 +61,9 @@ class User extends Authenticatable
         $address = $this->address;
 
         if ($address && $address->province && $address->city) {
-            return $address->province->name . ', ' . $address->city->name . ', ' . ($address->details ?? '');
+            return $address->province->name.', '.$address->city->name.', '.($address->details ?? '');
         }
+
         return null;
     }
 }

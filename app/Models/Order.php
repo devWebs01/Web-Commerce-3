@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -52,8 +52,6 @@ class Order extends Model
 
     /**
      * Get all of the Items for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function Items(): HasMany
     {
@@ -62,8 +60,6 @@ class Order extends Model
 
     /**
      * Get the user that owns the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -72,8 +68,6 @@ class Order extends Model
 
     /**
      * Get all of the couriers for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function couriers(): HasMany
     {

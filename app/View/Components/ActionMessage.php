@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class CostumerLayout extends Component
+class ActionMessage extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class CostumerLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.costumer');
+        return view('components.partials.action-message');
     }
 }

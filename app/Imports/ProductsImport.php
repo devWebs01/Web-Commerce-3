@@ -4,12 +4,12 @@ namespace App\Imports;
 
 use App\Models\Product;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
 
 class ProductsImport implements ToCollection, WithHeadingRow
 {
@@ -25,14 +25,16 @@ class ProductsImport implements ToCollection, WithHeadingRow
                     $resp = Http::timeout(30)->get($url);
                     if ($resp->successful()) {
                         $ext = pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
-                        $filename = Str::random(20) . '.' . $ext;
+                        $filename = Str::random(20).'.'.$ext;
                         $folder = 'products/images';
                         Storage::disk('public')->put("$folder/$filename", $resp->body());
+
                         return "$folder/$filename";
                     }
                 } catch (\Exception $e) {
-                    Log::warning("Download failed for $url: " . $e->getMessage());
+                    Log::warning("Download failed for $url: ".$e->getMessage());
                 }
+
                 return null;
             };
 
@@ -42,7 +44,7 @@ class ProductsImport implements ToCollection, WithHeadingRow
             }
 
             // 2) jika gagal, fallback ke fakeimg.pl
-            if (!$imagePath) {
+            if (! $imagePath) {
                 $fakeUrl = 'https://fakeimg.pl/350x200/?text=NO_IMAGE&font=lobster';
                 $imagePath = $downloadAndStore($fakeUrl)
                     // terakhir, kalau pun masih null, bisa pakai placeholder lokal

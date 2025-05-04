@@ -4,19 +4,19 @@ use function Livewire\Volt\{computed};
 use App\Models\Product;
 use function Laravel\Folio\name;
 
-name('report.rankProducts');
+name("report.rankProducts");
 
 $products = computed(fn() => Product::latest()->get());
 
 ?>
 
 <x-app-layout>
-    @include('layouts.print')
+    @include("components.partials.print")
 
     <x-slot name="title">Laporan Data Produk Terlaris</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('report.rankProducts') }}">Laporan Data Produk
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("report.rankProducts") }}">Laporan Data Produk
                 Terlaris</a></li>
     </x-slot>
     @volt
@@ -41,10 +41,10 @@ $products = computed(fn() => Product::latest()->get());
                                     <tr>
                                         <td>{{ ++$no }}</td>
                                         <td>{{ $product->title }}</td>
-                                        <td>{{ 'Rp. ' . Number::format($product->price, locale: 'id') }}</td>
+                                        <td>{{ "Rp. " . Number::format($product->price, locale: "id") }}</td>
                                         <td> Tersedia</td>
                                         <td>{{ $product->items->count() }} Terjual</td>
-                                        <td>{{ 'Rp. ' . Number::format($product->items->count() * $product->price, locale: 'id') }}
+                                        <td>{{ "Rp. " . Number::format($product->items->count() * $product->price, locale: "id") }}
                                         </td>
                                     </tr>
                                 @endforeach

@@ -23,8 +23,6 @@ class Product extends Model
 
     /**
      * Get the category that owns the Product
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -33,8 +31,6 @@ class Product extends Model
 
     /**
      * Get all of the carts for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function carts(): HasMany
     {
@@ -43,8 +39,6 @@ class Product extends Model
 
     /**
      * Get all of the orders for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders(): HasMany
     {
@@ -53,8 +47,6 @@ class Product extends Model
 
     /**
      * Get all of the Items for the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function Items(): HasMany
     {
@@ -63,8 +55,6 @@ class Product extends Model
 
     /**
      * Get all of the variants for the Product
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function variants(): HasMany
     {

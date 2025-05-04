@@ -11,13 +11,11 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id', 'product_id', 'variant_id', 'qty'
+        'order_id', 'product_id', 'variant_id', 'qty',
     ];
 
     /**
      * Get the order that owns the Item
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function order(): BelongsTo
     {
@@ -26,8 +24,6 @@ class Item extends Model
 
     /**
      * Get the product that owns the Item
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product(): BelongsTo
     {
@@ -36,8 +32,6 @@ class Item extends Model
 
     /**
      * Get the variant that owns the Cart
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function variant(): BelongsTo
     {

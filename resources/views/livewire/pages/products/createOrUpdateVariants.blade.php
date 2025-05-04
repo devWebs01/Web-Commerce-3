@@ -6,39 +6,39 @@ use App\Models\Product;
 use App\Models\Variant;
 
 state([
-    'productId' => '',
-    'title' => '',
-    'variantId' => '',
-    'type',
-    'stock',
+    "productId" => "",
+    "title" => "",
+    "variantId" => "",
+    "type",
+    "stock",
 ]);
 
 $createOrUpdateVariant = function (Variant $variant) {
     $validateData = $this->validate([
-        'productId' => 'required|exists:products,id',
-        'type' => [
-            'required',
-            Rule::unique('variants')
+        "productId" => "required|exists:products,id",
+        "type" => [
+            "required",
+            Rule::unique("variants")
                 ->where(function ($query) {
-                    return $query->where('product_id', $this->productId);
+                    return $query->where("product_id", $this->productId);
                 })
                 ->ignore($this->variantId),
         ],
-        'stock' => 'required|numeric',
+        "stock" => "required|numeric",
     ]);
 
     if ($this->variantId == null) {
         $variant->create([
-            'product_id' => $this->productId,
-            'type' => $this->type,
-            'stock' => $this->stock,
+            "product_id" => $this->productId,
+            "type" => $this->type,
+            "stock" => $this->stock,
         ]);
     } else {
         $variantUpdate = Variant::find($this->variantId);
         $variantUpdate->update($validateData);
     }
 
-    $this->reset('type', 'stock', 'variantId');
+    $this->reset("type", "stock", "variantId");
 };
 
 $editVariant = function (Variant $variant) {
@@ -50,15 +50,15 @@ $editVariant = function (Variant $variant) {
 
 $destroyVariant = function (Variant $variant) {
     $variant->delete();
-    $this->reset('type', 'stock', 'variantId');
+    $this->reset("type", "stock", "variantId");
 };
 
 $resetVariant = function () {
-    $this->reset('type', 'stock', 'variantId');
+    $this->reset("type", "stock", "variantId");
 };
 
 $variants = computed(function () {
-    return Variant::where('product_id', $this->productId)->get();
+    return Variant::where("product_id", $this->productId)->get();
 });
 
 ?>
@@ -67,7 +67,7 @@ $variants = computed(function () {
     <p class="fw-bold mb-3">Tambahkan Varian Product {{ $title }}</p>
     @if ($this->variants !== null)
         <div class="table-responsive border rounded mb-3">
-            <table class="table text-center text-nowrap">
+            <table class="table text-center text-nowrap" style="width: 100%;">
                 <thead>
                     <tr>
                         <th>No.</th>
@@ -87,7 +87,7 @@ $variants = computed(function () {
                                     <a type="button" wire:click='editVariant({{ $item->id }})'
                                         class="btn btn-sm btn-warning">Edit</a>
                                     <button wire:loading.attr='disabled' wire:click='destroyVariant({{ $item->id }})'
-                                        class="btn btn-sm btn-danger {{ auth()->user()->role == 'superadmin' ?: 'd-none' }}">
+                                        class="btn btn-sm btn-danger {{ auth()->user()->role == "superadmin" ?: "d-none" }}">
                                         Hapus
                                     </button>
                                 </div>
@@ -100,22 +100,21 @@ $variants = computed(function () {
     @endif
     <form wire:submit.prevent="createOrUpdateVariant">
         @csrf
-        @error('productId')
+        @error("productId")
             <p class="text-danger fw-bold">Tetapkan data produk dahulu!</p>
         @enderror
 
         <div class="input-group mb-3">
 
             <input type="text" class="form-control
-                            @error('type') is-invalid @enderror"
+                            @error("type") is-invalid @enderror"
                 wire:model="type" id="type" aria-describedby="typeId" placeholder="Enter type product"
-                {{ auth()->user()->role == 'superadmin' ?: 'disabled' }} />
-
+                {{ auth()->user()->role == "superadmin" ?: "disabled" }} />
 
             <input type="number" class="form-control
-                            @error('stock') is-invalid @enderror"
+                            @error("stock") is-invalid @enderror"
                 wire:model="stock" id="stock" aria-describedby="stockId" placeholder="Enter stock product"
-                min="{{ auth()->user()->role == 'superadmin' ?: $stock }}" />
+                min="{{ auth()->user()->role == "superadmin" ?: $stock }}" />
 
             <button type="submit" class="btn btn-primary">
                 Submit
@@ -128,10 +127,10 @@ $variants = computed(function () {
         </div>
 
         <p>
-            @error('type')
+            @error("type")
                 <small id="typeId" class="form-text text-danger">{{ $message }}</small>,
             @enderror
-            @error('stock')
+            @error("stock")
                 <small id="stockId" class="form-text text-danger">{{ $message }}</small>
             @enderror
         </p>

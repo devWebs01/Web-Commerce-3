@@ -41,7 +41,7 @@ $destroy = function (User $user) {
             <li class="breadcrumb-item"><a href="{{ route("users.index") }}">Admin</a></li>
         </x-slot>
 
-        @include("layouts.datatables")
+        @include("components.partials.datatables")
 
         @volt
             <div>
@@ -53,7 +53,7 @@ $destroy = function (User $user) {
 
                     <div class="card-body">
                         <div class="table-responsive px-3">
-                            <table class="table text-center text-nowrap">
+                            <table class="table text-center text-nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No.</th>

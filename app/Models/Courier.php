@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Order;
-use Illuminate\Support\Number;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Courier extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'description', 'value', 'etd', 'order_id'
+        'description', 'value', 'etd', 'order_id',
     ];
 
     public function order(): BelongsTo
@@ -29,14 +27,14 @@ class Courier extends Model
         $value = $this->value ?? null;
 
         // Jika etd atau value null, kembalikan ''
-        if (!$etd || !$value) {
+        if (! $etd || ! $value) {
             return '';
         }
 
         // Format value menjadi Rupiah
-        $formattedValue = 'Rp. ' . number_format($value, 0, ',', '.');
+        $formattedValue = 'Rp. '.number_format($value, 0, ',', '.');
 
         // Gabungkan dan kembalikan string format akhir
-        return $description . ' ' . $etd . ' Hari - ' . $formattedValue;
+        return $description.' '.$etd.' Hari - '.$formattedValue;
     }
 }

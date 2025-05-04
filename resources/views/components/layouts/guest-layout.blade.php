@@ -226,7 +226,7 @@
                         <!-- Kanan -->
                         <div class="d-flex align-items-center gap-3">
 
-                            @livewire("layout.guest-nav")
+                            @include("components.navigations.guest-nav")
 
                         </div>
                     </div>
@@ -235,7 +235,7 @@
         </header>
 
         <!-- ***** Header Area End ***** -->
-        @include("layouts.payment")
+        @include("components.partials.payment")
         {{ $slot }}
 
         <footer class="py-4">

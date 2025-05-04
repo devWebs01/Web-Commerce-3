@@ -187,23 +187,38 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
                     @foreach ($orderItems as $item)
                         <div class="card mb-3 shadow border-0">
                             <div class="row g-0">
-                                <div class="col-4">
-                                    <img src="{{ Storage::url($item->product->image) }}" class="img-fluid rounded-start"
-                                        alt="{{ $item->product->title }}">
+                                <div class="col-md-4">
+                                    <img src="{{ $item->product->image ? Storage::url($item->product->image) : "https://fakeimg.pl/350x200/?text=NO_IMAGE&font=lobster" }}"
+                                        class="img-fluid rounded-start" alt="{{ $item->product->title }}">
                                 </div>
-                                <div class="col-8">
+                                <div class="col-md-8">
                                     <div class="card-body">
-                                        <h6 class="card-title">{{ $item->product->title }} - {{ $item->variant->type }}</h6>
-                                        <p class="card-text">x{{ $item->qty }}
-                                            ({{ $item->qty * $item->product->weight }}g)
+                                        <h5 class="card-title text-primary mb-1">
+                                            {{ $item->product->title }}
+                                            <span class="text-muted">({{ $item->variant->type }})</span>
+                                        </h5>
+
+                                        <p class="mb-0">
+                                            <strong>Jumlah:</strong> {{ $item->qty }} pcs
                                         </p>
-                                        <h6 class="fw-bold text-primary">Rp
-                                            {{ Number::format($item->qty * $item->product->price, locale: "id") }}</h6>
+
+                                        <p class="mb-0">
+                                            <strong>Berat per item:</strong> {{ $item->product->weight }}g<br>
+                                            <strong>Total berat:</strong> {{ $item->qty * $item->product->weight }}g
+                                        </p>
+
+                                        <p class="mb-0">
+                                            <strong>Harga per item:</strong> Rp
+                                            {{ Number::format($item->product->price, locale: "id") }}<br>
+                                            <strong>Total harga:</strong> <span class="text-primary fw-bold">Rp
+                                                {{ Number::format($item->qty * $item->product->price, locale: "id") }}</span>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @endforeach
+
                 </div>
 
                 {{-- Panel Kanan: Pembayaran dan Ringkasan --}}
@@ -267,7 +282,7 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
                             {{-- Tombol Aksi --}}
                             @if ($order->status === "PROGRESS")
                                 <button wire:click="confirmOrder('{{ $order->id }}')"
-                                    class="btn btn-primary w-100">Lanjutkan</button>
+                                    class="btn btn-dark w-100">Lanjutkan</button>
                             @elseif ($order->status === "UNPAID")
                                 <a href="{{ route("customer.payment", ["order" => $order->id]) }}"
                                     class="btn btn-dark w-100">Bayar Sekarang</a>

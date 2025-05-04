@@ -4,12 +4,12 @@ use function Livewire\Volt\{computed};
 use App\Models\Category;
 use function Laravel\Folio\name;
 
-name('report.rankCategories');
+name("report.rankCategories");
 
 $categories = computed(
     fn() => Category::with([
-        'products' => function ($query) {
-            $query->withSum('items', 'qty'); // Load items with sum of quantities
+        "products" => function ($query) {
+            $query->withSum("items", "qty"); // Load items with sum of quantities
         },
     ])
         ->latest()
@@ -19,11 +19,11 @@ $categories = computed(
 ?>
 
 <x-admin-layout>
-    @include('layouts.print')
+    @include("components.partials.print")
     <x-slot name="title">Laporan Data Kategori Produk Terlaris</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('report.rankCategories') }}">Laporan Data Kategori Produk
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("report.rankCategories") }}">Laporan Data Kategori Produk
                 Terlaris</a></li>
     </x-slot>
 
@@ -47,7 +47,7 @@ $categories = computed(
                                         <td>{{ ++$no }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->products->count() }} Produk Toko</td>
-                                        <td>{{ $category->products->sum('items_sum_qty') }} Terjual</td>
+                                        <td>{{ $category->products->sum("items_sum_qty") }} Terjual</td>
 
                                     </tr>
                                 @endforeach

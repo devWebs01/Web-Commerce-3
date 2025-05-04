@@ -9,7 +9,6 @@ return new class extends Migration
     /**
      * Run the migrations.
      * 'order_id', 'product_id', 'qty'
-     *
      */
     public function up(): void
     {

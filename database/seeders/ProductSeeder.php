@@ -2,12 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
+use App\Models\Variant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Variant;
-use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
@@ -21,22 +19,22 @@ class ProductSeeder extends Seeder
         $data =
             [
                 [
-                    "image" => "https://iili.io/dBcuTRj.jpg",
-                    "title" => "black panther",
-                    "capital" => "100000",
-                    "price" => "130000",
-                    "category_id" => 1,
-                    "weight" => "500",
-                    "description" => "In The Dark I'm King!"
+                    'image' => 'https://iili.io/dBcuTRj.jpg',
+                    'title' => 'black panther',
+                    'capital' => '100000',
+                    'price' => '130000',
+                    'category_id' => 1,
+                    'weight' => '500',
+                    'description' => "In The Dark I'm King!",
                 ],
                 [
-                    "image" => "https://iili.io/dBcuxUu.jpg",
-                    "title" => "vpolv",
-                    "capital" => "100000",
-                    "price" => "130000",
-                    "category_id" => 1,
-                    "weight" => "500",
-                    "description" => "PEOPLE SHOULDN'T BE AFRAID OF THEIR GOVERNMENT."
+                    'image' => 'https://iili.io/dBcuxUu.jpg',
+                    'title' => 'vpolv',
+                    'capital' => '100000',
+                    'price' => '130000',
+                    'category_id' => 1,
+                    'weight' => '500',
+                    'description' => "PEOPLE SHOULDN'T BE AFRAID OF THEIR GOVERNMENT.",
                 ],
 
             ];
@@ -49,10 +47,10 @@ class ProductSeeder extends Seeder
                 // Gunakan fake image jika gagal
                 $fakeImage = 'https://fakeimg.pl/350x200/?text=NO_IMAGE&font=lobster';
                 $imageContents = file_get_contents($fakeImage);
-                $imageName = 'fake-' . uniqid() . '.png';
+                $imageName = 'fake-'.uniqid().'.png';
             }
 
-            $storagePath = 'images/' . $imageName;
+            $storagePath = 'images/'.$imageName;
             Storage::disk('public')->put($storagePath, $imageContents);
 
             // Buat record produk di database
@@ -76,7 +74,7 @@ class ProductSeeder extends Seeder
                 ]);
             }
 
-            $this->command->info('Tambah Produk ' . $product->title);
+            $this->command->info('Tambah Produk '.$product->title);
         }
     }
 }

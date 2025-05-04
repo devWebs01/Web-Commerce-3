@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Exports;
 
 use App\Models\Product;
@@ -17,7 +18,7 @@ class ProductsExport implements FromCollection, WithHeadings
             'Capital',
             'Price',
             'Weight',
-            'Description'
+            'Description',
         ];
     }
 
@@ -39,5 +40,3 @@ class ProductsExport implements FromCollection, WithHeadings
             });
     }
 }
-
-?>

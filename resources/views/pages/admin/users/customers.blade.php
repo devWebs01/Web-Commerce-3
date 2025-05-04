@@ -20,14 +20,14 @@ $users = computed(function () {
             <li class="breadcrumb-item"><a href="{{ route("customers") }}">Pelanggan</a></li>
         </x-slot>
 
-        @include("layouts.datatables")
+        @include("components.partials.datatables")
 
         @volt
             <div>
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table text-center text-nowrap">
+                            <table class="table text-center text-nowrap" style="width: 100%;">
                                 <thead>
                                     <tr>
                                         <th>No.</th>

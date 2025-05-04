@@ -14,7 +14,7 @@ use function Laravel\Folio\name;
 
 name("register");
 
-layout("layouts.auth-layout");
+layout("components.layouts.auth-layout");
 
 state([
     "name" => "",

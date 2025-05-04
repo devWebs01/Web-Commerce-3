@@ -6,17 +6,17 @@ use App\Models\User;
 use function Livewire\Volt\{state};
 
 state([
-    'customers' => fn() => User::whereRole('customer')->count(),
-    'ordersCount' => fn() => Order::whereIn('status', ['COMPLETED', 'SHIPPED', 'PACKED'])->count(),
-    'totalAmount' => Order::whereIn('status', ['COMPLETED', 'SHIPPED', 'PACKED'])->sum('total_amount'),
-    'ordersPendingCount' => fn() => Order::whereIn('status', ['PENDING', 'SHIPPED'])->get(),
-    'ordersCustPickup' => fn() => Order::whereIn('status', ['PENDING', 'SHIPPED'])->get(),
+    "customers" => fn() => User::whereRole("customer")->count(),
+    "ordersCount" => fn() => Order::whereIn("status", ["COMPLETED", "SHIPPED", "PACKED"])->count(),
+    "totalAmount" => Order::whereIn("status", ["COMPLETED", "SHIPPED", "PACKED"])->sum("total_amount"),
+    "ordersPendingCount" => fn() => Order::whereIn("status", ["PENDING", "SHIPPED"])->get(),
+    "ordersCustPickup" => fn() => Order::whereIn("status", ["PENDING", "SHIPPED"])->get(),
 ]);
 
 ?>
 <x-admin-layout>
     <x-slot name="title">Beranda</x-slot>
-    @include('layouts.datatables')
+    @include("components.partials.datatables")
 
     @volt
         <div>
@@ -38,7 +38,7 @@ state([
                                             <div class="col-auto">
                                                 <span class="opacity-75">Pendapatan</span>
                                                 <h1 class="mb-0 text-white mt-1 text-nowrap">
-                                                    {{ 'Rp. ' . Number::format($totalAmount, locale: 'id') }}
+                                                    {{ "Rp. " . Number::format($totalAmount, locale: "id") }}
                                                 </h1>
                                             </div>
                                         </div>
@@ -50,7 +50,6 @@ state([
                                     alt="welcome" class="img-fluid mb-n7 mt-2" width="180">
                             </div>
                         </div>
-
 
                     </div>
                 </div>
@@ -112,7 +111,7 @@ state([
                                             <td>{{ ++$no }}.</td>
                                             <td>{{ $order->status }}</td>
                                             <td>
-                                                {{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
+                                                {{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
                                             </td>
                                             <td>
                                                 {{ $order->payment_method }}
@@ -126,7 +125,6 @@ state([
                     </div>
                 </div>
             </div>
-
 
         </div>
     @endvolt

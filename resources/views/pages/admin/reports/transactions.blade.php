@@ -4,19 +4,18 @@ use App\Models\Order;
 use function Livewire\Volt\{computed};
 use function Laravel\Folio\name;
 
-name('report.transactions');
+name("report.transactions");
 
 $orders = computed(fn() => Order::query()->get());
 
 ?>
 <x-admin-layout>
-    @include('layouts.print')
+    @include("components.partials.print")
     <x-slot name="title">Transaksi Toko</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('report.transactions') }}">Transaksi Toko</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("report.transactions") }}">Transaksi Toko</a></li>
     </x-slot>
-
 
     @volt
         <div>
@@ -43,10 +42,10 @@ $orders = computed(fn() => Order::query()->get());
                                         <td>{{ $order->invoice }}</td>
                                         <td>{{ $order->user->name }}</td>
                                         <td>{{ $order->status }}</td>
-                                        <td>{{ 'Rp. ' . Number::format($order->total_amount, locale: 'id') }}
+                                        <td>{{ "Rp. " . Number::format($order->total_amount, locale: "id") }}
                                         </td>
                                         <td>{{ $order->payment_method }}</td>
-                                        <td>{{ $order->protect_cost == 1 ? 'Bubble Wrap' : '-' }}</td>
+                                        <td>{{ $order->protect_cost == 1 ? "Bubble Wrap" : "-" }}</td>
                                         <td>{{ $order->items->count() }} Barang</td>
                                     </tr>
                                 @endforeach

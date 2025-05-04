@@ -10,7 +10,7 @@ use function Laravel\Folio\name;
 
 name("login");
 
-layout("layouts.auth-layout");
+layout("components.layouts.auth-layout");
 
 form(LoginForm::class);
 

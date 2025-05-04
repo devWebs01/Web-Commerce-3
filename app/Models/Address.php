@@ -13,7 +13,7 @@ class Address extends Model
     protected $with = ['province', 'city'];
 
     protected $fillable = [
-        'user_id', 'province_id', 'city_id', 'details'
+        'user_id', 'province_id', 'city_id', 'details',
     ];
 
     // Relations Models
@@ -26,6 +26,7 @@ class Address extends Model
     {
         return $this->belongsTo(Province::class);
     }
+
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
