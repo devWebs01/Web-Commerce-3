@@ -22,7 +22,7 @@ $orders = computed(fn() => Order::query()->get());
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table display table-sm">
+                        <table class="table display table-sm text-nowrap" style="width: 100%;">
                             <thead>
                                 <tr>
                                     <th>No.</th>
@@ -41,7 +41,7 @@ $orders = computed(fn() => Order::query()->get());
                                         <td>{{ ++$no }}.</td>
                                         <td>{{ $order->invoice }}</td>
                                         <td>{{ $order->user->name }}</td>
-                                        <td>{{ $order->status }}</td>
+                                        <td>{{ __("order_status." . $order->status) }}</td>
                                         <td>{{ formatRupiah($order->total_amount) }}
                                         </td>
                                         <td>{{ $order->payment_method }}</td>

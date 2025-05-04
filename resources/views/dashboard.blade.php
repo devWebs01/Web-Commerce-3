@@ -109,7 +109,7 @@ state([
                                     @foreach ($ordersPendingCount as $no => $order)
                                         <tr>
                                             <td>{{ ++$no }}.</td>
-                                            <td>{{ $order->status }}</td>
+                                            <td>{{ __("order_status." . $order->status) }}</td>
                                             <td>
                                                 {{ formatRupiah($order->total_amount) }}
                                             </td>
