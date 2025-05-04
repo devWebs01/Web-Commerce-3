@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="{{ asset("/admin/css/styles.min.css") }}" />
         <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+        <link rel="stylesheet" href="{{ asset("/guest/css/fontawesome.css") }}">
 
         <style>
             @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
@@ -61,10 +62,20 @@
                                     <a class="nav-link " href="javascript:void(0)" id="drop2"
                                         data-bs-toggle="dropdown" aria-expanded="false">
                                         <img src="https://api.dicebear.com/7.x/notionists/svg?seed={{ auth()->user()->name }}"
-                                            alt="" width="50" height="50" class="rounded-circle border">
+                                            alt="profile user" width="50" height="50"
+                                            class="rounded-circle border">
                                     </a>
-                                    {{-- @livewire("components.navigations.admin-header") --}}
-                                    @include("components.navigations.admin-header")
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+                                        aria-labelledby="drop2">
+                                        <div class="message-body">
+                                            <a href="{{ route("account.auth") }}"
+                                                class="d-flex align-items-center gap-2 dropdown-item">
+                                                <i class="ti ti-user fs-6"></i>
+                                                <p class="mb-0 fs-3">Akun Profile</p>
+                                            </a>
+                                            @include("components.navigations.admin-header")
+                                        </div>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

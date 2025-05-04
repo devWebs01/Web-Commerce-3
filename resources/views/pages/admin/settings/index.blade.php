@@ -2,14 +2,14 @@
 
 use function Laravel\Folio\name;
 
-name('setting-store');
+name("setting.store");
 
 ?>
 <x-admin-layout>
     <x-slot name="title">Pengaturan Toko</x-slot>
     <x-slot name="header">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Beranda</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('setting-store') }}">Pengaturan Toko</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
+        <li class="breadcrumb-item"><a href="{{ route("setting.store") }}">Pengaturan Toko</a></li>
     </x-slot>
 
     @volt
@@ -32,19 +32,18 @@ name('setting-store');
                                 data-bs-target="#v-pills-payment" type="button" role="tab"
                                 aria-controls="v-pills-payment" aria-selected="true">Rekening</button>
 
-
                         </div>
                         <div class="tab-content" id="v-pills-tabContent">
 
                             <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
-                            aria-labelledby="v-pills-profile-tab" tabindex="0">
-                            @include('pages.admin.settings.profile')
+                                aria-labelledby="v-pills-profile-tab" tabindex="0">
+                                @include("pages.admin.settings.profile")
 
-                        </div>
+                            </div>
 
                             <div class="tab-pane fade" id="v-pills-payment" role="tabpanel"
                                 aria-labelledby="v-pills-payment-tab" tabindex="0">
-                                @include('pages.admin.settings.bank')
+                                @include("pages.admin.settings.bank")
 
                             </div>
                         </div>

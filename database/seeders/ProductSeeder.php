@@ -65,7 +65,7 @@ class ProductSeeder extends Seeder
                 'description' => $item['description'],
             ]);
 
-            $type = ['XL', 'L', 'M', 'S'];
+            $type = ['XXXL', 'XXL', 'XL', 'XL', 'L', 'M', 'S', 'XS',];
             foreach ($type as $variant) {
                 Variant::create([
                     'product_id' => $product->id,

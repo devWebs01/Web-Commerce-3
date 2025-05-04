@@ -6,7 +6,8 @@ use function Laravel\Folio\name;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 uses([LivewireAlert::class]);
-name("categories-product");
+name("categories.index");
+
 state(["name", "categoryId"]);
 rules(["name" => "required|min:6|string"]);
 
@@ -56,7 +57,7 @@ $destroy = function (Category $category) {
         <x-slot name="title">Kategori Produk</x-slot>
         <x-slot name="header">
             <li class="breadcrumb-item"><a href="{{ route("dashboard") }}">Beranda</a></li>
-            <li class="breadcrumb-item"><a href="{{ route("categories-product") }}">Kategori Produk</a></li>
+            <li class="breadcrumb-item"><a href="{{ route("categories.index") }}">Kategori Produk</a></li>
         </x-slot>
 
         @volt
