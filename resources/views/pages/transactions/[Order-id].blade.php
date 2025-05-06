@@ -117,7 +117,7 @@ $submit = function () {
 
                                                 </div>
                                             </label>
-                                            <input type="file" class="form-control" wire:model='proof_of_payment'>
+                                            <input type="file" class="form-control" wire:model='proof_of_payment' accept="image/*">
                                             @error("proof_of_payment")
                                                 <p id="proof_of_payment" class="text-danger">{{ $message }}</p>
                                             @enderror

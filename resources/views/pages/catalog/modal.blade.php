@@ -6,7 +6,7 @@
                 <h6 class="mb-3">
                     Pesanan akan dikirim ke
                 </h6>
-                <h6 class="text-dark mb-3">{{ auth()->user()->fulladdress }}</h6>
+                <p class="text-dark mb-3 text-break">{{ auth()->user()->fulladdress }}</p>
                 <h6>
                     Apakah alamat pengiriman ini sudah benar?
                 </h6>

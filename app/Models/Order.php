@@ -14,24 +14,36 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'slug',
+
         'invoice',
+        'slug',
         'status',
+        'order_type', // tambahan
+
+        'payment_method',
+        'proof_of_payment',
+        'paid_at', // tambahan
+
         'total_amount',
         'total_weight',
-        'tracking_number',
         'shipping_cost',
-        'payment_method',
-        'note',
+        'protect_cost',
+
+        'tracking_number',
         'estimated_delivery_time',
         'courier',
-        'proof_of_payment',
-        'protect_cost',
         'province_id',
         'city_id',
         'details',
+
+        'customer_name', // tambahan
+        'customer_phone', // tambahan
+        'note',
     ];
 
+    protected $dates = ['paid_at'];
+
+    // Auto generate slug saat create/update
     public static function boot()
     {
         parent::boot();
@@ -45,22 +57,12 @@ class Order extends Model
         });
     }
 
-    public static function generateSlug($invoice)
+    public static function generateSlug($invoice): string
     {
-        return str::slug($invoice, '-');
+        return Str::slug($invoice, '-');
     }
 
-    /**
-     * Get all of the Items for the Order
-     */
-    public function Items(): HasMany
-    {
-        return $this->hasMany(Item::class);
-    }
-
-    /**
-     * Get the user that owns the Order
-     */
+    // Relasi ke user (pelanggan)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -72,5 +74,23 @@ class Order extends Model
     public function couriers(): HasMany
     {
         return $this->hasMany(Courier::class);
+    }
+
+    // Relasi ke item pesanan
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    // Relasi ke provinsi
+    public function province(): BelongsTo
+    {
+        return $this->belongsTo(Province::class);
+    }
+
+    // Relasi ke kota
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
     }
 }

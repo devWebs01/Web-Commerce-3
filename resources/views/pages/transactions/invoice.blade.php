@@ -1,4 +1,4 @@
-<div class="card d-print-block border-0">
+<div class="card d-print-block border-0 shadow">
     <div class="card-body">
         <div class="invoice" id="printableArea">
             <div class="row pt-3">
@@ -83,22 +83,29 @@
                         <div class="card-body">
                             <h6 class="fw-bold mb-3">Informasi Pemesan</h6>
                             <div class="row mb-2">
-                                <div class="col-md-4">
-                                    <p class="fw-bold mb-0">Nama Lengkap:</p>
-                                    <p class="mb-0">{{ $order->user->name }}</p>
+                                <div class="mb-3 col-md-4">
+                                    <p class="mb-1 text-dark fw-bold">Nama:</p>
+                                    <p class="mb-0">
+                                        {{ $order->customer_name ? $order->customer_name : $order->user->name }}</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="fw-bold mb-0">Email:</p>
-                                    <p class="mb-0">{{ $order->user->email }}</p>
+                                <div class="mb-3 col-md-4">
+                                    <p class="mb-1 text-dark fw-bold">Email:</p>
+                                    <p class="mb-0">
+                                        {{ $order->customer_name ? "-" : $order->user->email }}</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="fw-bold mb-0">Telepon:</p>
-                                    <p class="mb-0">{{ $order->user->telp }}</p>
+                                <div class="mb-3 col-md-4">
+                                    <p class="mb-1 text-dark fw-bold">Telepon:</p>
+                                    <p class="mb-0">
+                                        {{ $order->customer_phone ? $order->customer_phone : $order->user->telp }}</p>
                                 </div>
-                            </div>
-                            <div>
-                                <p class="fw-bold mb-0">Alamat Lengkap:</p>
-                                <p class="mb-0">{{ $order->user->fulladdress }}</p>
+                                <div class="mb-3 col-md-12">
+                                    <p class="mb-1 text-dark fw-bold">Alamat:</p>
+                                    <p class="mb-0">{{ $order->user->fulladdress ?? "-" }}</p>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    <p class="mb-1 text-dark fw-bold">Catatan:</p>
+                                    <p class="mb-0">{{ $order->note }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

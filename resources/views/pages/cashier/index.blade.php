@@ -1,11 +1,8 @@
 <?php
 
 use function Laravel\Folio\name;
-use function Livewire\Volt\{state, rules, computed, usesPagination, uses, On};
+use function Livewire\Volt\{state, computed};
 use App\Models\{Category, Product, Cart, Variant, User};
-use Jantinnerezo\LivewireAlert\LivewireAlert;
-
-uses([LivewireAlert::class]);
 
 name("cashier.index");
 
@@ -18,10 +15,6 @@ state([
     "user" => fn() => User::whereEmail("offline@testing.com")->first(),
     "user_id" => fn() => $this->user->id,
 
-    // User Information
-    "name",
-    "telp",
-
     // Select Product & Variant
     "variant_id" => "",
     "qty" => 1,
@@ -29,13 +22,6 @@ state([
     "variant_stock" => "",
     "variant" => "",
     "product_id" => "",
-]);
-
-rules([
-    "user_id" => "required|exists:users,id",
-    "product_id" => "required|exists:products,id",
-    "variant_id" => "required|exists:variants,id",
-    "qty" => "required|numeric",
 ]);
 
 $selectVariant = function (Variant $variant) {
@@ -70,7 +56,7 @@ $addToCart = function (int $productId) {
         ]);
     }
 
-    $this->alert("success", "Berhasil ditambahkan ke keranjang");
+    $this->dispatch("cart-updated");
 };
 
 $products = computed(function () {
@@ -100,53 +86,12 @@ $products = computed(function () {
     }
 });
 
-$carts = computed(function () {
-    return Cart::where("user_id", $this->user_id)->get();
-});
-
 $selectedCategoryId = function ($id) {
     if ($id) {
         $this->category_id = $id;
     } else {
         return null;
     }
-};
-
-$calculateTotal = function () {
-    $total = 0;
-    foreach ($this->carts as $cart) {
-        $total += $cart->product->price * $cart->qty;
-    }
-    return $total;
-};
-
-// Increase quantity or do nothing if stock reached
-$increaseQty = function ($cartId) {
-    $cart = Cart::find($cartId);
-    if (!$cart) {
-        return;
-    }
-
-    $stock = $cart->variant->stock;
-    if ($cart->qty < $stock) {
-        $cart->update(["qty" => $cart->qty + 1]);
-        $this->dispatch("cart-updated");
-    }
-};
-
-// Decrease quantity; if reaches zero, delete the cart item
-$decreaseQty = function ($cartId) {
-    $cart = Cart::find($cartId);
-    if (!$cart) {
-        return;
-    }
-
-    if ($cart->qty > 1) {
-        $cart->update(["qty" => $cart->qty - 1]);
-    } else {
-        $cart->delete();
-    }
-    $this->dispatch("cart-updated");
 };
 
 ?>
@@ -267,59 +212,7 @@ $decreaseQty = function ($cartId) {
 
                     </div>
 
-                    <!-- Current Order Sidebar -->
-                    <div class="col-lg-4">
-                        <div class="p-3 bg-white rounded-3 shadow-sm">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="mb-0">Pesanan saat ini</h5>
-                            </div>
-
-                            <!-- Order Items -->
-                            <ul class="list-unstyled mb-4">
-                                @foreach ($this->carts as $item)
-                                    <li class="d-flex align-items-center mb-3">
-                                        <div class="flex-grow-1">
-                                            <div class="fw-semibold">{{ Str::limit($item->product->title, 20) }}</div>
-                                            <small class="text-muted">{{ $item->variant->type }}</small> <br>
-                                            <small class="text-muted">{{ formatRupiah($item->product->price) }}</small>
-                                        </div>
-                                        <div class="d-flex align-items-center ms-3">
-                                            <button class="btn btn-dark btn-sm"
-                                                wire:click="decreaseQty('{{ $item->id }}')"
-                                                wire:loading.attr="disabled">
-                                                <i class="fas fa-minus fa-sm"></i>
-                                            </button>
-                                            <span class="px-2">{{ $item->qty }}</span>
-                                            <button class="btn btn-dark btn-sm"
-                                                wire:click="increaseQty('{{ $item->id }}')"
-                                                wire:loading.attr="disabled">
-                                                <i class="fas fa-plus fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </li>
-                                @endforeach
-                                @if ($this->carts->isEmpty())
-                                    <li class="text-center text-muted py-4">Keranjang kosong</li>
-                                @endif
-                            </ul>
-
-                            <!-- Summary Box -->
-                            <div class="p-3 bg-light rounded mb-3">
-
-                                <hr class="my-2">
-                                <div class="d-flex justify-content-between">
-                                    <span class="fw-bold">Total</span>
-                                    <span class="fw-bold">{{ formatRupiah($this->calculateTotal()) }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Continue Button -->
-                            <button class="btn btn-warning w-100 fw-bold">
-                                Continue to Payment
-                                <div wire:loading class="spinner-border spinner-border-sm text-white ms-2"></div>
-                            </button>
-                        </div>
-                    </div>
+                    @include("pages.cashier.orderSidebar")
 
                 </div>
             </div>

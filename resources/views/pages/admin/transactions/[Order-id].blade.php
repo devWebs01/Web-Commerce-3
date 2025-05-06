@@ -117,10 +117,13 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                 </button>
                             @endif
 
-                            <button onclick="window.print()" class="btn btn-dark d-flex align-items-center gap-1">
+                            <a href="{{ route("print.invoice", ["order" => $order->id]) }}"
+                                class="btn btn-dark d-flex align-items-center gap-1" target="_blank"
+                                rel="noopener noreferrer">
                                 <i class="ti ti-printer fs-5"></i>
                                 <span>Cetak</span>
-                            </button>
+                            </a>
+
                         </div>
 
                     </div>
@@ -191,22 +194,29 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                         <div class="card-body">
                             <h6 class="fw-bold mb-3">Informasi Pemesan</h6>
                             <div class="row mb-2">
-                                <div class="col-md-4">
-                                    <p class="mb-1 text-muted">Nama Lengkap</p>
-                                    <p class="mb-0">{{ $order->user->name }}</p>
+                                <div class="mb-3 col-md-4">
+                                    <p class="mb-1 text-dark">Nama:</p>
+                                    <p class="mb-0">
+                                        {{ $order->customer_name ? $order->customer_name : $order->user->name }}</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="mb-1 text-muted">Email</p>
-                                    <p class="mb-0">{{ $order->user->email }}</p>
+                                <div class="mb-3 col-md-4">
+                                    <p class="mb-1 text-dark">Email:</p>
+                                    <p class="mb-0">
+                                        {{ $order->customer_name ? "-" : $order->user->email }}</p>
                                 </div>
-                                <div class="col-md-4">
-                                    <p class="mb-1 text-muted">Telepon</p>
-                                    <p class="mb-0">{{ $order->user->telp }}</p>
+                                <div class="mb-3 col-md-4">
+                                    <p class="mb-1 text-dark">Telepon:</p>
+                                    <p class="mb-0">
+                                        {{ $order->customer_phone ? $order->customer_phone : $order->user->telp }}</p>
                                 </div>
-                            </div>
-                            <div>
-                                <p class="mb-1 text-muted">Alamat Lengkap</p>
-                                <p class="mb-0">{{ $order->user->fulladdress }}</p>
+                                <div class="mb-3 col-md-12">
+                                    <p class="mb-1 text-dark">Alamat:</p>
+                                    <p class="mb-0">{{ $order->user->fulladdress ?? "-" }}</p>
+                                </div>
+                                <div class="mb-3 col-md-12">
+                                    <p class="mb-1 text-dark">Catatan:</p>
+                                    <p class="mb-0">{{ $order->note }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -222,16 +232,19 @@ $orderReady = fn() => $this->order->update(["status" => "PICKUP"]);
                                 <h4 class="fw-bold">Invoice</h4>
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <p class="mb-1"><strong>Nomor Faktur:</strong> {{ $order->invoice }}</p>
-                                        <p class="mb-1"><strong>Nomor Resi:</strong> {{ $order->tracking_number ?? "-" }}
+                                        <p class="mb-1"><span class="text-dark">Nomor Faktur:</span>
+                                            {{ $order->invoice }}</p>
+                                        <p class="mb-1"><span class="text-dark">Nomor Resi:</span>
+                                            {{ $order->tracking_number ?? "-" }}
                                         </p>
-                                        <p class="mb-1"><strong>Tanggal Pesanan:</strong>
+                                        <p class="mb-1"><span class="text-dark">Tanggal Pesanan:</span>
                                             {{ $order->created_at->format("d M Y") }}</p>
                                     </div>
                                     <div class="text-end">
-                                        <p class="mb-1"><strong>Kurir:</strong> {{ $order->courier }}</p>
-                                        <p class="mb-1"><strong>Pembayaran:</strong> {{ $order->payment_method }}</p>
-                                        <p class="mb-1"><strong>Tambahan:</strong>
+                                        <p class="mb-1"><span class="text-dark">Kurir:</span> {{ $order->courier }}</p>
+                                        <p class="mb-1"><span class="text-dark">Pembayaran:</span>
+                                            {{ $order->payment_method }}</p>
+                                        <p class="mb-1"><span class="text-dark">Tambahan:</span>
                                             {{ $order->protect_cost ? "Bubble Wrap" : "-" }}</p>
                                     </div>
                                 </div>

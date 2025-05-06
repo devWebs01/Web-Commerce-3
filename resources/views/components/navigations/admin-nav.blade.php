@@ -163,6 +163,13 @@ on([
                         <span class="hide-menu">Menu Karyawan</span>
                     </li>
                     <li class="sidebar-item">
+                        <a class="sidebar-link {{ request()->routeIs("cashier.index") ? "active" : "" }}"
+                            href="{{ route("cashier.index") }}">
+                            <i class="fas fa-cash-register me-2"></i>
+                            <span class="hide-menu">Kasir</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a class="sidebar-link {{ request()->routeIs("customers") ? "active" : "" }}"
                             href="{{ route("customers") }}">
                             <i class="fas fa-users me-2"></i>

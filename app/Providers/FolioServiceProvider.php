@@ -25,6 +25,9 @@ class FolioServiceProvider extends ServiceProvider
                 'admin/*' => [
                     'auth', 'checkRole:admin,superadmin',
                 ],
+                'cashier/*' => [
+                    'auth', 'checkRole:admin,superadmin',
+                ],
                 'orders/*' => [
                     'auth', 'checkRole:customer',
                 ],

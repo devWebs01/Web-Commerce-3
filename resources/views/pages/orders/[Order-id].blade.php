@@ -146,23 +146,28 @@ $complatedOrder = fn() => $this->order->update(["status" => "COMPLETED"]);
     @include("components.partials.fancybox")
 
     @volt
-        <div class="container py-4">
+        <div class="container">
 
             @if (!in_array($order->status, ["PROGRESS", "UNPAID"]))
                 {{-- Jika pesanan sudah dikirim, tampilkan alert & tombol konfirmasi --}}
                 @if ($order->status === "SHIPPED")
-                    <div class="alert alert-info d-flex align-items-center shadow-sm rounded-3 mb-3">
-                        <i class="fa-solid fa-truck me-3 fs-4"></i>
-                        <div>
-                            <strong>Status Pesanan:</strong> {{ __("order_status." . $order->status) }}<br>
-                            <p class="mb-3">
-                                Mohon klik tombol di bawah ini setelah Anda menerima paket.
-                            </p>
-                            <button wire:click="complatedOrder" class="btn btn-success" role="button">
-                                Pesanan diterima
-                            </button>
+                    <div class="alert alert-warning shadow-sm rounded-3 mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-8 d-flex align-items-center">
+                                <i class="fa-solid fa-truck me-3 fs-2 text-dark mt-1"></i>
+                                <div>
+                                    <strong>Status Pesanan:</strong> {{ __("order_status." . $order->status) }}<br>
+                                    <p class="mb-0 mt-1">
+                                        Mohon klik tombol terima untuk mengkonfirmasi bahwa Anda telah menerima paket.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <button wire:click="complatedOrder" class="btn btn-warning">
+                                    Pesanan diterima
+                                </button>
+                            </div>
                         </div>
-
                     </div>
                 @endif
 
